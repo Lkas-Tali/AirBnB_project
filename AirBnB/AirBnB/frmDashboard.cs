@@ -154,7 +154,7 @@ namespace AirBnB
         }
 
         // Method to upload images to Firebase Storage
-        private async void UploadImagesToFirebase()
+        private async Task UploadImagesToFirebase()
         {
             string username = GlobalData.Username;
 
@@ -185,10 +185,9 @@ namespace AirBnB
         // Method to add image URLs to the Firebase Realtime Database
         private async Task AddImageUrlsToDatabase(string username, List<string> newImageUrls)
         {
-            // Reference to the "Users" node in the Realtime Database
             var userCredsRef = firebaseClient
                 .Child("Users")
-                .Child(username) // Use the username as the key
+                .Child(username)
                 .Child("Listed Property");
 
             // Retrieve existing image URLs
@@ -210,38 +209,22 @@ namespace AirBnB
             // Store the updated list of image URLs in the database
             await userCredsRef.Child("ImageUrls").PutAsync(existingImageUrls);
 
+            // Update the Available Properties node with the image URLs
             await firebaseClient
                 .Child("Available Properties")
                 .Child(username)
                 .Child("ImageUrls")
                 .PutAsync(existingImageUrls);
-
-            await firebaseClient
-                .Child("Users")
-                .Child(username)
-                .Child("isListing")
-                .PutAsync(true);
-
-            Dictionary<string, string> dicAddress = new Dictionary<string, string>();
-
-            dicAddress = keyValuePairs("Address", txtAddress.Text);
-
-            await firebaseClient
-                .Child("Available Properties")
-                .Child(username)
-                .Child("Address")
-                .PutAsync(dicAddress);
-
-            // Show a success message to the user
-            MessageBox.Show("Images uploaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Upload images to the database
-        private void uploadButton_Click(object sender, EventArgs e)
+        private async void uploadButton_Click(object sender, EventArgs e)
         {
-            if (txtAddress.Text == "")
+            if (string.IsNullOrWhiteSpace(txtAddress.Text) || string.IsNullOrWhiteSpace(txtCity.Text) ||
+                string.IsNullOrWhiteSpace(txtDescription.Text) || string.IsNullOrWhiteSpace(txtPrice.Text) ||
+                string.IsNullOrWhiteSpace(txtTitle.Text))
             {
-                MessageBox.Show("Please enter your property address first", "Action Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please fill up all the fields!", "Action Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -249,18 +232,40 @@ namespace AirBnB
 
                 using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
-                    // Set filter for file types to allow only images
                     openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png|All Files|*.*";
                     openFileDialog.Title = "Select Image Files";
-                    openFileDialog.Multiselect = true; // Allow multiple file selection
+                    openFileDialog.Multiselect = true;
 
-                    // Show the file dialog and check if user selected files
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
-                        // Add selected files to the list of selectedFiles
                         selectedFiles.AddRange(openFileDialog.FileNames);
-                        // Call the method to upload the images to Firebase
-                        UploadImagesToFirebase();
+                        await UploadImagesToFirebase();
+
+                        // Create a dictionary to hold all property details
+                        var propertyDetails = new Dictionary<string, object>
+                {
+                    { "Address", txtAddress.Text },
+                    { "City", txtCity.Text },
+                    { "Title", txtTitle.Text },
+                    { "PricePerNight", txtPrice.Text },
+                    { "Description", txtDescription.Text }
+                };
+
+                        // Update the Available Properties node with all details
+                        await firebaseClient
+                            .Child("Available Properties")
+                            .Child(username)
+                            .Child("Address")
+                            .PutAsync(propertyDetails);
+
+                        // Update the user's listing status
+                        await firebaseClient
+                            .Child("Users")
+                            .Child(username)
+                            .Child("isListing")
+                            .PutAsync(true);
+
+                        MessageBox.Show("Property details and images uploaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }

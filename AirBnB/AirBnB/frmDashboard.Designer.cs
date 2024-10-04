@@ -47,9 +47,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.panelList = new System.Windows.Forms.Panel();
             this.frontImageButton = new System.Windows.Forms.Button();
+            this.txtTitle = new System.Windows.Forms.TextBox();
+            this.txtPrice = new System.Windows.Forms.TextBox();
+            this.txtCity = new System.Windows.Forms.TextBox();
+            this.txtDescription = new System.Windows.Forms.TextBox();
             this.txtAddress = new System.Windows.Forms.TextBox();
             this.uploadButton = new System.Windows.Forms.Button();
+            this.labelTitle = new System.Windows.Forms.Label();
+            this.labelPrice = new System.Windows.Forms.Label();
+            this.labelCity = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.labelDescription = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -73,18 +81,16 @@
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 1052);
+            this.panel1.Size = new System.Drawing.Size(300, 855);
             this.panel1.TabIndex = 0;
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.SeaShell;
-            this.panel3.Location = new System.Drawing.Point(0, 239);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4);
+            this.panel3.Location = new System.Drawing.Point(0, 194);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(7, 295);
+            this.panel3.Size = new System.Drawing.Size(5, 240);
             this.panel3.TabIndex = 2;
             // 
             // logoutButton
@@ -96,10 +102,9 @@
             this.logoutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.logoutButton.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logoutButton.ForeColor = System.Drawing.Color.SeaShell;
-            this.logoutButton.Location = new System.Drawing.Point(0, 954);
-            this.logoutButton.Margin = new System.Windows.Forms.Padding(4);
+            this.logoutButton.Location = new System.Drawing.Point(0, 775);
             this.logoutButton.Name = "logoutButton";
-            this.logoutButton.Size = new System.Drawing.Size(400, 98);
+            this.logoutButton.Size = new System.Drawing.Size(300, 80);
             this.logoutButton.TabIndex = 1;
             this.logoutButton.Text = "Logout";
             this.logoutButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -117,10 +122,9 @@
             this.listedButton.ForeColor = System.Drawing.Color.SeaShell;
             this.listedButton.Image = global::AirBnB.Properties.Resources.icons8_house_64;
             this.listedButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.listedButton.Location = new System.Drawing.Point(0, 435);
-            this.listedButton.Margin = new System.Windows.Forms.Padding(4);
+            this.listedButton.Location = new System.Drawing.Point(0, 354);
             this.listedButton.Name = "listedButton";
-            this.listedButton.Size = new System.Drawing.Size(400, 98);
+            this.listedButton.Size = new System.Drawing.Size(300, 80);
             this.listedButton.TabIndex = 1;
             this.listedButton.Text = "Listed Property";
             this.listedButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -139,10 +143,9 @@
             this.listButton.ForeColor = System.Drawing.Color.SeaShell;
             this.listButton.Image = global::AirBnB.Properties.Resources.icons8_key_64;
             this.listButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.listButton.Location = new System.Drawing.Point(0, 337);
-            this.listButton.Margin = new System.Windows.Forms.Padding(4);
+            this.listButton.Location = new System.Drawing.Point(0, 274);
             this.listButton.Name = "listButton";
-            this.listButton.Size = new System.Drawing.Size(400, 98);
+            this.listButton.Size = new System.Drawing.Size(300, 80);
             this.listButton.TabIndex = 1;
             this.listButton.Text = "List Property";
             this.listButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -161,10 +164,9 @@
             this.bookButton.ForeColor = System.Drawing.Color.SeaShell;
             this.bookButton.Image = global::AirBnB.Properties.Resources.icons8_leasing_60;
             this.bookButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bookButton.Location = new System.Drawing.Point(0, 239);
-            this.bookButton.Margin = new System.Windows.Forms.Padding(4);
+            this.bookButton.Location = new System.Drawing.Point(0, 194);
             this.bookButton.Name = "bookButton";
-            this.bookButton.Size = new System.Drawing.Size(400, 98);
+            this.bookButton.Size = new System.Drawing.Size(300, 80);
             this.bookButton.TabIndex = 1;
             this.bookButton.Text = "Book Property";
             this.bookButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -178,9 +180,8 @@
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(400, 239);
+            this.panel2.Size = new System.Drawing.Size(300, 194);
             this.panel2.TabIndex = 0;
             // 
             // usernameLabel
@@ -189,10 +190,9 @@
             this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
             this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameLabel.ForeColor = System.Drawing.Color.SeaShell;
-            this.usernameLabel.Location = new System.Drawing.Point(107, 15);
-            this.usernameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.usernameLabel.Location = new System.Drawing.Point(80, 12);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(124, 29);
+            this.usernameLabel.Size = new System.Drawing.Size(97, 24);
             this.usernameLabel.TabIndex = 1;
             this.usernameLabel.Text = "Username";
             this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -200,10 +200,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::AirBnB.Properties.Resources._CITYPNG_COM_White_User_Member_Guest_Icon_PNG_Image___4000x4000;
-            this.pictureBox1.Location = new System.Drawing.Point(16, 15);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(83, 80);
+            this.pictureBox1.Size = new System.Drawing.Size(62, 65);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -214,19 +213,17 @@
             this.panelListed.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.panelListed.Controls.Add(this.flowPanelImages);
             this.panelListed.Controls.Add(this.label1);
-            this.panelListed.Location = new System.Drawing.Point(400, 0);
-            this.panelListed.Margin = new System.Windows.Forms.Padding(4);
+            this.panelListed.Location = new System.Drawing.Point(300, 0);
             this.panelListed.Name = "panelListed";
-            this.panelListed.Size = new System.Drawing.Size(1121, 1052);
+            this.panelListed.Size = new System.Drawing.Size(841, 855);
             this.panelListed.TabIndex = 1;
             // 
             // flowPanelImages
             // 
             this.flowPanelImages.BackColor = System.Drawing.Color.Transparent;
-            this.flowPanelImages.Location = new System.Drawing.Point(8, 113);
-            this.flowPanelImages.Margin = new System.Windows.Forms.Padding(4);
+            this.flowPanelImages.Location = new System.Drawing.Point(6, 92);
             this.flowPanelImages.Name = "flowPanelImages";
-            this.flowPanelImages.Size = new System.Drawing.Size(1113, 939);
+            this.flowPanelImages.Size = new System.Drawing.Size(835, 763);
             this.flowPanelImages.TabIndex = 1;
             // 
             // label1
@@ -234,10 +231,9 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(32, 32);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(24, 26);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(503, 60);
+            this.label1.Size = new System.Drawing.Size(401, 47);
             this.label1.TabIndex = 0;
             this.label1.Text = "Your Property Pictures:";
             // 
@@ -246,10 +242,9 @@
             this.panelHome.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelHome.BackgroundImage = global::AirBnB.Properties.Resources._4e8ff027_0c5e_4603_a5a9_541e77c28b5b;
             this.panelHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panelHome.Location = new System.Drawing.Point(400, 0);
-            this.panelHome.Margin = new System.Windows.Forms.Padding(4);
+            this.panelHome.Location = new System.Drawing.Point(300, 0);
             this.panelHome.Name = "panelHome";
-            this.panelHome.Size = new System.Drawing.Size(1121, 1052);
+            this.panelHome.Size = new System.Drawing.Size(841, 855);
             this.panelHome.TabIndex = 2;
             // 
             // panelBook
@@ -258,18 +253,16 @@
             this.panelBook.BackColor = System.Drawing.Color.Transparent;
             this.panelBook.Controls.Add(this.flowPanelBook);
             this.panelBook.Controls.Add(this.label2);
-            this.panelBook.Location = new System.Drawing.Point(400, 0);
-            this.panelBook.Margin = new System.Windows.Forms.Padding(4);
+            this.panelBook.Location = new System.Drawing.Point(300, 0);
             this.panelBook.Name = "panelBook";
-            this.panelBook.Size = new System.Drawing.Size(1121, 1052);
+            this.panelBook.Size = new System.Drawing.Size(841, 855);
             this.panelBook.TabIndex = 3;
             // 
             // flowPanelBook
             // 
             this.flowPanelBook.AutoSize = true;
             this.flowPanelBook.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowPanelBook.Location = new System.Drawing.Point(0, 110);
-            this.flowPanelBook.Margin = new System.Windows.Forms.Padding(4);
+            this.flowPanelBook.Location = new System.Drawing.Point(0, 89);
             this.flowPanelBook.Name = "flowPanelBook";
             this.flowPanelBook.Size = new System.Drawing.Size(0, 0);
             this.flowPanelBook.TabIndex = 1;
@@ -278,10 +271,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(39, 48);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(29, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(442, 60);
+            this.label2.Size = new System.Drawing.Size(352, 47);
             this.label2.TabIndex = 0;
             this.label2.Text = "Available Properties";
             // 
@@ -290,17 +282,24 @@
             this.panelList.BackColor = System.Drawing.Color.Transparent;
             this.panelList.BackgroundImage = global::AirBnB.Properties.Resources.image;
             this.panelList.Controls.Add(this.frontImageButton);
+            this.panelList.Controls.Add(this.txtTitle);
+            this.panelList.Controls.Add(this.txtPrice);
+            this.panelList.Controls.Add(this.txtCity);
+            this.panelList.Controls.Add(this.txtDescription);
             this.panelList.Controls.Add(this.txtAddress);
             this.panelList.Controls.Add(this.uploadButton);
+            this.panelList.Controls.Add(this.labelTitle);
+            this.panelList.Controls.Add(this.labelPrice);
+            this.panelList.Controls.Add(this.labelCity);
             this.panelList.Controls.Add(this.label7);
+            this.panelList.Controls.Add(this.labelDescription);
             this.panelList.Controls.Add(this.label6);
             this.panelList.Controls.Add(this.label5);
             this.panelList.Controls.Add(this.label4);
             this.panelList.Controls.Add(this.label3);
-            this.panelList.Location = new System.Drawing.Point(400, 0);
-            this.panelList.Margin = new System.Windows.Forms.Padding(4);
+            this.panelList.Location = new System.Drawing.Point(300, 0);
             this.panelList.Name = "panelList";
-            this.panelList.Size = new System.Drawing.Size(1121, 1052);
+            this.panelList.Size = new System.Drawing.Size(841, 855);
             this.panelList.TabIndex = 4;
             // 
             // frontImageButton
@@ -312,25 +311,67 @@
             this.frontImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.frontImageButton.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.frontImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(223)))), ((int)(((byte)(204)))));
-            this.frontImageButton.Location = new System.Drawing.Point(620, 902);
-            this.frontImageButton.Margin = new System.Windows.Forms.Padding(4);
+            this.frontImageButton.Location = new System.Drawing.Point(465, 733);
             this.frontImageButton.Name = "frontImageButton";
-            this.frontImageButton.Size = new System.Drawing.Size(427, 92);
+            this.frontImageButton.Size = new System.Drawing.Size(320, 75);
             this.frontImageButton.TabIndex = 4;
             this.frontImageButton.Text = "UPLOAD";
             this.frontImageButton.UseVisualStyleBackColor = false;
             this.frontImageButton.Click += new System.EventHandler(this.frontImageButton_Click);
+            // 
+            // txtTitle
+            // 
+            this.txtTitle.BackColor = System.Drawing.Color.White;
+            this.txtTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtTitle.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTitle.Location = new System.Drawing.Point(32, 387);
+            this.txtTitle.Multiline = true;
+            this.txtTitle.Name = "txtTitle";
+            this.txtTitle.Size = new System.Drawing.Size(220, 32);
+            this.txtTitle.TabIndex = 3;
+            // 
+            // txtPrice
+            // 
+            this.txtPrice.BackColor = System.Drawing.Color.White;
+            this.txtPrice.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPrice.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPrice.Location = new System.Drawing.Point(32, 455);
+            this.txtPrice.Multiline = true;
+            this.txtPrice.Name = "txtPrice";
+            this.txtPrice.Size = new System.Drawing.Size(220, 32);
+            this.txtPrice.TabIndex = 3;
+            // 
+            // txtCity
+            // 
+            this.txtCity.BackColor = System.Drawing.Color.White;
+            this.txtCity.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtCity.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCity.Location = new System.Drawing.Point(32, 524);
+            this.txtCity.Multiline = true;
+            this.txtCity.Name = "txtCity";
+            this.txtCity.Size = new System.Drawing.Size(220, 32);
+            this.txtCity.TabIndex = 3;
+            // 
+            // txtDescription
+            // 
+            this.txtDescription.BackColor = System.Drawing.Color.White;
+            this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtDescription.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDescription.Location = new System.Drawing.Point(32, 592);
+            this.txtDescription.Multiline = true;
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(529, 32);
+            this.txtDescription.TabIndex = 3;
             // 
             // txtAddress
             // 
             this.txtAddress.BackColor = System.Drawing.Color.White;
             this.txtAddress.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtAddress.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAddress.Location = new System.Drawing.Point(43, 812);
-            this.txtAddress.Margin = new System.Windows.Forms.Padding(4);
+            this.txtAddress.Location = new System.Drawing.Point(32, 660);
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(705, 39);
+            this.txtAddress.Size = new System.Drawing.Size(529, 32);
             this.txtAddress.TabIndex = 3;
             // 
             // uploadButton
@@ -343,36 +384,77 @@
             this.uploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.uploadButton.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.uploadButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(223)))), ((int)(((byte)(204)))));
-            this.uploadButton.Location = new System.Drawing.Point(43, 902);
-            this.uploadButton.Margin = new System.Windows.Forms.Padding(4);
+            this.uploadButton.Location = new System.Drawing.Point(32, 733);
             this.uploadButton.Name = "uploadButton";
-            this.uploadButton.Size = new System.Drawing.Size(427, 92);
+            this.uploadButton.Size = new System.Drawing.Size(320, 75);
             this.uploadButton.TabIndex = 1;
             this.uploadButton.Text = "UPLOAD";
             this.uploadButton.UseVisualStyleBackColor = false;
             this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
+            // 
+            // labelTitle
+            // 
+            this.labelTitle.AutoSize = true;
+            this.labelTitle.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTitle.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.labelTitle.Location = new System.Drawing.Point(27, 354);
+            this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Size = new System.Drawing.Size(56, 30);
+            this.labelTitle.TabIndex = 0;
+            this.labelTitle.Text = "Title";
+            // 
+            // labelPrice
+            // 
+            this.labelPrice.AutoSize = true;
+            this.labelPrice.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPrice.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.labelPrice.Location = new System.Drawing.Point(27, 422);
+            this.labelPrice.Name = "labelPrice";
+            this.labelPrice.Size = new System.Drawing.Size(158, 30);
+            this.labelPrice.TabIndex = 0;
+            this.labelPrice.Text = "Price per night";
+            // 
+            // labelCity
+            // 
+            this.labelCity.AutoSize = true;
+            this.labelCity.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCity.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.labelCity.Location = new System.Drawing.Point(27, 491);
+            this.labelCity.Name = "labelCity";
+            this.labelCity.Size = new System.Drawing.Size(51, 30);
+            this.labelCity.TabIndex = 0;
+            this.labelCity.Text = "City";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.label7.Location = new System.Drawing.Point(613, 864);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label7.Location = new System.Drawing.Point(460, 702);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(174, 37);
+            this.label7.Size = new System.Drawing.Size(133, 30);
             this.label7.TabIndex = 0;
             this.label7.Text = "Front Image";
+            // 
+            // labelDescription
+            // 
+            this.labelDescription.AutoSize = true;
+            this.labelDescription.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelDescription.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.labelDescription.Location = new System.Drawing.Point(27, 559);
+            this.labelDescription.Name = "labelDescription";
+            this.labelDescription.Size = new System.Drawing.Size(125, 30);
+            this.labelDescription.TabIndex = 0;
+            this.labelDescription.Text = "Description";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.label6.Location = new System.Drawing.Point(43, 864);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(32, 702);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(152, 37);
+            this.label6.Size = new System.Drawing.Size(116, 30);
             this.label6.TabIndex = 0;
             this.label6.Text = "All Images";
             // 
@@ -381,10 +463,9 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.label5.Location = new System.Drawing.Point(36, 772);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(27, 627);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(120, 37);
+            this.label5.Size = new System.Drawing.Size(91, 30);
             this.label5.TabIndex = 0;
             this.label5.Text = "Address";
             // 
@@ -393,10 +474,9 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
-            this.label4.Location = new System.Drawing.Point(39, 132);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(29, 107);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(269, 60);
+            this.label4.Size = new System.Drawing.Size(214, 47);
             this.label4.TabIndex = 0;
             this.label4.Text = "images of it";
             // 
@@ -405,28 +485,26 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
-            this.label3.Location = new System.Drawing.Point(39, 74);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(29, 60);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(863, 60);
+            this.label3.Size = new System.Drawing.Size(691, 47);
             this.label3.TabIndex = 0;
             this.label3.Text = "Enter your property address and upload ";
             // 
             // frmDashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1520, 1052);
+            this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panelHome);
-            this.Controls.Add(this.panelListed);
             this.Controls.Add(this.panelList);
             this.Controls.Add(this.panelBook);
+            this.Controls.Add(this.panelHome);
+            this.Controls.Add(this.panelListed);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "frmDashboard";
             this.Text = "frmDashboard";
@@ -472,5 +550,13 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button frontImageButton;
         private System.Windows.Forms.FlowLayoutPanel flowPanelBook;
+        private System.Windows.Forms.TextBox txtTitle;
+        private System.Windows.Forms.TextBox txtPrice;
+        private System.Windows.Forms.TextBox txtCity;
+        private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.Label labelTitle;
+        private System.Windows.Forms.Label labelPrice;
+        private System.Windows.Forms.Label labelCity;
+        private System.Windows.Forms.Label labelDescription;
     }
 }
