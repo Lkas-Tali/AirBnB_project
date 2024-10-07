@@ -113,6 +113,26 @@ namespace AirBnB.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap google_web_search_32 {
+            get {
+                object obj = ResourceManager.GetObject("google-web-search-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap google_web_search_48 {
+            get {
+                object obj = ResourceManager.GetObject("google-web-search-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap house_16 {
             get {
                 object obj = ResourceManager.GetObject("house-16", resourceCulture);
@@ -197,6 +217,16 @@ namespace AirBnB.Properties {
             get {
                 object obj = ResourceManager.GetObject("png-transparent-user-profile-computer-icons-profile-heroes-black-silhouette-thumb" +
                         "nail", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap search_13_32 {
+            get {
+                object obj = ResourceManager.GetObject("search-13-32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

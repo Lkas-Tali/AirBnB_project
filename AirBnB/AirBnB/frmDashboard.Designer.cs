@@ -43,6 +43,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panelHome = new System.Windows.Forms.Panel();
             this.panelBook = new System.Windows.Forms.Panel();
+            this.searchLabel = new System.Windows.Forms.Label();
             this.flowPanelBook = new System.Windows.Forms.FlowLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.panelList = new System.Windows.Forms.Panel();
@@ -62,12 +63,17 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.searchPanel = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelListed.SuspendLayout();
             this.panelBook.SuspendLayout();
             this.panelList.SuspendLayout();
+            this.searchPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -251,12 +257,26 @@
             // 
             this.panelBook.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelBook.BackColor = System.Drawing.Color.Transparent;
+            this.panelBook.Controls.Add(this.searchLabel);
             this.panelBook.Controls.Add(this.flowPanelBook);
             this.panelBook.Controls.Add(this.label2);
             this.panelBook.Location = new System.Drawing.Point(300, 0);
             this.panelBook.Name = "panelBook";
             this.panelBook.Size = new System.Drawing.Size(841, 855);
             this.panelBook.TabIndex = 3;
+            // 
+            // searchLabel
+            // 
+            this.searchLabel.AutoSize = true;
+            this.searchLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.searchLabel.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchLabel.ForeColor = System.Drawing.Color.Sienna;
+            this.searchLabel.Location = new System.Drawing.Point(542, 43);
+            this.searchLabel.Name = "searchLabel";
+            this.searchLabel.Size = new System.Drawing.Size(156, 47);
+            this.searchLabel.TabIndex = 2;
+            this.searchLabel.Text = "SEARCH";
+            this.searchLabel.Click += new System.EventHandler(this.searchLabel_Click);
             // 
             // flowPanelBook
             // 
@@ -491,6 +511,54 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Enter your property address and upload ";
             // 
+            // searchPanel
+            // 
+            this.searchPanel.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
+            this.searchPanel.Controls.Add(this.button1);
+            this.searchPanel.Controls.Add(this.txtSearch);
+            this.searchPanel.Controls.Add(this.label8);
+            this.searchPanel.Location = new System.Drawing.Point(300, 0);
+            this.searchPanel.Name = "searchPanel";
+            this.searchPanel.Size = new System.Drawing.Size(840, 862);
+            this.searchPanel.TabIndex = 5;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.SeaShell;
+            this.button1.Image = global::AirBnB.Properties.Resources.search_13_32;
+            this.button1.Location = new System.Drawing.Point(606, 93);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(49, 32);
+            this.button1.TabIndex = 5;
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.BackColor = System.Drawing.Color.White;
+            this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtSearch.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(37, 93);
+            this.txtSearch.Multiline = true;
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(574, 32);
+            this.txtSearch.TabIndex = 4;
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("Nirmala UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.label8.Location = new System.Drawing.Point(35, 43);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(150, 55);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "SEARCH";
+            // 
             // frmDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -499,10 +567,11 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panelList);
+            this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.panelBook);
             this.Controls.Add(this.panelHome);
             this.Controls.Add(this.panelListed);
+            this.Controls.Add(this.panelList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -519,6 +588,8 @@
             this.panelBook.PerformLayout();
             this.panelList.ResumeLayout(false);
             this.panelList.PerformLayout();
+            this.searchPanel.ResumeLayout(false);
+            this.searchPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -558,5 +629,10 @@
         private System.Windows.Forms.Label labelPrice;
         private System.Windows.Forms.Label labelCity;
         private System.Windows.Forms.Label labelDescription;
+        private System.Windows.Forms.Panel searchPanel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label searchLabel;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Button button1;
     }
 }

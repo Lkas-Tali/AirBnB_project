@@ -12,6 +12,7 @@ using Firebase.Database;
 using Firebase.Database.Query;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AirBnB
 {
@@ -75,6 +76,18 @@ namespace AirBnB
                     // Set the global username
                     GlobalData.Username = txtUsername.Text;
 
+                    // Retrieve the user email
+                    var userCredsRef = firebaseClient
+                        .Child("Users")
+                        .Child(txtUsername.Text)
+                        .Child("Credentials")
+                        .Child("Email");
+
+                    var email = await userCredsRef.OnceSingleAsync<string>();
+
+                    //Set the global email
+                    GlobalData.email = email;
+
                     new frmDashboard().Show();
                     this.Close();
                 }
@@ -134,6 +147,7 @@ namespace AirBnB
     public static class GlobalData
     {
         public static string Username { get; set; }
+        public static string email { get; set; }
     }
 
 }

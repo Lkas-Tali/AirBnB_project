@@ -121,11 +121,17 @@
   <data name="transparent-hd-white-male-user-profile-icon-701751695035030pj3izxn7kh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\transparent-hd-white-male-user-profile-icon-701751695035030pj3izxn7kh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="_4e8ff027-0c5e-4603-a5a9-541e77c28b5b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_4e8ff027-0c5e-4603-a5a9-541e77c28b5b.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="house-64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\house-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icons8-leasing-50" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-leasing-50.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_4e8ff027-0c5e-4603-a5a9-541e77c28b5b.jpeg" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\_4e8ff027-0c5e-4603-a5a9-541e77c28b5b.jpeg.JPG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="image" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\image.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -139,17 +145,20 @@
   <data name="AdobeStock_288768256-2mb" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AdobeStock_288768256-2mb.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icons8-leasing-60" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icons8-leasing-60.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="google-web-search-48" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\google-web-search-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8-house-64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-house-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="house-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\house-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_4e8ff027-0c5e-4603-a5a9-541e77c28b5b.jpeg" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\_4e8ff027-0c5e-4603-a5a9-541e77c28b5b.jpeg.JPG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="google-web-search-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\google-web-search-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_4e8ff027-0c5e-4603-a5a9-541e77c28b5b" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\_4e8ff027-0c5e-4603-a5a9-541e77c28b5b.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-leasing-60" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-leasing-60.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="[CITYPNG.COM]White User Member Guest Icon PNG Image - 4000x4000" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\[CITYPNG.COM]White User Member Guest Icon PNG Image - 4000x4000.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -160,7 +169,7 @@
   <data name="house-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\house-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icons8-house-64" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icons8-house-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="search-13-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\search-13-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

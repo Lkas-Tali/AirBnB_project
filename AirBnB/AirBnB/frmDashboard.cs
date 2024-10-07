@@ -149,6 +149,7 @@ namespace AirBnB
             panelListed.Visible = false;
             panelBook.Visible = false;
             panelHome.Visible = false;
+            searchPanel.Visible = false;
 
             panel.Visible = true;
         }
@@ -317,6 +318,8 @@ namespace AirBnB
         // Upload the front image URL to the database
         private async Task AddFrontImageUrlsToDatabase(string username,string frontImageUrl)
         {
+            string email = GlobalData.email;
+
             Dictionary<string, string> dicFrontImageUrl = new Dictionary<string, string>();
 
             dicFrontImageUrl = keyValuePairs("Front Image", frontImageUrl);
@@ -325,7 +328,7 @@ namespace AirBnB
                 .Child("Available Properties")
                 .Child(username);
 
-            // Get the existing data (including address) from Firebase
+            // Get the existing data from Firebase
             var existingData = await userCredsRef.OnceSingleAsync<Dictionary<string, object>>();
 
             // If existing data is null, initialize it as an empty dictionary
@@ -336,6 +339,8 @@ namespace AirBnB
 
             // Add/Update the front image URL in the existing data
             existingData["Front Image"] = frontImageUrl;
+            existingData["Name"] = username;
+            existingData["Email"] = email;
 
             // Update the database with the modified data (keeping existing values like address)
             await userCredsRef.PutAsync(existingData);
@@ -429,6 +434,19 @@ namespace AirBnB
             }
 
             return properties;
+        }
+
+        private void searchLabel_Click(object sender, EventArgs e)
+        {
+            ShowPanel(searchPanel);
+
+            var userCredsRef = firebaseClient
+                       .Child("Available Properties")
+                       .Child(txtUsername.Text)
+                       .Child("Credentials")
+                       .Child("Email");
+
+            var email = await userCredsRef.OnceSingleAsync<string>();
         }
     }
 
