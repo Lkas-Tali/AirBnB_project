@@ -64,7 +64,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.searchPanel = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.searchButton = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -514,7 +514,7 @@
             // searchPanel
             // 
             this.searchPanel.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
-            this.searchPanel.Controls.Add(this.button1);
+            this.searchPanel.Controls.Add(this.searchButton);
             this.searchPanel.Controls.Add(this.txtSearch);
             this.searchPanel.Controls.Add(this.label8);
             this.searchPanel.Location = new System.Drawing.Point(300, 0);
@@ -522,21 +522,22 @@
             this.searchPanel.Size = new System.Drawing.Size(840, 862);
             this.searchPanel.TabIndex = 5;
             // 
-            // button1
+            // searchButton
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.SeaShell;
-            this.button1.Image = global::AirBnB.Properties.Resources.search_13_32;
-            this.button1.Location = new System.Drawing.Point(606, 93);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(49, 32);
-            this.button1.TabIndex = 5;
-            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button1.UseVisualStyleBackColor = false;
+            this.searchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.searchButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.searchButton.FlatAppearance.BorderSize = 0;
+            this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.searchButton.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchButton.ForeColor = System.Drawing.Color.SeaShell;
+            this.searchButton.Image = global::AirBnB.Properties.Resources.search_13_32;
+            this.searchButton.Location = new System.Drawing.Point(606, 93);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(49, 32);
+            this.searchButton.TabIndex = 5;
+            this.searchButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.searchButton.UseVisualStyleBackColor = false;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // txtSearch
             // 
@@ -633,6 +634,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label searchLabel;
         private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button searchButton;
     }
 }

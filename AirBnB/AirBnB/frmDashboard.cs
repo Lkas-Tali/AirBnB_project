@@ -439,14 +439,52 @@ namespace AirBnB
         private void searchLabel_Click(object sender, EventArgs e)
         {
             ShowPanel(searchPanel);
+        }
 
-            var userCredsRef = firebaseClient
-                       .Child("Available Properties")
-                       .Child(txtUsername.Text)
-                       .Child("Credentials")
-                       .Child("Email");
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            
+        }
 
-            var email = await userCredsRef.OnceSingleAsync<string>();
+        private async Task<List<Property>> SearchPropertiesByCity(string city)
+        {
+            List<Property> properties = new List<Property>();
+
+            // Get a reference to the "Available Properties" node in Firebase
+            var availablePropertiesRef = firebaseClient.Child("Available Properties");
+
+            // Retrieve all available properties
+            var availableProperties = await availablePropertiesRef.OnceAsync<Dictionary<string, object>>();
+
+            // Iterate through each property
+            foreach (var property in availableProperties)
+            {
+                var data = property.Object;
+
+                // Check if the property has an Address field and it's a Dictionary
+                if (data.ContainsKey("Address") && data["Address"] is Dictionary<string, object> addressData)
+                {
+                    // Check if the property's city matches the search query
+                    if (addressData.ContainsKey("City") && addressData["City"].ToString().ToLower() == city)
+                    {
+                        // Extract property details
+                        string frontImage = data.ContainsKey("Front Image") ? data["Front Image"].ToString() : "";
+                        string address = addressData.ContainsKey("Address") ? addressData["Address"].ToString() : "";
+                        string pricePerNight = data.ContainsKey("PricePerNight") ? data["PricePerNight"].ToString() : "";
+
+                        // Create a new Property object and add it to the list
+                        Property newProperty = new Property
+                        {
+                            FrontImageUrl = frontImage,
+                            Address = address
+                        };
+
+                        properties.Add(newProperty);
+                    }
+                }
+            }
+
+            return properties;
         }
     }
 
