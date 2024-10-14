@@ -568,11 +568,11 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelListed);
+            this.Controls.Add(this.panelList);
             this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.panelBook);
             this.Controls.Add(this.panelHome);
-            this.Controls.Add(this.panelListed);
-            this.Controls.Add(this.panelList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

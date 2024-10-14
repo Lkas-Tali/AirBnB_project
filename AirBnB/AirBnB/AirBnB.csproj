@@ -319,8 +319,11 @@
     <Compile Include="frmLogin.Designer.cs">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="ListedPropertyViewer.cs" />
+    <Compile Include="ListPropertyManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyBookingManager.cs" />
     <EmbeddedResource Include="frmList.resx">
       <DependentUpon>frmList.cs</DependentUpon>
     </EmbeddedResource>
