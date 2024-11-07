@@ -47,7 +47,7 @@
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label5.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label5.Location = new System.Drawing.Point(151, 668);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(148, 25);
@@ -74,7 +74,7 @@
             this.clearButton.FlatAppearance.BorderSize = 0;
             this.clearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.clearButton.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.clearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.clearButton.Location = new System.Drawing.Point(38, 534);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(394, 52);
@@ -85,7 +85,7 @@
             // 
             // loginButton
             // 
-            this.loginButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.loginButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.loginButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.loginButton.FlatAppearance.BorderSize = 0;
             this.loginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -166,7 +166,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Nirmala UI", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label1.Location = new System.Drawing.Point(29, 117);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(174, 65);

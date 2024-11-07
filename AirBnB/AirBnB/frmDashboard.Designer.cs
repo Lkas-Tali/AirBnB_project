@@ -67,6 +67,12 @@
             this.searchButton = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.panelPropertyDetails = new System.Windows.Forms.Panel();
+            this.labelContact = new System.Windows.Forms.Label();
+            this.labelPricePerNight = new System.Windows.Forms.Label();
+            this.labelAddress = new System.Windows.Forms.Label();
+            this.button_FinalBook = new System.Windows.Forms.Button();
+            this.flowLayoutPanelImages = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -74,11 +80,12 @@
             this.panelBook.SuspendLayout();
             this.panelList.SuspendLayout();
             this.searchPanel.SuspendLayout();
+            this.panelPropertyDetails.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.logoutButton);
             this.panel1.Controls.Add(this.listedButton);
@@ -101,13 +108,13 @@
             // 
             // logoutButton
             // 
-            this.logoutButton.BackColor = System.Drawing.Color.DimGray;
+            this.logoutButton.BackColor = System.Drawing.Color.White;
             this.logoutButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.logoutButton.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.logoutButton.FlatAppearance.BorderSize = 0;
             this.logoutButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.logoutButton.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logoutButton.ForeColor = System.Drawing.Color.SeaShell;
+            this.logoutButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.logoutButton.Location = new System.Drawing.Point(0, 775);
             this.logoutButton.Name = "logoutButton";
             this.logoutButton.Size = new System.Drawing.Size(300, 80);
@@ -119,13 +126,13 @@
             // 
             // listedButton
             // 
-            this.listedButton.BackColor = System.Drawing.Color.DimGray;
+            this.listedButton.BackColor = System.Drawing.Color.White;
             this.listedButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.listedButton.Dock = System.Windows.Forms.DockStyle.Top;
             this.listedButton.FlatAppearance.BorderSize = 0;
             this.listedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.listedButton.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listedButton.ForeColor = System.Drawing.Color.SeaShell;
+            this.listedButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.listedButton.Image = global::AirBnB.Properties.Resources.icons8_house_64;
             this.listedButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.listedButton.Location = new System.Drawing.Point(0, 354);
@@ -140,13 +147,13 @@
             // 
             // listButton
             // 
-            this.listButton.BackColor = System.Drawing.Color.DimGray;
+            this.listButton.BackColor = System.Drawing.Color.White;
             this.listButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.listButton.Dock = System.Windows.Forms.DockStyle.Top;
             this.listButton.FlatAppearance.BorderSize = 0;
             this.listButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.listButton.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listButton.ForeColor = System.Drawing.Color.SeaShell;
+            this.listButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.listButton.Image = global::AirBnB.Properties.Resources.icons8_key_64;
             this.listButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.listButton.Location = new System.Drawing.Point(0, 274);
@@ -161,13 +168,13 @@
             // 
             // bookButton
             // 
-            this.bookButton.BackColor = System.Drawing.Color.DimGray;
+            this.bookButton.BackColor = System.Drawing.Color.White;
             this.bookButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.bookButton.Dock = System.Windows.Forms.DockStyle.Top;
             this.bookButton.FlatAppearance.BorderSize = 0;
             this.bookButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.bookButton.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bookButton.ForeColor = System.Drawing.Color.SeaShell;
+            this.bookButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.bookButton.Image = global::AirBnB.Properties.Resources.icons8_leasing_60;
             this.bookButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.bookButton.Location = new System.Drawing.Point(0, 194);
@@ -182,6 +189,7 @@
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
             this.panel2.Controls.Add(this.usernameLabel);
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
@@ -237,6 +245,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label1.Location = new System.Drawing.Point(24, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(401, 47);
@@ -246,8 +255,9 @@
             // panelHome
             // 
             this.panelHome.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panelHome.BackgroundImage = global::AirBnB.Properties.Resources._4e8ff027_0c5e_4603_a5a9_541e77c28b5b;
-            this.panelHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panelHome.BackColor = System.Drawing.Color.SeaShell;
+            this.panelHome.BackgroundImage = global::AirBnB.Properties.Resources.airbnb_logo;
+            this.panelHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panelHome.Location = new System.Drawing.Point(300, 0);
             this.panelHome.Name = "panelHome";
             this.panelHome.Size = new System.Drawing.Size(841, 855);
@@ -270,7 +280,7 @@
             this.searchLabel.AutoSize = true;
             this.searchLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.searchLabel.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchLabel.ForeColor = System.Drawing.Color.Sienna;
+            this.searchLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.searchLabel.Location = new System.Drawing.Point(542, 43);
             this.searchLabel.Name = "searchLabel";
             this.searchLabel.Size = new System.Drawing.Size(156, 47);
@@ -280,17 +290,17 @@
             // 
             // flowPanelBook
             // 
-            this.flowPanelBook.AutoSize = true;
             this.flowPanelBook.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowPanelBook.Location = new System.Drawing.Point(0, 89);
             this.flowPanelBook.Name = "flowPanelBook";
-            this.flowPanelBook.Size = new System.Drawing.Size(0, 0);
+            this.flowPanelBook.Size = new System.Drawing.Size(835, 763);
             this.flowPanelBook.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Black;
             this.label2.Location = new System.Drawing.Point(29, 39);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(352, 47);
@@ -324,7 +334,7 @@
             // 
             // frontImageButton
             // 
-            this.frontImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.frontImageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.frontImageButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.frontImageButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.frontImageButton.FlatAppearance.BorderSize = 0;
@@ -396,7 +406,7 @@
             // 
             // uploadButton
             // 
-            this.uploadButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.uploadButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.uploadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.uploadButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uploadButton.FlatAppearance.BorderColor = System.Drawing.Color.Sienna;
@@ -493,7 +503,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label4.Location = new System.Drawing.Point(29, 107);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(214, 47);
@@ -504,7 +514,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label3.Location = new System.Drawing.Point(29, 60);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(691, 47);
@@ -524,7 +534,7 @@
             // 
             // searchButton
             // 
-            this.searchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.searchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.searchButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.searchButton.FlatAppearance.BorderSize = 0;
             this.searchButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -553,12 +563,88 @@
             // label8
             // 
             this.label8.Font = new System.Drawing.Font("Nirmala UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label8.Location = new System.Drawing.Point(35, 43);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(150, 55);
             this.label8.TabIndex = 0;
             this.label8.Text = "SEARCH";
+            // 
+            // panelPropertyDetails
+            // 
+            this.panelPropertyDetails.BackColor = System.Drawing.Color.SeaShell;
+            this.panelPropertyDetails.Controls.Add(this.flowLayoutPanelImages);
+            this.panelPropertyDetails.Controls.Add(this.labelContact);
+            this.panelPropertyDetails.Controls.Add(this.labelPricePerNight);
+            this.panelPropertyDetails.Controls.Add(this.button_FinalBook);
+            this.panelPropertyDetails.Controls.Add(this.labelAddress);
+            this.panelPropertyDetails.Location = new System.Drawing.Point(300, 0);
+            this.panelPropertyDetails.Name = "panelPropertyDetails";
+            this.panelPropertyDetails.Size = new System.Drawing.Size(840, 855);
+            this.panelPropertyDetails.TabIndex = 6;
+            // 
+            // labelContact
+            // 
+            this.labelContact.AutoSize = true;
+            this.labelContact.BackColor = System.Drawing.Color.Transparent;
+            this.labelContact.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelContact.ForeColor = System.Drawing.Color.Black;
+            this.labelContact.Location = new System.Drawing.Point(38, 589);
+            this.labelContact.Name = "labelContact";
+            this.labelContact.Size = new System.Drawing.Size(81, 25);
+            this.labelContact.TabIndex = 4;
+            this.labelContact.Text = "Contact";
+            this.labelContact.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelPricePerNight
+            // 
+            this.labelPricePerNight.AutoSize = true;
+            this.labelPricePerNight.BackColor = System.Drawing.Color.Transparent;
+            this.labelPricePerNight.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPricePerNight.ForeColor = System.Drawing.Color.Black;
+            this.labelPricePerNight.Location = new System.Drawing.Point(38, 627);
+            this.labelPricePerNight.Name = "labelPricePerNight";
+            this.labelPricePerNight.Size = new System.Drawing.Size(145, 25);
+            this.labelPricePerNight.TabIndex = 4;
+            this.labelPricePerNight.Text = "Price Per Night";
+            this.labelPricePerNight.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelAddress
+            // 
+            this.labelAddress.AutoSize = true;
+            this.labelAddress.BackColor = System.Drawing.Color.Transparent;
+            this.labelAddress.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAddress.ForeColor = System.Drawing.Color.Black;
+            this.labelAddress.Location = new System.Drawing.Point(39, 664);
+            this.labelAddress.Name = "labelAddress";
+            this.labelAddress.Size = new System.Drawing.Size(83, 25);
+            this.labelAddress.TabIndex = 3;
+            this.labelAddress.Text = "Address";
+            this.labelAddress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelAddress.Click += new System.EventHandler(this.labelAddress_Click);
+            // 
+            // button_FinalBook
+            // 
+            this.button_FinalBook.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
+            this.button_FinalBook.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button_FinalBook.FlatAppearance.BorderSize = 0;
+            this.button_FinalBook.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_FinalBook.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_FinalBook.ForeColor = System.Drawing.Color.White;
+            this.button_FinalBook.Location = new System.Drawing.Point(509, 735);
+            this.button_FinalBook.Name = "button_FinalBook";
+            this.button_FinalBook.Size = new System.Drawing.Size(300, 80);
+            this.button_FinalBook.TabIndex = 2;
+            this.button_FinalBook.Text = "Book";
+            this.button_FinalBook.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button_FinalBook.UseVisualStyleBackColor = false;
+            // 
+            // flowLayoutPanelImages
+            // 
+            this.flowLayoutPanelImages.Location = new System.Drawing.Point(0, 107);
+            this.flowLayoutPanelImages.Name = "flowLayoutPanelImages";
+            this.flowLayoutPanelImages.Size = new System.Drawing.Size(839, 427);
+            this.flowLayoutPanelImages.TabIndex = 5;
             // 
             // frmDashboard
             // 
@@ -567,12 +653,13 @@
             this.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
+            this.Controls.Add(this.panelPropertyDetails);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelHome);
             this.Controls.Add(this.panelListed);
             this.Controls.Add(this.panelList);
             this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.panelBook);
-            this.Controls.Add(this.panelHome);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -591,6 +678,8 @@
             this.panelList.PerformLayout();
             this.searchPanel.ResumeLayout(false);
             this.searchPanel.PerformLayout();
+            this.panelPropertyDetails.ResumeLayout(false);
+            this.panelPropertyDetails.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -635,5 +724,11 @@
         private System.Windows.Forms.Label searchLabel;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Panel panelPropertyDetails;
+        private System.Windows.Forms.Label labelContact;
+        private System.Windows.Forms.Label labelPricePerNight;
+        private System.Windows.Forms.Button button_FinalBook;
+        private System.Windows.Forms.Label labelAddress;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelImages;
     }
 }

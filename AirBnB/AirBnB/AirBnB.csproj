@@ -463,6 +463,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <None Include="Resources\airbnb-logo.png" />
     <None Include="Resources\search-13-32.png" />
     <None Include="Resources\google-web-search-48.png" />
     <None Include="Resources\google-web-search-32.png" />

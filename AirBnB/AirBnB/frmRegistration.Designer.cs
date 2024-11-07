@@ -50,7 +50,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Nirmala UI", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label1.Location = new System.Drawing.Point(27, 69);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(285, 65);
@@ -145,7 +145,7 @@
             // 
             // registerButton
             // 
-            this.registerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.registerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.registerButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.registerButton.FlatAppearance.BorderSize = 0;
             this.registerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -166,7 +166,7 @@
             this.clearButton.FlatAppearance.BorderSize = 0;
             this.clearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.clearButton.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.clearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.clearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.clearButton.Location = new System.Drawing.Point(36, 612);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(394, 52);
@@ -194,7 +194,7 @@
             this.BackToLoginLabel.BackColor = System.Drawing.Color.Transparent;
             this.BackToLoginLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.BackToLoginLabel.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BackToLoginLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(26)))), ((int)(((byte)(30)))));
+            this.BackToLoginLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.BackToLoginLabel.Location = new System.Drawing.Point(199, 715);
             this.BackToLoginLabel.Name = "BackToLoginLabel";
             this.BackToLoginLabel.Size = new System.Drawing.Size(70, 25);
@@ -229,6 +229,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.ClientSize = new System.Drawing.Size(471, 782);
             this.Controls.Add(this.BackToLoginLabel);

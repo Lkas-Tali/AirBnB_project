@@ -1,5 +1,8 @@
 ﻿using Firebase.Database;
+using Firebase.Database.Query;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AirBnB
@@ -19,6 +22,9 @@ namespace AirBnB
             listPropertyManager = new ListPropertyManager(firebaseClient);
             listedPropertyViewer = new ListedPropertyViewer(firebaseClient);
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
+
+            // Subscribe to the PropertySelected event
+            propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
         }
 
         public void InitializeFirebase()
@@ -84,8 +90,10 @@ namespace AirBnB
             panelBook.Visible = false;
             panelHome.Visible = false;
             searchPanel.Visible = false;
+            panelPropertyDetails.Visible = true;
 
             panel.Visible = true;
+            panel.BringToFront();
         }
 
         private async void uploadButton_Click(object sender, EventArgs e)
@@ -133,6 +141,86 @@ namespace AirBnB
             {
                 MessageBox.Show($"No properties found in {city}.", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private async void PropertyBookingManager_PropertySelected(object sender, Dictionary<string, object> propertyData)
+        {
+            try
+            {
+                // Get the complete address data
+                var addressData = await firebaseClient
+                    .Child("Available Properties")
+                    .Child(propertyData["Username"].ToString())
+                    .Child("Address")
+                    .OnceSingleAsync<Dictionary<string, object>>();
+
+                if (labelAddress != null)
+                {
+                    labelAddress.Text = $"Address: {addressData["Address"]}";
+                }
+
+                if (labelPricePerNight != null)
+                {
+                    labelPricePerNight.Text = $"Price per night: £{propertyData["PricePerNight"]}";
+                }
+
+                if (labelContact != null)
+                {
+                    labelContact.Text = $"Contact: {propertyData["Email"]}";
+                }
+
+                // Show details panel
+                ShowPanel(panelPropertyDetails);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading property details: {ex.Message}", "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            DisplaySelectedPropertyImages(sender, propertyData);
+        }
+
+        private async void DisplaySelectedPropertyImages(object sender, Dictionary<string, object> propertyData)
+        {
+            flowLayoutPanelImages.Controls.Clear();
+            flowLayoutPanelImages.AutoScroll = true;
+            flowLayoutPanelImages.WrapContents = true;
+            flowLayoutPanelImages.FlowDirection = FlowDirection.LeftToRight;
+            flowLayoutPanelImages.Padding = new Padding(10);
+
+            // Get the property images
+            var images = await firebaseClient
+                .Child("Available Properties")
+                .Child(propertyData["Username"].ToString())
+                .Child("ImageUrls")
+                .OnceSingleAsync<List<string>>();
+
+            foreach (var image in images)
+            {
+                PictureBox propertyImage = new PictureBox
+                {
+                    Width = 350,
+                    Height = 300,
+                    Location = new Point(10, 10),
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    BorderStyle = BorderStyle.FixedSingle
+                };
+
+                propertyImage.Load(image.ToString());
+
+                flowLayoutPanelImages.Controls.Add(propertyImage);
+            }
+        }
+
+        private void panelPropertyDetails_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void labelAddress_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Firebase.Database;
+using Firebase.Database.Query;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -9,114 +12,198 @@ namespace AirBnB
     public class PropertyBookingManager
     {
         private FirebaseClient firebaseClient;
+        private const int PROPERTY_CARD_WIDTH = 200;
+        private const int PROPERTY_CARD_HEIGHT = 300;
+
+        // Define event for property selection
+        public event EventHandler<Dictionary<string, object>> PropertySelected;
 
         public PropertyBookingManager(FirebaseClient client)
         {
             firebaseClient = client;
         }
 
-        public async Task<List<Property>> GetAvailablePropertiesFromFirebase()
+        public async Task<List<Dictionary<string, object>>> GetAvailablePropertiesFromFirebase()
         {
-            List<Property> properties = new List<Property>();
-            var availablePropertiesRef = firebaseClient.Child("Available Properties");
-            var availableProperties = await availablePropertiesRef.OnceAsync<Dictionary<string, object>>();
+            var properties = await firebaseClient
+                .Child("Available Properties")
+                .OnceSingleAsync<Dictionary<string, Dictionary<string, object>>>();
 
-            foreach (var property in availableProperties)
+            var propertyList = new List<Dictionary<string, object>>();
+
+            if (properties != null)
             {
-                var data = property.Object;
-
-                if (data.ContainsKey("Front Image") && data.ContainsKey("Address"))
+                foreach (var property in properties)
                 {
-                    string frontImage = data["Front Image"].ToString();
-                    string address = "";
-
-                    if (data["Address"] is Dictionary<string, object> addressData)
+                    if (property.Value != null)
                     {
-                        if (addressData.ContainsKey("Address"))
-                        {
-                            address = addressData["Address"].ToString();
-                        }
+                        var propertyData = new Dictionary<string, object>(property.Value);
+                        propertyData["Username"] = property.Key;
+                        propertyList.Add(propertyData);
                     }
-                    else
-                    {
-                        address = data["Address"].ToString();
-                    }
-
-                    Property newProperty = new Property
-                    {
-                        FrontImageUrl = frontImage,
-                        Address = address
-                    };
-
-                    properties.Add(newProperty);
                 }
             }
 
-            return properties;
+            return propertyList;
         }
 
-        public void DisplayAvailableProperties(List<Property> properties, FlowLayoutPanel flowPanelBook)
+        public async void DisplayAvailableProperties(List<Dictionary<string, object>> properties, FlowLayoutPanel flowPanel)
         {
-            flowPanelBook.Controls.Clear();
+            flowPanel.Controls.Clear();
+            flowPanel.AutoScroll = true;
+            flowPanel.WrapContents = true;
+            flowPanel.FlowDirection = FlowDirection.LeftToRight;
+            flowPanel.Padding = new Padding(10);
 
             foreach (var property in properties)
             {
-                PictureBox pictureBox = new PictureBox
+                Panel propertyCard = new Panel
                 {
+                    Width = PROPERTY_CARD_WIDTH,
+                    Height = PROPERTY_CARD_HEIGHT,
+                    Margin = new Padding(10),
+                    BorderStyle = BorderStyle.FixedSingle,
+                    BackColor = Color.White,
+                    Cursor = Cursors.Hand
+                };
+
+                // Store the property data
+                propertyCard.Tag = property;
+
+                // Add click event handler
+                propertyCard.Click += PropertyCard_Click;
+
+                // Property Image
+                PictureBox propertyImage = new PictureBox
+                {
+                    Width = PROPERTY_CARD_WIDTH - 20,
+                    Height = 150,
+                    Location = new Point(10, 10),
                     SizeMode = PictureBoxSizeMode.Zoom,
-                    Size = new Size(200, 200)
+                    BorderStyle = BorderStyle.FixedSingle
                 };
-                pictureBox.Load(property.FrontImageUrl);
 
-                Label addressLabel = new Label
+                try
                 {
-                    Text = property.Address,
-                    AutoSize = true,
-                    TextAlign = ContentAlignment.MiddleCenter
-                };
-
-                Panel propertyPanel = new Panel
+                    if (property.ContainsKey("Front Image"))
+                    {
+                        propertyImage.Load(property["Front Image"].ToString());
+                    }
+                }
+                catch
                 {
-                    Size = new Size(200, 250)
+                    // Handle image loading error if needed
+                }
+
+                // Start labels right after the image
+                int yPosition = 170; 
+                int spacing = 25;
+
+                // Get city from the nested "Address" dictionary
+                string city = "Unknown";
+
+                try
+                {
+                    var addressData = await firebaseClient
+                        .Child("Available Properties")
+                        .Child(property["Username"].ToString())
+                        .Child("Address")
+                        .OnceSingleAsync<Dictionary<string, object>>();
+
+                    if (addressData != null && addressData.ContainsKey("City"))
+                    {
+                        city = addressData["City"].ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log or handle any potential errors
+                    Console.WriteLine($"Error fetching city: {ex.Message}");
+                }
+
+                // City Label
+                Label cityLabel = new Label
+                {
+                    Location = new Point(10, yPosition),
+                    AutoSize = false,
+                    Width = PROPERTY_CARD_WIDTH - 20,
+                    Height = 20,
+                    Text = $"City: {city}"
                 };
-                propertyPanel.Controls.Add(pictureBox);
-                propertyPanel.Controls.Add(addressLabel);
+                propertyCard.Controls.Add(cityLabel);
+                yPosition += spacing;
 
-                addressLabel.Location = new Point(0, pictureBox.Bottom);
+                // Price Label
+                Label priceLabel = new Label
+                {
+                    Location = new Point(10, yPosition),
+                    AutoSize = false,
+                    Width = PROPERTY_CARD_WIDTH - 20,
+                    Height = 20,
+                    Text = $"Price per night: £{property["PricePerNight"]}"
+                };
+                propertyCard.Controls.Add(priceLabel);
+                yPosition += spacing;
 
-                flowPanelBook.Controls.Add(propertyPanel);
+                // Host Label
+                Label hostLabel = new Label
+                {
+                    Location = new Point(10, yPosition),
+                    AutoSize = false,
+                    Width = PROPERTY_CARD_WIDTH - 20,
+                    Height = 20,
+                    Text = $"Host: {property["Name"]}"
+                };
+                propertyCard.Controls.Add(hostLabel);
+                yPosition += spacing;
+
+                // Contact Label
+                Label contactLabel = new Label
+                {
+                    Location = new Point(10, yPosition),
+                    AutoSize = false,
+                    Width = PROPERTY_CARD_WIDTH - 20,
+                    Height = 20,
+                    Text = $"Contact: {property["Email"]}"
+                };
+                propertyCard.Controls.Add(contactLabel);
+
+                // Add image to property card
+                propertyCard.Controls.Add(propertyImage);
+
+
+                foreach (Control control in propertyCard.Controls)
+                {
+                    control.Click += (s, e) => PropertyCard_Click(propertyCard, e);
+                }
+
+                // Add property card to flow panel
+                flowPanel.Controls.Add(propertyCard);
             }
         }
 
-        public async Task<List<Property>> SearchPropertiesByCity(string city)
+        public async Task<List<Dictionary<string, object>>> SearchPropertiesByCity(string city)
         {
-            List<Property> properties = new List<Property>();
-            var availablePropertiesRef = firebaseClient.Child("Available Properties");
-            var availableProperties = await availablePropertiesRef.OnceAsync<Dictionary<string, object>>();
+            if (string.IsNullOrWhiteSpace(city)) return await GetAvailablePropertiesFromFirebase();
 
-            foreach (var property in availableProperties)
+            var allProperties = await GetAvailablePropertiesFromFirebase();
+
+            return allProperties.Where(p =>
             {
-                var data = property.Object;
+                var addressData = p["Address"] as Dictionary<string, object>;
+                return addressData != null &&
+                       addressData.ContainsKey("City") &&
+                       addressData["City"].ToString().ToLower().Contains(city.ToLower());
+            }).ToList();
+        }
 
-                if (data.ContainsKey("Address") && data["Address"] is Dictionary<string, object> addressData)
-                {
-                    if (addressData.ContainsKey("City") && addressData["City"].ToString().ToLower() == city.ToLower())
-                    {
-                        string frontImage = data.ContainsKey("Front Image") ? data["Front Image"].ToString() : "";
-                        string address = addressData.ContainsKey("Address") ? addressData["Address"].ToString() : "";
-
-                        Property newProperty = new Property
-                        {
-                            FrontImageUrl = frontImage,
-                            Address = address
-                        };
-
-                        properties.Add(newProperty);
-                    }
-                }
+        private void PropertyCard_Click(object sender, EventArgs e)
+        {
+            if (sender is Panel propertyCard && propertyCard.Tag is Dictionary<string, object> propertyData)
+            {
+                // Trigger the event with the selected property data
+                PropertySelected?.Invoke(this, propertyData);
             }
-
-            return properties;
         }
     }
 
