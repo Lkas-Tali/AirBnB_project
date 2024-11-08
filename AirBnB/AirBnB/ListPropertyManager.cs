@@ -31,6 +31,9 @@ namespace AirBnB
 
             await UploadImagesToFirebase(username);
 
+            //Capitalise city
+            city = char.ToUpper(city[0]) + city.Substring(1).ToLower();
+
             var propertyDetails = new Dictionary<string, object>
             {
                 { "Address", address },

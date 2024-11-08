@@ -90,7 +90,8 @@ namespace AirBnB
             panelBook.Visible = false;
             panelHome.Visible = false;
             searchPanel.Visible = false;
-            panelPropertyDetails.Visible = true;
+            panelPropertyDetails.Visible = false;
+            panelFinalBook.Visible = false;
 
             panel.Visible = true;
             panel.BringToFront();
@@ -135,7 +136,7 @@ namespace AirBnB
 
             if (properties != null && properties.Count > 0)
             {
-                propertyBookingManager.DisplayAvailableProperties(properties, flowPanelBook);
+                propertyBookingManager.DisplayAvailableProperties(properties, flowPanelSearch);
             }
             else
             {
@@ -213,14 +214,38 @@ namespace AirBnB
             }
         }
 
-        private void panelPropertyDetails_Paint(object sender, PaintEventArgs e)
+        private void button_FinalBook_Click(object sender, EventArgs e)
         {
-
+            ShowPanel(panelFinalBook);
         }
 
-        private void labelAddress_Click(object sender, EventArgs e)
+        private void bookingCalendar_DateSelected(object sender, DateRangeEventArgs e)
         {
+            DateTime checkInDate = bookingCalendar.SelectionStart;
+            DateTime checkOutDate = bookingCalendar.SelectionEnd;
 
+            // Update labels
+            labelCheckIn.Text = $"Check-in Date: {checkInDate:d}";
+            labelCheckOut.Text = $"Check-out Date: {checkOutDate:d}";
+
+            // Calculate total nights and price
+            int totalNights = (checkOutDate - checkInDate).Days;
+
+            // Get price from the previous screen
+            decimal pricePerNight = 0;
+            if (labelPricePerNight != null)
+            {
+                string priceText = labelPricePerNight.Text.Replace("Price per night: £", "");
+                decimal.TryParse(priceText, out pricePerNight);
+            }
+
+            decimal totalPrice = totalNights * pricePerNight;
+
+            labelTotalNights.Text = $"Total Nights: {totalNights}";
+            labelTotalPrice.Text = $"Total Price: £{totalPrice:N2}";
+
+            // Enable confirm button if dates are valid
+            button_ConfirmBooking.Enabled = totalNights > 0;
         }
     }
 }

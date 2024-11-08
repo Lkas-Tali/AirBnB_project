@@ -187,14 +187,26 @@ namespace AirBnB
             if (string.IsNullOrWhiteSpace(city)) return await GetAvailablePropertiesFromFirebase();
 
             var allProperties = await GetAvailablePropertiesFromFirebase();
+            var matchingProperties = new List<Dictionary<string, object>>();
 
-            return allProperties.Where(p =>
+            //Capitalise city
+            city = char.ToUpper(city[0]) + city.Substring(1).ToLower();
+
+            foreach (var property in allProperties)
             {
-                var addressData = p["Address"] as Dictionary<string, object>;
-                return addressData != null &&
-                       addressData.ContainsKey("City") &&
-                       addressData["City"].ToString().ToLower().Contains(city.ToLower());
-            }).ToList();
+                var addressData = await firebaseClient
+                        .Child("Available Properties")
+                        .Child(property["Username"].ToString())
+                        .Child("Address")
+                        .OnceSingleAsync<Dictionary<string, object>>();
+                
+                if (addressData != null && addressData["City"].ToString() == city)
+                {
+                    matchingProperties.Add(property);
+                }
+            }
+
+            return matchingProperties;
         }
 
         private void PropertyCard_Click(object sender, EventArgs e)
@@ -205,11 +217,5 @@ namespace AirBnB
                 PropertySelected?.Invoke(this, propertyData);
             }
         }
-    }
-
-    public class Property
-    {
-        public string FrontImageUrl { get; set; }
-        public string Address { get; set; }
     }
 }
