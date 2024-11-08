@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -216,6 +217,31 @@ namespace AirBnB
                 // Trigger the event with the selected property data
                 PropertySelected?.Invoke(this, propertyData);
             }
+        }
+
+        public async void AddReservationToDatabase(string customerName, string endDate, int nights, string startDate, Dictionary<string, object> propertyData, Dictionary<string, object> propertyAddress)
+        {
+            
+            // Initialize reservation data dictionary with booking details
+            var reservationData = new Dictionary<string, object>
+            {
+                { "address", propertyAddress["Address"]},
+                { "city", propertyAddress["City"] },
+                { "customerName", customerName },
+                { "description", propertyAddress["Description"] },
+                { "email", propertyData["Email"] },
+                { "endDate", endDate },
+                { "mainImage", propertyData["Front Image"] },
+                { "nights", nights },
+                { "owner", propertyData["Name"] },
+                { "pricePerNight", propertyData["PricePerNight"]},
+                { "startDate", startDate },
+                { "title", propertyAddress["Title"] }
+            };
+
+            await firebaseClient
+                .Child("Reservations")
+                .PostAsync(reservationData);
         }
     }
 }

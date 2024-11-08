@@ -13,6 +13,7 @@ namespace AirBnB
         private ListPropertyManager listPropertyManager;
         private ListedPropertyViewer listedPropertyViewer;
         private PropertyBookingManager propertyBookingManager;
+        private Dictionary<string, object> selectedPropertyData;
 
         public frmDashboard()
         {
@@ -148,6 +149,9 @@ namespace AirBnB
         {
             try
             {
+                // Store the selected property data
+                selectedPropertyData = propertyData;
+
                 // Get the complete address data
                 var addressData = await firebaseClient
                     .Child("Available Properties")
@@ -246,6 +250,36 @@ namespace AirBnB
 
             // Enable confirm button if dates are valid
             button_ConfirmBooking.Enabled = totalNights > 0;
+        }
+
+        private async void button_ConfirmBooking_Click(object sender, EventArgs e)
+        {
+            if (selectedPropertyData == null)
+            {
+                MessageBox.Show("Dictionary empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DateTime checkInDate = bookingCalendar.SelectionStart.Date;
+            DateTime checkOutDate = bookingCalendar.SelectionEnd.Date;
+
+            string strCheckInDate = checkInDate.ToString("dd/MM/yyyy");
+            string strCheckOutDate = checkOutDate.ToString("dd/MM/yyyy");
+            string username = GlobalData.Username;
+            int totalNights = (checkOutDate - checkInDate).Days;
+
+            var properyData = await firebaseClient
+            .Child("Available Properties")
+            .Child(selectedPropertyData["Username"].ToString())
+            .OnceSingleAsync<Dictionary<string, object>>();
+
+            var addressData = await firebaseClient
+            .Child("Available Properties")
+            .Child(selectedPropertyData["Username"].ToString())
+            .Child("Address")
+            .OnceSingleAsync<Dictionary<string, object>>();
+
+            propertyBookingManager.AddReservationToDatabase(username, strCheckOutDate, totalNights, strCheckInDate, properyData, addressData);
         }
     }
 }
