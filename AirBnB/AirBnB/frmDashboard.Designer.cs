@@ -83,8 +83,16 @@
             this.labelCheckIn = new System.Windows.Forms.Label();
             this.bookingCalendar = new System.Windows.Forms.MonthCalendar();
             this.panelReservations = new System.Windows.Forms.Panel();
-            this.flowPanelReservations = new System.Windows.Forms.FlowLayoutPanel();
             this.label9 = new System.Windows.Forms.Label();
+            this.flowPanelReservations = new System.Windows.Forms.FlowLayoutPanel();
+            this.panelSelectedReservation = new System.Windows.Forms.Panel();
+            this.buttonCancelReservation = new System.Windows.Forms.Button();
+            this.labelResTotalPrice = new System.Windows.Forms.Label();
+            this.labelResTotalNights = new System.Windows.Forms.Label();
+            this.labelResCheckOut = new System.Windows.Forms.Label();
+            this.labelResCheckIn = new System.Windows.Forms.Label();
+            this.labelResAddress = new System.Windows.Forms.Label();
+            this.flowPanelSelectedResevation = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -95,6 +103,7 @@
             this.panelPropertyDetails.SuspendLayout();
             this.panelFinalBook.SuspendLayout();
             this.panelReservations.SuspendLayout();
+            this.panelSelectedReservation.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -787,14 +796,6 @@
             this.panelReservations.Size = new System.Drawing.Size(841, 855);
             this.panelReservations.TabIndex = 8;
             // 
-            // flowPanelReservations
-            // 
-            this.flowPanelReservations.BackColor = System.Drawing.Color.Transparent;
-            this.flowPanelReservations.Location = new System.Drawing.Point(0, 113);
-            this.flowPanelReservations.Name = "flowPanelReservations";
-            this.flowPanelReservations.Size = new System.Drawing.Size(839, 746);
-            this.flowPanelReservations.TabIndex = 0;
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -807,6 +808,104 @@
             this.label9.TabIndex = 1;
             this.label9.Text = "Your Reservations:";
             // 
+            // flowPanelReservations
+            // 
+            this.flowPanelReservations.BackColor = System.Drawing.Color.Transparent;
+            this.flowPanelReservations.Location = new System.Drawing.Point(0, 113);
+            this.flowPanelReservations.Name = "flowPanelReservations";
+            this.flowPanelReservations.Size = new System.Drawing.Size(839, 746);
+            this.flowPanelReservations.TabIndex = 0;
+            // 
+            // panelSelectedReservation
+            // 
+            this.panelSelectedReservation.BackColor = System.Drawing.Color.SeaShell;
+            this.panelSelectedReservation.Controls.Add(this.flowPanelSelectedResevation);
+            this.panelSelectedReservation.Controls.Add(this.buttonCancelReservation);
+            this.panelSelectedReservation.Controls.Add(this.labelResTotalPrice);
+            this.panelSelectedReservation.Controls.Add(this.labelResTotalNights);
+            this.panelSelectedReservation.Controls.Add(this.labelResCheckOut);
+            this.panelSelectedReservation.Controls.Add(this.labelResAddress);
+            this.panelSelectedReservation.Controls.Add(this.labelResCheckIn);
+            this.panelSelectedReservation.Location = new System.Drawing.Point(300, 0);
+            this.panelSelectedReservation.Name = "panelSelectedReservation";
+            this.panelSelectedReservation.Size = new System.Drawing.Size(839, 859);
+            this.panelSelectedReservation.TabIndex = 9;
+            // 
+            // buttonCancelReservation
+            // 
+            this.buttonCancelReservation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
+            this.buttonCancelReservation.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonCancelReservation.FlatAppearance.BorderSize = 0;
+            this.buttonCancelReservation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCancelReservation.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCancelReservation.ForeColor = System.Drawing.Color.White;
+            this.buttonCancelReservation.Location = new System.Drawing.Point(509, 702);
+            this.buttonCancelReservation.Name = "buttonCancelReservation";
+            this.buttonCancelReservation.Size = new System.Drawing.Size(300, 80);
+            this.buttonCancelReservation.TabIndex = 8;
+            this.buttonCancelReservation.Text = "Cancel Reservation";
+            this.buttonCancelReservation.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonCancelReservation.UseVisualStyleBackColor = false;
+            this.buttonCancelReservation.Click += new System.EventHandler(this.buttonCancelReservation_Click);
+            // 
+            // labelResTotalPrice
+            // 
+            this.labelResTotalPrice.AutoSize = true;
+            this.labelResTotalPrice.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelResTotalPrice.Location = new System.Drawing.Point(55, 695);
+            this.labelResTotalPrice.Name = "labelResTotalPrice";
+            this.labelResTotalPrice.Size = new System.Drawing.Size(176, 32);
+            this.labelResTotalPrice.TabIndex = 4;
+            this.labelResTotalPrice.Text = "Total Price: £0";
+            // 
+            // labelResTotalNights
+            // 
+            this.labelResTotalNights.AutoSize = true;
+            this.labelResTotalNights.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelResTotalNights.Location = new System.Drawing.Point(55, 645);
+            this.labelResTotalNights.Name = "labelResTotalNights";
+            this.labelResTotalNights.Size = new System.Drawing.Size(180, 32);
+            this.labelResTotalNights.TabIndex = 5;
+            this.labelResTotalNights.Text = "Total Nights: 0";
+            // 
+            // labelResCheckOut
+            // 
+            this.labelResCheckOut.AutoSize = true;
+            this.labelResCheckOut.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelResCheckOut.Location = new System.Drawing.Point(55, 592);
+            this.labelResCheckOut.Name = "labelResCheckOut";
+            this.labelResCheckOut.Size = new System.Drawing.Size(345, 32);
+            this.labelResCheckOut.TabIndex = 6;
+            this.labelResCheckOut.Text = "Check-out Date: Not selected";
+            // 
+            // labelResCheckIn
+            // 
+            this.labelResCheckIn.AutoSize = true;
+            this.labelResCheckIn.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelResCheckIn.Location = new System.Drawing.Point(55, 545);
+            this.labelResCheckIn.Name = "labelResCheckIn";
+            this.labelResCheckIn.Size = new System.Drawing.Size(328, 32);
+            this.labelResCheckIn.TabIndex = 7;
+            this.labelResCheckIn.Text = "Check-in Date: Not selected";
+            // 
+            // labelResAddress
+            // 
+            this.labelResAddress.AutoSize = true;
+            this.labelResAddress.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelResAddress.Location = new System.Drawing.Point(55, 495);
+            this.labelResAddress.Name = "labelResAddress";
+            this.labelResAddress.Size = new System.Drawing.Size(106, 32);
+            this.labelResAddress.TabIndex = 7;
+            this.labelResAddress.Text = "Address";
+            // 
+            // flowPanelSelectedResevation
+            // 
+            this.flowPanelSelectedResevation.BackColor = System.Drawing.Color.Transparent;
+            this.flowPanelSelectedResevation.Location = new System.Drawing.Point(0, 31);
+            this.flowPanelSelectedResevation.Name = "flowPanelSelectedResevation";
+            this.flowPanelSelectedResevation.Size = new System.Drawing.Size(841, 460);
+            this.flowPanelSelectedResevation.TabIndex = 9;
+            // 
             // frmDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -815,6 +914,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelSelectedReservation);
             this.Controls.Add(this.panelReservations);
             this.Controls.Add(this.panelHome);
             this.Controls.Add(this.panelListed);
@@ -847,6 +947,8 @@
             this.panelFinalBook.PerformLayout();
             this.panelReservations.ResumeLayout(false);
             this.panelReservations.PerformLayout();
+            this.panelSelectedReservation.ResumeLayout(false);
+            this.panelSelectedReservation.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -909,5 +1011,13 @@
         private System.Windows.Forms.Panel panelReservations;
         private System.Windows.Forms.FlowLayoutPanel flowPanelReservations;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Panel panelSelectedReservation;
+        private System.Windows.Forms.Button buttonCancelReservation;
+        private System.Windows.Forms.Label labelResTotalPrice;
+        private System.Windows.Forms.Label labelResTotalNights;
+        private System.Windows.Forms.Label labelResCheckOut;
+        private System.Windows.Forms.Label labelResCheckIn;
+        private System.Windows.Forms.Label labelResAddress;
+        private System.Windows.Forms.FlowLayoutPanel flowPanelSelectedResevation;
     }
 }

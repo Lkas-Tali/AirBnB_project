@@ -3,7 +3,9 @@ using Firebase.Database.Query;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Management;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace AirBnB
 {
@@ -14,6 +16,7 @@ namespace AirBnB
         private ListedPropertyViewer listedPropertyViewer;
         private PropertyBookingManager propertyBookingManager;
         private Dictionary<string, object> selectedPropertyData;
+        private Dictionary<string, object> selectedReservationData;
         private PropertyReservationManager propertyReservationManager;
 
         public frmDashboard()
@@ -28,6 +31,9 @@ namespace AirBnB
 
             // Subscribe to the PropertySelected event
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
+
+            // Subscribe to the ReservationSelected event
+            propertyReservationManager.ReservationSelected += PropertyReservationManager_ReservationSelected;
         }
 
         public void InitializeFirebase()
@@ -88,16 +94,6 @@ namespace AirBnB
 
         private void ShowPanel(Panel panel)
         {
-            panelList.Visible = false;
-            panelListed.Visible = false;
-            panelBook.Visible = false;
-            panelHome.Visible = false;
-            searchPanel.Visible = false;
-            panelPropertyDetails.Visible = false;
-            panelFinalBook.Visible = false;
-            panelReservations.Visible = false;
-
-            panel.Visible = true;
             panel.BringToFront();
         }
 
@@ -186,26 +182,46 @@ namespace AirBnB
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            DisplaySelectedPropertyImages(sender, propertyData);
+            DisplaySelectedPropertyImages(sender, propertyData, flowLayoutPanelImages);
         }
 
-        private async void DisplaySelectedPropertyImages(object sender, Dictionary<string, object> propertyData)
+        private async void DisplaySelectedPropertyImages(object sender, Dictionary<string, object> propertyData, FlowLayoutPanel flowPanel)
         {
-            flowLayoutPanelImages.Controls.Clear();
-            flowLayoutPanelImages.AutoScroll = true;
-            flowLayoutPanelImages.WrapContents = true;
-            flowLayoutPanelImages.FlowDirection = FlowDirection.LeftToRight;
-            flowLayoutPanelImages.Padding = new Padding(10);
+            flowPanel.Controls.Clear();
+            flowPanel.AutoScroll = true;
+            flowPanel.WrapContents = true;
+            flowPanel.FlowDirection = FlowDirection.LeftToRight;
+            flowPanel.Padding = new Padding(10);
 
             // Get the property images
-            var images = await firebaseClient
-                .Child("Available Properties")
-                .Child(propertyData["Username"].ToString())
-                .Child("ImageUrls")
-                .OnceSingleAsync<List<string>>();
-
-            foreach (var image in images)
+            if (propertyData.ContainsKey("Username"))
             {
+                var images = await firebaseClient
+                    .Child("Available Properties")
+                    .Child(propertyData["Username"].ToString())
+                    .Child("ImageUrls")
+                    .OnceSingleAsync<List<string>>();
+
+                foreach (var image in images)
+                {
+                    PictureBox propertyImage = new PictureBox
+                    {
+                        Width = 350,
+                        Height = 300,
+                        Location = new Point(10, 10),
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        BorderStyle = BorderStyle.FixedSingle
+                    };
+
+                    propertyImage.Load(image.ToString());
+
+                    flowPanel.Controls.Add(propertyImage);
+                }
+            }
+            else
+            {
+                var image = propertyData["mainImage"];
+
                 PictureBox propertyImage = new PictureBox
                 {
                     Width = 350,
@@ -217,7 +233,7 @@ namespace AirBnB
 
                 propertyImage.Load(image.ToString());
 
-                flowLayoutPanelImages.Controls.Add(propertyImage);
+                flowPanel.Controls.Add(propertyImage);
             }
         }
 
@@ -311,5 +327,49 @@ namespace AirBnB
                 MessageBox.Show("No reservations found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void PropertyReservationManager_ReservationSelected(object sender, Dictionary<string, object> reservationData)
+        {
+            ShowPanel(panelSelectedReservation);
+
+            // Store the selected reservation data
+            selectedReservationData = reservationData;
+
+            if (labelResAddress != null)
+            {
+                labelResAddress.Text = $"Address: {reservationData["address"]}";
+            }
+            if (labelResCheckIn != null)
+            {
+                labelResCheckIn.Text = $"Check-in Date: {reservationData["startDate"]}";
+            }
+            if (labelResCheckOut != null)
+            {
+                labelResCheckOut.Text = $"Check-out Date: {reservationData["endDate"]}";
+            }
+            if (labelResTotalNights != null)
+            {
+                labelResTotalNights.Text = $"Total Nights: {reservationData["nights"]}";
+            }
+            if (labelResTotalPrice != null)
+            {
+                decimal pricePerNight = decimal.Parse(reservationData["pricePerNight"].ToString());
+                int nights = int.Parse(reservationData["nights"].ToString());
+                decimal totalPrice = pricePerNight * nights;
+
+                labelResTotalPrice.Text = $"Total Price: £{totalPrice}";
+            }
+
+            DisplaySelectedPropertyImages(sender, reservationData, flowPanelSelectedResevation);
+
+            // Show details panel
+            ShowPanel(panelSelectedReservation);
+        }
+
+        private void buttonCancelReservation_Click(object sender, EventArgs e)
+        {
+
+        }
     }
+    
 }
