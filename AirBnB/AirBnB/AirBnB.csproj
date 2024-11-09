@@ -324,6 +324,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyBookingManager.cs" />
+    <Compile Include="PropertyReservationManager.cs" />
     <EmbeddedResource Include="frmList.resx">
       <DependentUpon>frmList.cs</DependentUpon>
     </EmbeddedResource>
@@ -463,6 +464,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
+    <None Include="Resources\reservation-completed-icon3.png" />
+    <None Include="Resources\reservation-completed-icon2.png" />
+    <None Include="Resources\reservation-completed-icon1.png" />
+    <None Include="Resources\reservation-completed-icon.png" />
     <None Include="Resources\airbnb-logo.png" />
     <None Include="Resources\search-13-32.png" />
     <None Include="Resources\google-web-search-48.png" />

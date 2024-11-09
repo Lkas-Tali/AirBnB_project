@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDashboard));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.buttonReservations = new System.Windows.Forms.Button();
             this.logoutButton = new System.Windows.Forms.Button();
             this.listedButton = new System.Windows.Forms.Button();
             this.listButton = new System.Windows.Forms.Button();
@@ -81,6 +82,9 @@
             this.labelCheckOut = new System.Windows.Forms.Label();
             this.labelCheckIn = new System.Windows.Forms.Label();
             this.bookingCalendar = new System.Windows.Forms.MonthCalendar();
+            this.panelReservations = new System.Windows.Forms.Panel();
+            this.flowPanelReservations = new System.Windows.Forms.FlowLayoutPanel();
+            this.label9 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -90,12 +94,14 @@
             this.searchPanel.SuspendLayout();
             this.panelPropertyDetails.SuspendLayout();
             this.panelFinalBook.SuspendLayout();
+            this.panelReservations.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
             this.panel1.Controls.Add(this.panel3);
+            this.panel1.Controls.Add(this.buttonReservations);
             this.panel1.Controls.Add(this.logoutButton);
             this.panel1.Controls.Add(this.listedButton);
             this.panel1.Controls.Add(this.listButton);
@@ -112,8 +118,29 @@
             this.panel3.BackColor = System.Drawing.Color.SeaShell;
             this.panel3.Location = new System.Drawing.Point(0, 194);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(5, 240);
+            this.panel3.Size = new System.Drawing.Size(5, 320);
             this.panel3.TabIndex = 2;
+            // 
+            // buttonReservations
+            // 
+            this.buttonReservations.BackColor = System.Drawing.Color.White;
+            this.buttonReservations.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonReservations.Dock = System.Windows.Forms.DockStyle.Top;
+            this.buttonReservations.FlatAppearance.BorderSize = 0;
+            this.buttonReservations.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonReservations.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonReservations.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.buttonReservations.Image = global::AirBnB.Properties.Resources.reservation_completed_icon3;
+            this.buttonReservations.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonReservations.Location = new System.Drawing.Point(0, 434);
+            this.buttonReservations.Name = "buttonReservations";
+            this.buttonReservations.Size = new System.Drawing.Size(300, 80);
+            this.buttonReservations.TabIndex = 3;
+            this.buttonReservations.Text = "Reservations";
+            this.buttonReservations.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonReservations.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonReservations.UseVisualStyleBackColor = false;
+            this.buttonReservations.Click += new System.EventHandler(this.buttonReservations_Click);
             // 
             // logoutButton
             // 
@@ -211,6 +238,7 @@
             // 
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.usernameLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameLabel.ForeColor = System.Drawing.Color.SeaShell;
             this.usernameLabel.Location = new System.Drawing.Point(80, 12);
@@ -219,9 +247,11 @@
             this.usernameLabel.TabIndex = 1;
             this.usernameLabel.Text = "Username";
             this.usernameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.usernameLabel.Click += new System.EventHandler(this.usernameLabel_Click);
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::AirBnB.Properties.Resources._CITYPNG_COM_White_User_Member_Guest_Icon_PNG_Image___4000x4000;
             this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
@@ -229,6 +259,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // panelListed
             // 
@@ -746,6 +777,36 @@
             this.bookingCalendar.TabIndex = 0;
             this.bookingCalendar.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.bookingCalendar_DateSelected);
             // 
+            // panelReservations
+            // 
+            this.panelReservations.BackColor = System.Drawing.Color.SeaShell;
+            this.panelReservations.Controls.Add(this.label9);
+            this.panelReservations.Controls.Add(this.flowPanelReservations);
+            this.panelReservations.Location = new System.Drawing.Point(300, 0);
+            this.panelReservations.Name = "panelReservations";
+            this.panelReservations.Size = new System.Drawing.Size(841, 855);
+            this.panelReservations.TabIndex = 8;
+            // 
+            // flowPanelReservations
+            // 
+            this.flowPanelReservations.BackColor = System.Drawing.Color.Transparent;
+            this.flowPanelReservations.Location = new System.Drawing.Point(0, 113);
+            this.flowPanelReservations.Name = "flowPanelReservations";
+            this.flowPanelReservations.Size = new System.Drawing.Size(839, 746);
+            this.flowPanelReservations.TabIndex = 0;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.label9.Location = new System.Drawing.Point(29, 39);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(321, 47);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Your Reservations:";
+            // 
             // frmDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -754,13 +815,14 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelReservations);
+            this.Controls.Add(this.panelHome);
+            this.Controls.Add(this.panelListed);
             this.Controls.Add(this.panelList);
             this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.panelBook);
             this.Controls.Add(this.panelFinalBook);
             this.Controls.Add(this.panelPropertyDetails);
-            this.Controls.Add(this.panelHome);
-            this.Controls.Add(this.panelListed);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -783,6 +845,8 @@
             this.panelPropertyDetails.PerformLayout();
             this.panelFinalBook.ResumeLayout(false);
             this.panelFinalBook.PerformLayout();
+            this.panelReservations.ResumeLayout(false);
+            this.panelReservations.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -841,5 +905,9 @@
         private System.Windows.Forms.Label labelTotalNights;
         private System.Windows.Forms.Label labelCheckOut;
         private System.Windows.Forms.Label labelCheckIn;
+        private System.Windows.Forms.Button buttonReservations;
+        private System.Windows.Forms.Panel panelReservations;
+        private System.Windows.Forms.FlowLayoutPanel flowPanelReservations;
+        private System.Windows.Forms.Label label9;
     }
 }

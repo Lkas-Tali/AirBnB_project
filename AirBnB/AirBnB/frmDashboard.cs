@@ -14,6 +14,7 @@ namespace AirBnB
         private ListedPropertyViewer listedPropertyViewer;
         private PropertyBookingManager propertyBookingManager;
         private Dictionary<string, object> selectedPropertyData;
+        private PropertyReservationManager propertyReservationManager;
 
         public frmDashboard()
         {
@@ -23,6 +24,7 @@ namespace AirBnB
             listPropertyManager = new ListPropertyManager(firebaseClient);
             listedPropertyViewer = new ListedPropertyViewer(firebaseClient);
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
+            propertyReservationManager = new PropertyReservationManager(firebaseClient);
 
             // Subscribe to the PropertySelected event
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
@@ -93,6 +95,7 @@ namespace AirBnB
             searchPanel.Visible = false;
             panelPropertyDetails.Visible = false;
             panelFinalBook.Visible = false;
+            panelReservations.Visible = false;
 
             panel.Visible = true;
             panel.BringToFront();
@@ -280,6 +283,33 @@ namespace AirBnB
             .OnceSingleAsync<Dictionary<string, object>>();
 
             propertyBookingManager.AddReservationToDatabase(username, strCheckOutDate, totalNights, strCheckInDate, properyData, addressData);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            ShowPanel(panelHome);
+        }
+
+        private void usernameLabel_Click(object sender, EventArgs e)
+        {
+            ShowPanel(panelHome);
+        }
+
+        private async void buttonReservations_Click(object sender, EventArgs e)
+        {
+            string username = GlobalData.Username;
+            ShowPanel(panelReservations);
+
+            var reservations = await propertyReservationManager.RetrieveUserReservationDetails(username);
+
+            if (reservations.Count != 0)
+            {
+                propertyReservationManager.DisplayUserReservations(reservations, flowPanelReservations);
+            }
+            else
+            {
+                MessageBox.Show("No reservations found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

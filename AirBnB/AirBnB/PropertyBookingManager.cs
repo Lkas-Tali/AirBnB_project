@@ -221,7 +221,20 @@ namespace AirBnB
 
         public async void AddReservationToDatabase(string customerName, string endDate, int nights, string startDate, Dictionary<string, object> propertyData, Dictionary<string, object> propertyAddress)
         {
-            
+
+            //debug:
+            // Debug: Print all keys in the dictionaries
+            Console.WriteLine("Available propertyAddress:");
+            foreach (var key in propertyAddress.Keys)
+            {
+                Console.WriteLine($"Key: '{key}'");
+            }
+
+            foreach (var key in propertyData.Keys)
+            {
+                Console.WriteLine($"Key: '{key}'");
+            }
+
             // Initialize reservation data dictionary with booking details
             var reservationData = new Dictionary<string, object>
             {
