@@ -442,7 +442,6 @@ C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\bin\
 C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\bin\Debug\System.ValueTuple.xml
 C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\obj\Debug\AirBnB.csproj.AssemblyReference.cache
-C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\obj\Debug\AirBnB.frmList.resources
 C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\obj\Debug\AirBnB.frmDashboard.resources
 C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\obj\Debug\AirBnB.frmRegister.resources
 C:\Users\zacht\OneDrive\Desktop\AirBnB Project\AirBnB_project\AirBnB\AirBnB\obj\Debug\AirBnB.frmLogin.resources

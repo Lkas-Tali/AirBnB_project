@@ -24,7 +24,12 @@ namespace AirBnB
             InitializeFirebase(); // Call to initialize Firebase on program start
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmRegister());
+
+            frmRegister mainForm = new frmRegister();
+            // Handle the form closed event
+            mainForm.FormClosed += (s, args) => Application.Exit();
+
+            Application.Run(mainForm);
         }
 
         public static void InitializeFirebase()

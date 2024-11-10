@@ -43,7 +43,8 @@ namespace AirBnB
         //Going back to the Login form
         private void label5_Click(object sender, EventArgs e)
         {
-            new frmLogin().Show();
+            frmLogin loginForm = new frmLogin();
+            loginForm.Show();
             this.Hide();
         }
 
@@ -220,6 +221,15 @@ namespace AirBnB
         private void frmRegister_Load(object sender, EventArgs e)
         {
 
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Application.Exit();
+            }
         }
     }
 }

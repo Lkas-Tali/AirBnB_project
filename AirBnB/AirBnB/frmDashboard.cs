@@ -92,7 +92,7 @@ namespace AirBnB
         private void button3_Click(object sender, EventArgs e)
         {
             new frmLogin().Show();
-            this.Close();
+            this.Hide();
         }
 
         private void ShowPanel(Panel panel)
@@ -438,6 +438,15 @@ namespace AirBnB
                 // Refresh the reservations panel
                 buttonReservations_Click(sender, e);
             }
-        }  
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Application.Exit();
+            }
+        }
     }
 }

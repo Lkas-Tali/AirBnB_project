@@ -89,7 +89,7 @@ namespace AirBnB
                     GlobalData.email = email;
 
                     new frmDashboard().Show();
-                    this.Close();
+                    this.Hide();
                 }
                 else
                 {
@@ -127,7 +127,7 @@ namespace AirBnB
         private void label5_Click(object sender, EventArgs e)
         {
             new frmRegister().Show();
-            this.Close();
+            this.Hide();
         }
 
         //Setting the text fields to empty
@@ -141,6 +141,15 @@ namespace AirBnB
         private void clearButton_Click(object sender, EventArgs e)
         {
             EmptyFields();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Application.Exit();
+            }
         }
     }
 
