@@ -25,20 +25,21 @@ namespace AirBnB
         public async Task<List<Dictionary<string, object>>> RetrieveUserReservationDetails(string username)
         {
             var reservationData = await firebaseClient
-            .Child("Reservations")
-            .OnceSingleAsync<Dictionary<string, Dictionary<string, object>>>();
+                .Child("Reservations")
+                .OnceAsync<Dictionary<string, object>>();
 
             var reservations = new List<Dictionary<string, object>>();
 
             foreach (var reservation in reservationData)
             {
-                // Convert the object value to a dictionary
-                var reservationDetails = reservation.Value as Dictionary<string, object>;
+                var reservationDetails = reservation.Object;
 
-                // Check if conversion was successful and the customerName matches
+                // Check if the customerName matches
                 if (reservationDetails != null &&
                     reservationDetails["customerName"].ToString() == username)
                 {
+                    // Add the Firebase key to the reservation details
+                    reservationDetails["firebaseKey"] = reservation.Key;
                     reservations.Add(reservationDetails);
                 }
             }
@@ -186,6 +187,32 @@ namespace AirBnB
             {
                 // Trigger the event with the selected property data
                 ReservationSelected?.Invoke(this, propertyData);
+            }
+        }
+
+        public async Task CancelReservation(Dictionary<string, object> reservation)
+        {
+            try
+            {
+                if (reservation.ContainsKey("firebaseKey"))
+                {
+                    string reservationId = reservation["firebaseKey"].ToString();
+
+                    await firebaseClient
+                        .Child("Reservations")
+                        .Child(reservationId)
+                        .DeleteAsync();
+
+                    MessageBox.Show("Reservation cancelled successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Could not find the reservation ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error cancelling reservation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

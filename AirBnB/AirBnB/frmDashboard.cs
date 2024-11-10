@@ -32,7 +32,6 @@ namespace AirBnB
             // Subscribe to the PropertySelected event
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
 
-            // Subscribe to the ReservationSelected event
             propertyReservationManager.ReservationSelected += PropertyReservationManager_ReservationSelected;
         }
 
@@ -366,10 +365,22 @@ namespace AirBnB
             ShowPanel(panelSelectedReservation);
         }
 
-        private void buttonCancelReservation_Click(object sender, EventArgs e)
+        private async void buttonCancelReservation_Click(object sender, EventArgs e)
         {
+            DialogResult result = MessageBox.Show(
+                "Are you sure you want to cancel this reservation?",
+                "Confirm Cancellation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
 
-        }
+            if (result == DialogResult.Yes)
+            {
+                await propertyReservationManager.CancelReservation(selectedReservationData);
+
+                // Refresh the reservations panel
+                buttonReservations_Click(sender, e);
+            }
+        }  
     }
-    
 }
