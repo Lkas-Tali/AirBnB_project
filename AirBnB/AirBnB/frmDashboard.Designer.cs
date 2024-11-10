@@ -86,13 +86,13 @@
             this.label9 = new System.Windows.Forms.Label();
             this.flowPanelReservations = new System.Windows.Forms.FlowLayoutPanel();
             this.panelSelectedReservation = new System.Windows.Forms.Panel();
+            this.flowPanelSelectedResevation = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonCancelReservation = new System.Windows.Forms.Button();
             this.labelResTotalPrice = new System.Windows.Forms.Label();
             this.labelResTotalNights = new System.Windows.Forms.Label();
             this.labelResCheckOut = new System.Windows.Forms.Label();
-            this.labelResCheckIn = new System.Windows.Forms.Label();
             this.labelResAddress = new System.Windows.Forms.Label();
-            this.flowPanelSelectedResevation = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelResCheckIn = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -359,7 +359,7 @@
             // panelList
             // 
             this.panelList.BackColor = System.Drawing.Color.Transparent;
-            this.panelList.BackgroundImage = global::AirBnB.Properties.Resources.image;
+            this.panelList.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.panelList.Controls.Add(this.frontImageButton);
             this.panelList.Controls.Add(this.txtTitle);
             this.panelList.Controls.Add(this.txtPrice);
@@ -387,9 +387,9 @@
             this.frontImageButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.frontImageButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.frontImageButton.FlatAppearance.BorderSize = 0;
-            this.frontImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.frontImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.frontImageButton.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.frontImageButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(223)))), ((int)(((byte)(204)))));
+            this.frontImageButton.ForeColor = System.Drawing.Color.White;
             this.frontImageButton.Location = new System.Drawing.Point(465, 733);
             this.frontImageButton.Name = "frontImageButton";
             this.frontImageButton.Size = new System.Drawing.Size(320, 75);
@@ -460,9 +460,9 @@
             this.uploadButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.uploadButton.FlatAppearance.BorderColor = System.Drawing.Color.Sienna;
             this.uploadButton.FlatAppearance.BorderSize = 0;
-            this.uploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.uploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.uploadButton.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.uploadButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(223)))), ((int)(((byte)(204)))));
+            this.uploadButton.ForeColor = System.Drawing.Color.White;
             this.uploadButton.Location = new System.Drawing.Point(32, 733);
             this.uploadButton.Name = "uploadButton";
             this.uploadButton.Size = new System.Drawing.Size(320, 75);
@@ -831,6 +831,14 @@
             this.panelSelectedReservation.Size = new System.Drawing.Size(839, 859);
             this.panelSelectedReservation.TabIndex = 9;
             // 
+            // flowPanelSelectedResevation
+            // 
+            this.flowPanelSelectedResevation.BackColor = System.Drawing.Color.Transparent;
+            this.flowPanelSelectedResevation.Location = new System.Drawing.Point(0, 31);
+            this.flowPanelSelectedResevation.Name = "flowPanelSelectedResevation";
+            this.flowPanelSelectedResevation.Size = new System.Drawing.Size(841, 460);
+            this.flowPanelSelectedResevation.TabIndex = 9;
+            // 
             // buttonCancelReservation
             // 
             this.buttonCancelReservation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
@@ -878,16 +886,6 @@
             this.labelResCheckOut.TabIndex = 6;
             this.labelResCheckOut.Text = "Check-out Date: Not selected";
             // 
-            // labelResCheckIn
-            // 
-            this.labelResCheckIn.AutoSize = true;
-            this.labelResCheckIn.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelResCheckIn.Location = new System.Drawing.Point(55, 545);
-            this.labelResCheckIn.Name = "labelResCheckIn";
-            this.labelResCheckIn.Size = new System.Drawing.Size(328, 32);
-            this.labelResCheckIn.TabIndex = 7;
-            this.labelResCheckIn.Text = "Check-in Date: Not selected";
-            // 
             // labelResAddress
             // 
             this.labelResAddress.AutoSize = true;
@@ -898,13 +896,15 @@
             this.labelResAddress.TabIndex = 7;
             this.labelResAddress.Text = "Address";
             // 
-            // flowPanelSelectedResevation
+            // labelResCheckIn
             // 
-            this.flowPanelSelectedResevation.BackColor = System.Drawing.Color.Transparent;
-            this.flowPanelSelectedResevation.Location = new System.Drawing.Point(0, 31);
-            this.flowPanelSelectedResevation.Name = "flowPanelSelectedResevation";
-            this.flowPanelSelectedResevation.Size = new System.Drawing.Size(841, 460);
-            this.flowPanelSelectedResevation.TabIndex = 9;
+            this.labelResCheckIn.AutoSize = true;
+            this.labelResCheckIn.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelResCheckIn.Location = new System.Drawing.Point(55, 545);
+            this.labelResCheckIn.Name = "labelResCheckIn";
+            this.labelResCheckIn.Size = new System.Drawing.Size(328, 32);
+            this.labelResCheckIn.TabIndex = 7;
+            this.labelResCheckIn.Text = "Check-in Date: Not selected";
             // 
             // frmDashboard
             // 
@@ -914,15 +914,15 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panelSelectedReservation);
-            this.Controls.Add(this.panelReservations);
-            this.Controls.Add(this.panelHome);
-            this.Controls.Add(this.panelListed);
             this.Controls.Add(this.panelList);
             this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.panelBook);
             this.Controls.Add(this.panelFinalBook);
             this.Controls.Add(this.panelPropertyDetails);
+            this.Controls.Add(this.panelSelectedReservation);
+            this.Controls.Add(this.panelReservations);
+            this.Controls.Add(this.panelHome);
+            this.Controls.Add(this.panelListed);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

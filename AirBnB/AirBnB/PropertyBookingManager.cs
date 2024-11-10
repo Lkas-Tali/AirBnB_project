@@ -63,10 +63,18 @@ namespace AirBnB
                     Width = PROPERTY_CARD_WIDTH,
                     Height = PROPERTY_CARD_HEIGHT,
                     Margin = new Padding(10),
-                    BorderStyle = BorderStyle.FixedSingle,
                     BackColor = Color.White,
                     Cursor = Cursors.Hand
                 };
+
+                // Add rounded corners
+                int radius = 20;
+                System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+                path.AddArc(0, 0, radius, radius, 180, 90);
+                path.AddArc(propertyCard.Width - radius, 0, radius, radius, 270, 90);
+                path.AddArc(propertyCard.Width - radius, propertyCard.Height - radius, radius, radius, 0, 90);
+                path.AddArc(0, propertyCard.Height - radius, radius, radius, 90, 90);
+                propertyCard.Region = new Region(path);
 
                 // Store the property data
                 propertyCard.Tag = property;
@@ -80,9 +88,17 @@ namespace AirBnB
                     Width = PROPERTY_CARD_WIDTH - 20,
                     Height = 150,
                     Location = new Point(10, 10),
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    BorderStyle = BorderStyle.FixedSingle
+                    SizeMode = PictureBoxSizeMode.Zoom
                 };
+
+                // Add rounded corners
+                int picRadius = 10; // Adjust this value to change how rounded the corners are
+                System.Drawing.Drawing2D.GraphicsPath picPath = new System.Drawing.Drawing2D.GraphicsPath();
+                picPath.AddArc(0, 0, picRadius, picRadius, 180, 90);
+                picPath.AddArc(propertyImage.Width - picRadius, 0, picRadius, picRadius, 270, 90);
+                picPath.AddArc(propertyImage.Width - picRadius, propertyImage.Height - picRadius, picRadius, picRadius, 0, 90);
+                picPath.AddArc(0, propertyImage.Height - picRadius, picRadius, picRadius, 90, 90);
+                propertyImage.Region = new Region(picPath);
 
                 try
                 {
@@ -97,7 +113,7 @@ namespace AirBnB
                 }
 
                 // Start labels right after the image
-                int yPosition = 170; 
+                int yPosition = 170;
                 int spacing = 25;
 
                 // Get city from the nested "Address" dictionary
@@ -200,7 +216,7 @@ namespace AirBnB
                         .Child(property["Username"].ToString())
                         .Child("Address")
                         .OnceSingleAsync<Dictionary<string, object>>();
-                
+
                 if (addressData != null && addressData["City"].ToString() == city)
                 {
                     matchingProperties.Add(property);
