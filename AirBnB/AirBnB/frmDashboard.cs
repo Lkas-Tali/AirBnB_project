@@ -19,6 +19,10 @@ namespace AirBnB
         private Dictionary<string, object> selectedReservationData;
         private PropertyReservationManager propertyReservationManager;
 
+        const int IMAGE_PADDING = 10;
+        private const int PROPERTY_CARD_WIDTH = 350;
+        private const int PROPERTY_CARD_HEIGHT = 300;
+
         public frmDashboard()
         {
             InitializeComponent();
@@ -192,7 +196,6 @@ namespace AirBnB
             flowPanel.FlowDirection = FlowDirection.LeftToRight;
             flowPanel.Padding = new Padding(10);
 
-            // Get the property images
             if (propertyData.ContainsKey("Username"))
             {
                 var images = await firebaseClient
@@ -201,38 +204,92 @@ namespace AirBnB
                     .Child("ImageUrls")
                     .OnceSingleAsync<List<string>>();
 
-                foreach (var image in images)
+                foreach (var imageUrl in images)
                 {
-                    PictureBox propertyImage = new PictureBox
+                    // Create card panel with rounded corners
+                    Panel imageCard = new Panel
                     {
-                        Width = 350,
-                        Height = 300,
-                        Location = new Point(10, 10),
-                        SizeMode = PictureBoxSizeMode.Zoom,
-                        BorderStyle = BorderStyle.FixedSingle
+                        Width = PROPERTY_CARD_WIDTH,
+                        Height = PROPERTY_CARD_HEIGHT,
+                        Margin = new Padding(10),
+                        BackColor = Color.White
                     };
 
-                    propertyImage.Load(image.ToString());
+                    // Add rounded corners to card
+                    int cardRadius = 20;
+                    System.Drawing.Drawing2D.GraphicsPath cardPath = new System.Drawing.Drawing2D.GraphicsPath();
+                    cardPath.AddArc(0, 0, cardRadius, cardRadius, 180, 90);
+                    cardPath.AddArc(imageCard.Width - cardRadius, 0, cardRadius, cardRadius, 270, 90);
+                    cardPath.AddArc(imageCard.Width - cardRadius, imageCard.Height - cardRadius, cardRadius, cardRadius, 0, 90);
+                    cardPath.AddArc(0, imageCard.Height - cardRadius, cardRadius, cardRadius, 90, 90);
+                    imageCard.Region = new Region(cardPath);
 
-                    flowPanel.Controls.Add(propertyImage);
+                    // Create PictureBox with rounded corners
+                    PictureBox propertyImage = new PictureBox
+                    {
+                        Width = PROPERTY_CARD_WIDTH - (IMAGE_PADDING * 2),
+                        Height = PROPERTY_CARD_HEIGHT - (IMAGE_PADDING * 2),
+                        Location = new Point(IMAGE_PADDING, IMAGE_PADDING),
+                        SizeMode = PictureBoxSizeMode.Zoom
+                    };
+
+                    // Add rounded corners to image
+                    int imageRadius = 10;
+                    System.Drawing.Drawing2D.GraphicsPath imagePath = new System.Drawing.Drawing2D.GraphicsPath();
+                    imagePath.AddArc(0, 0, imageRadius, imageRadius, 180, 90);
+                    imagePath.AddArc(propertyImage.Width - imageRadius, 0, imageRadius, imageRadius, 270, 90);
+                    imagePath.AddArc(propertyImage.Width - imageRadius, propertyImage.Height - imageRadius, imageRadius, imageRadius, 0, 90);
+                    imagePath.AddArc(0, propertyImage.Height - imageRadius, imageRadius, imageRadius, 90, 90);
+                    propertyImage.Region = new Region(imagePath);
+
+                    propertyImage.Load(imageUrl);
+                    imageCard.Controls.Add(propertyImage);
+                    flowPanel.Controls.Add(imageCard);
                 }
             }
             else
             {
-                var image = propertyData["mainImage"];
+                var imageUrl = propertyData["mainImage"];
 
-                PictureBox propertyImage = new PictureBox
+                // Create card panel with rounded corners
+                Panel imageCard = new Panel
                 {
-                    Width = 350,
-                    Height = 300,
-                    Location = new Point(10, 10),
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    BorderStyle = BorderStyle.FixedSingle
+                    Width = PROPERTY_CARD_WIDTH,
+                    Height = PROPERTY_CARD_HEIGHT,
+                    Margin = new Padding(10),
+                    BackColor = Color.White
                 };
 
-                propertyImage.Load(image.ToString());
+                // Add rounded corners to card
+                int cardRadius = 20;
+                System.Drawing.Drawing2D.GraphicsPath cardPath = new System.Drawing.Drawing2D.GraphicsPath();
+                cardPath.AddArc(0, 0, cardRadius, cardRadius, 180, 90);
+                cardPath.AddArc(imageCard.Width - cardRadius, 0, cardRadius, cardRadius, 270, 90);
+                cardPath.AddArc(imageCard.Width - cardRadius, imageCard.Height - cardRadius, cardRadius, cardRadius, 0, 90);
+                cardPath.AddArc(0, imageCard.Height - cardRadius, cardRadius, cardRadius, 90, 90);
+                imageCard.Region = new Region(cardPath);
 
-                flowPanel.Controls.Add(propertyImage);
+                // Create PictureBox with rounded corners
+                PictureBox propertyImage = new PictureBox
+                {
+                    Width = PROPERTY_CARD_WIDTH - (IMAGE_PADDING * 2),
+                    Height = PROPERTY_CARD_HEIGHT - (IMAGE_PADDING * 2),
+                    Location = new Point(IMAGE_PADDING, IMAGE_PADDING),
+                    SizeMode = PictureBoxSizeMode.Zoom
+                };
+
+                // Add rounded corners to image
+                int imageRadius = 10;
+                System.Drawing.Drawing2D.GraphicsPath imagePath = new System.Drawing.Drawing2D.GraphicsPath();
+                imagePath.AddArc(0, 0, imageRadius, imageRadius, 180, 90);
+                imagePath.AddArc(propertyImage.Width - imageRadius, 0, imageRadius, imageRadius, 270, 90);
+                imagePath.AddArc(propertyImage.Width - imageRadius, propertyImage.Height - imageRadius, imageRadius, imageRadius, 0, 90);
+                imagePath.AddArc(0, propertyImage.Height - imageRadius, imageRadius, imageRadius, 90, 90);
+                propertyImage.Region = new Region(imagePath);
+
+                propertyImage.Load(imageUrl.ToString());
+                imageCard.Controls.Add(propertyImage);
+                flowPanel.Controls.Add(imageCard);
             }
         }
 

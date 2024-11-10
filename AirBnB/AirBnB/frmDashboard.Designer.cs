@@ -93,6 +93,7 @@
             this.labelResCheckOut = new System.Windows.Forms.Label();
             this.labelResAddress = new System.Windows.Forms.Label();
             this.labelResCheckIn = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -707,6 +708,7 @@
             // panelFinalBook
             // 
             this.panelFinalBook.BackColor = System.Drawing.Color.SeaShell;
+            this.panelFinalBook.Controls.Add(this.label10);
             this.panelFinalBook.Controls.Add(this.button_ConfirmBooking);
             this.panelFinalBook.Controls.Add(this.labelTotalPrice);
             this.panelFinalBook.Controls.Add(this.labelTotalNights);
@@ -739,7 +741,7 @@
             // 
             this.labelTotalPrice.AutoSize = true;
             this.labelTotalPrice.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
-            this.labelTotalPrice.Location = new System.Drawing.Point(98, 627);
+            this.labelTotalPrice.Location = new System.Drawing.Point(54, 690);
             this.labelTotalPrice.Name = "labelTotalPrice";
             this.labelTotalPrice.Size = new System.Drawing.Size(210, 40);
             this.labelTotalPrice.TabIndex = 1;
@@ -749,7 +751,7 @@
             // 
             this.labelTotalNights.AutoSize = true;
             this.labelTotalNights.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
-            this.labelTotalNights.Location = new System.Drawing.Point(98, 577);
+            this.labelTotalNights.Location = new System.Drawing.Point(54, 640);
             this.labelTotalNights.Name = "labelTotalNights";
             this.labelTotalNights.Size = new System.Drawing.Size(215, 40);
             this.labelTotalNights.TabIndex = 1;
@@ -759,7 +761,7 @@
             // 
             this.labelCheckOut.AutoSize = true;
             this.labelCheckOut.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
-            this.labelCheckOut.Location = new System.Drawing.Point(98, 524);
+            this.labelCheckOut.Location = new System.Drawing.Point(54, 587);
             this.labelCheckOut.Name = "labelCheckOut";
             this.labelCheckOut.Size = new System.Drawing.Size(415, 40);
             this.labelCheckOut.TabIndex = 1;
@@ -769,7 +771,7 @@
             // 
             this.labelCheckIn.AutoSize = true;
             this.labelCheckIn.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
-            this.labelCheckIn.Location = new System.Drawing.Point(98, 467);
+            this.labelCheckIn.Location = new System.Drawing.Point(54, 537);
             this.labelCheckIn.Name = "labelCheckIn";
             this.labelCheckIn.Size = new System.Drawing.Size(394, 40);
             this.labelCheckIn.TabIndex = 1;
@@ -777,8 +779,8 @@
             // 
             // bookingCalendar
             // 
-            this.bookingCalendar.CalendarDimensions = new System.Drawing.Size(3, 2);
-            this.bookingCalendar.Location = new System.Drawing.Point(62, 108);
+            this.bookingCalendar.CalendarDimensions = new System.Drawing.Size(2, 2);
+            this.bookingCalendar.Location = new System.Drawing.Point(44, 171);
             this.bookingCalendar.MaxDate = new System.DateTime(2025, 12, 31, 0, 0, 0, 0);
             this.bookingCalendar.MaxSelectionCount = 100;
             this.bookingCalendar.MinDate = new System.DateTime(2024, 11, 8, 0, 0, 0, 0);
@@ -906,6 +908,18 @@
             this.labelResCheckIn.TabIndex = 7;
             this.labelResCheckIn.Text = "Check-in Date: Not selected";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.label10.Location = new System.Drawing.Point(53, 73);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(630, 47);
+            this.label10.TabIndex = 4;
+            this.label10.Text = "Select Check-In and Check-Out Dates";
+            // 
             // frmDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -914,15 +928,15 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.panelList);
-            this.Controls.Add(this.searchPanel);
-            this.Controls.Add(this.panelBook);
             this.Controls.Add(this.panelFinalBook);
             this.Controls.Add(this.panelPropertyDetails);
             this.Controls.Add(this.panelSelectedReservation);
             this.Controls.Add(this.panelReservations);
             this.Controls.Add(this.panelHome);
             this.Controls.Add(this.panelListed);
+            this.Controls.Add(this.panelList);
+            this.Controls.Add(this.searchPanel);
+            this.Controls.Add(this.panelBook);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -1019,5 +1033,6 @@
         private System.Windows.Forms.Label labelResCheckIn;
         private System.Windows.Forms.Label labelResAddress;
         private System.Windows.Forms.FlowLayoutPanel flowPanelSelectedResevation;
+        private System.Windows.Forms.Label label10;
     }
 }
