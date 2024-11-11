@@ -68,6 +68,7 @@ namespace AirBnB
         {
             try
             {
+                EnableDoubleBuffering(flowPanel);
                 flowPanel.SuspendLayout();
                 flowPanel.Controls.Clear();
                 flowPanel.AutoScroll = true;
@@ -91,7 +92,6 @@ namespace AirBnB
                 {
                     var card = CreateReservationCard(reservation);
 
-                    // Set cached image if available
                     if (reservation.ContainsKey("mainImage"))
                     {
                         var imageUrl = reservation["mainImage"].ToString();
@@ -100,8 +100,7 @@ namespace AirBnB
                             var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
                             if (pictureBox != null)
                             {
-                                pictureBox.Image = cachedImage;
-                                // Don't start loading effect for cards with cached images
+                                pictureBox.Image = ResizeImage(cachedImage, pictureBox.Width, pictureBox.Height);
                                 if (loadingTimers.TryGetValue(card, out var timer))
                                 {
                                     timer.Stop();
@@ -128,6 +127,27 @@ namespace AirBnB
             {
                 MessageBox.Show($"Error loading reservations: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Helper method at the start of the class
+        private void EnableDoubleBuffering(FlowLayoutPanel panel)
+        {
+            typeof(Control).GetProperty("DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance)
+                .SetValue(panel, true, null);
+        }
+
+        // Helper method for image resizing
+        private Image ResizeImage(Image image, int width, int height)
+        {
+            var resized = new Bitmap(width, height);
+            using (var g = Graphics.FromImage(resized))
+            {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(image, 0, 0, width, height);
+            }
+            return resized;
         }
 
         private async Task LoadReservationData(Panel card, Dictionary<string, object> reservation)
@@ -341,11 +361,14 @@ namespace AirBnB
         {
             try
             {
-                // First check if the image is already in the cache
                 if (imageCache.TryGetValue(imageUrl, out Image cachedImage))
                 {
-                    UpdatePropertyCardImage(propertyCard, cachedImage);
-                    StopLoadingEffect(propertyCard);
+                    var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
+                    if (pictureBox != null)
+                    {
+                        UpdatePropertyCardImage(propertyCard, cachedImage);
+                        StopLoadingEffect(propertyCard);
+                    }
                     return;
                 }
 
@@ -368,11 +391,16 @@ namespace AirBnB
                                     var image = Image.FromStream(ms);
                                     if (!imageCache.ContainsKey(imageUrl))
                                     {
-                                        var imageCopy = new Bitmap(image);
-                                        imageCache.TryAdd(imageUrl, imageCopy);
+                                        // Store original size in cache
+                                        imageCache.TryAdd(imageUrl, new Bitmap(image));
                                     }
-                                    UpdatePropertyCardImage(propertyCard, imageCache[imageUrl]);
-                                    StopLoadingEffect(propertyCard);
+
+                                    var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
+                                    if (pictureBox != null)
+                                    {
+                                        UpdatePropertyCardImage(propertyCard, imageCache[imageUrl]);
+                                        StopLoadingEffect(propertyCard);
+                                    }
                                     return;
                                 }
                             }
@@ -394,18 +422,18 @@ namespace AirBnB
             }
         }
 
-        private void UpdatePropertyCardImage(Panel propertyCard, Image image)
+        private void UpdatePropertyCardImage(Panel propertyCard, Image originalImage)
         {
             if (propertyCard.InvokeRequired)
             {
-                propertyCard.Invoke(new Action(() => UpdatePropertyCardImage(propertyCard, image)));
+                propertyCard.Invoke(new Action(() => UpdatePropertyCardImage(propertyCard, originalImage)));
                 return;
             }
 
             var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
             if (pictureBox != null && !pictureBox.IsDisposed)
             {
-                pictureBox.Image = image;
+                pictureBox.Image = ResizeImage(originalImage, pictureBox.Width, pictureBox.Height);
                 pictureBox.BackColor = Color.White;
             }
         }
