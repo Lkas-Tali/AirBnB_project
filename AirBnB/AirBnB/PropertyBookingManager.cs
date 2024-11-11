@@ -18,16 +18,13 @@ namespace AirBnB
         private const int PROPERTY_CARD_HEIGHT = 300;
         private static readonly HttpClient httpClient = new HttpClient();
 
-        // Image cache to store already loaded images
-        private static readonly ConcurrentDictionary<string, Image> imageCache = new ConcurrentDictionary<string, Image>();
-
         public event EventHandler<Dictionary<string, object>> PropertySelected;
 
         public PropertyBookingManager(FirebaseClient client)
         {
             firebaseClient = client;
             // Set timeout for faster image loading
-            httpClient.Timeout = TimeSpan.FromSeconds(5);
+            httpClient.Timeout = TimeSpan.FromSeconds(3);
         }
 
         public async Task<List<Dictionary<string, object>>> GetAvailablePropertiesFromFirebase()
@@ -55,10 +52,20 @@ namespace AirBnB
                 flowPanel.FlowDirection = FlowDirection.LeftToRight;
                 flowPanel.Padding = new Padding(10);
 
-                // Process properties in batches of 5 for smoother loading
-                for (int i = 0; i < properties.Count; i += 5)
+                var loadingLabel = new Label
                 {
-                    var batch = properties.Skip(i).Take(5);
+                    Text = "Loading properties...",
+                    Font = new Font("Nirmala UI", 20, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(255, 56, 92),
+                    AutoSize = true,
+                    Location = new Point(flowPanel.Width / 2 - 100, flowPanel.Height / 2 - 15),
+                };
+                flowPanel.Controls.Add(loadingLabel);
+                flowPanel.ResumeLayout();
+
+                for (int i = 0; i < properties.Count; i += 3)
+                {
+                    var batch = properties.Skip(i).Take(3);
                     var tasks = new List<Task>();
 
                     foreach (var property in batch)
@@ -66,17 +73,18 @@ namespace AirBnB
                         var propertyCard = CreatePropertyCard(property);
                         flowPanel.Controls.Add(propertyCard);
 
-                        // Load address
-                        tasks.Add(LoadPropertyAddressAsync(property, propertyCard));
-
-                        // Load image if available
                         if (property.ContainsKey("Front Image"))
                         {
                             tasks.Add(LoadPropertyImageAsync(property["Front Image"].ToString(), propertyCard));
                         }
+                        tasks.Add(LoadPropertyAddressAsync(property, propertyCard));
                     }
 
-                    // Wait for current batch to complete before loading next batch
+                    if (i == 0)
+                    {
+                        flowPanel.Controls.Remove(loadingLabel);
+                    }
+
                     await Task.WhenAll(tasks);
                 }
             }
@@ -90,32 +98,9 @@ namespace AirBnB
             }
         }
 
-        private async Task LoadPropertyDataAsync(Dictionary<string, object> property, Panel propertyCard)
+        private Panel CreatePropertyCard(Dictionary<string, object> property, bool isLoading = false)
         {
-            // Start both loading operations concurrently
-            var addressTask = LoadPropertyAddressAsync(property, propertyCard);
-            var imageTask = property.ContainsKey("Front Image") ?
-                LoadPropertyImageAsync(property["Front Image"].ToString(), propertyCard) :
-                Task.CompletedTask;
-
-            // Use WhenAny to handle whichever completes first
-            while (!addressTask.IsCompleted || !imageTask.IsCompleted)
-            {
-                var completedTask = await Task.WhenAny(addressTask, imageTask);
-                if (completedTask == addressTask)
-                {
-                    addressTask = Task.CompletedTask;
-                }
-                if (completedTask == imageTask)
-                {
-                    imageTask = Task.CompletedTask;
-                }
-            }
-        }
-
-        private Panel CreatePropertyCard(Dictionary<string, object> property)
-        {
-            Panel propertyCard = new Panel
+            var card = new Panel
             {
                 Width = PROPERTY_CARD_WIDTH,
                 Height = PROPERTY_CARD_HEIGHT,
@@ -129,19 +114,55 @@ namespace AirBnB
             int radius = 20;
             System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
             path.AddArc(0, 0, radius, radius, 180, 90);
-            path.AddArc(propertyCard.Width - radius, 0, radius, radius, 270, 90);
-            path.AddArc(propertyCard.Width - radius, propertyCard.Height - radius, radius, radius, 0, 90);
-            path.AddArc(0, propertyCard.Height - radius, radius, radius, 90, 90);
-            propertyCard.Region = new Region(path);
+            path.AddArc(card.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(card.Width - radius, card.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, card.Height - radius, radius, radius, 90, 90);
+            card.Region = new Region(path);
 
-            propertyCard.Click += PropertyCard_Click;
+            if (isLoading)
+            {
+                // Add a loading indicator instead of placeholder text
+                var loadingLabel = new Label
+                {
+                    Text = "Loading...",
+                    Font = new Font("Nirmala UI", 12, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(255, 56, 92),
+                    AutoSize = true,
+                    Location = new Point(card.Width / 2 - 30, card.Height / 2 - 10)
+                };
+                card.Controls.Add(loadingLabel);
+            }
+            else
+            {
+                // Add the regular controls
+                AddPropertyControls(card, property);
 
-            // Add initial controls
+                // Add click handlers to all controls including the card itself
+                card.Click += (s, e) => PropertyCard_Click(card, e);
+
+                // Make all child controls trigger the parent card's click
+                foreach (Control control in card.Controls)
+                {
+                    control.Click += (s, e) => PropertyCard_Click(card, e);
+
+                    // If the control is a PictureBox, make sure it's clickable
+                    if (control is PictureBox pictureBox)
+                    {
+                        pictureBox.Cursor = Cursors.Hand;
+                        pictureBox.Click += (s, e) => PropertyCard_Click(card, e);
+                    }
+                }
+            }
+
+            return card;
+        }
+
+        private void AddPropertyControls(Panel card, Dictionary<string, object> property)
+        {
+            // Add your existing control creation code here
             PictureBox propertyImage = CreatePropertyImageBox();
-            propertyCard.Controls.Add(propertyImage);
-            AddPropertyLabels(propertyCard, property);
-
-            return propertyCard;
+            card.Controls.Add(propertyImage);
+            AddPropertyLabels(card, property);
         }
 
         private async Task LoadPropertyAddressAsync(Dictionary<string, object> property, Panel propertyCard)
@@ -160,12 +181,20 @@ namespace AirBnB
                     {
                         propertyCard.Invoke(new Action(() =>
                         {
-                            UpdateCityLabel(propertyCard, addressData["City"].ToString());
+                            var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
+                            if (cityLabel != null && !cityLabel.IsDisposed)
+                            {
+                                cityLabel.Text = $"City: {addressData["City"]}";
+                            }
                         }));
                     }
                     else
                     {
-                        UpdateCityLabel(propertyCard, addressData["City"].ToString());
+                        var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
+                        if (cityLabel != null && !cityLabel.IsDisposed)
+                        {
+                            cityLabel.Text = $"City: {addressData["City"]}";
+                        }
                     }
                 }
             }
@@ -176,57 +205,47 @@ namespace AirBnB
         }
 
         private async Task LoadPropertyImageAsync(string imageUrl, Panel propertyCard)
+{
+    try
+    {
+        using (var client = new HttpClient())
         {
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = TimeSpan.FromSeconds(10);
-                    var imageBytes = await client.GetByteArrayAsync(imageUrl);
+            client.Timeout = TimeSpan.FromSeconds(10);
+            var imageBytes = await client.GetByteArrayAsync(imageUrl);
 
-                    if (!propertyCard.IsDisposed)
+            if (!propertyCard.IsDisposed)
+            {
+                using (var ms = new System.IO.MemoryStream(imageBytes))
+                {
+                    var image = Image.FromStream(ms);
+                    if (propertyCard.InvokeRequired)
                     {
-                        using (var ms = new System.IO.MemoryStream(imageBytes))
+                        propertyCard.Invoke(new Action(() =>
                         {
-                            var image = Image.FromStream(ms);
-                            if (propertyCard.InvokeRequired)
+                            var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
+                            if (pictureBox != null && !pictureBox.IsDisposed)
                             {
-                                propertyCard.Invoke(new Action(() =>
-                                {
-                                    UpdatePropertyImage(propertyCard, image);
-                                }));
+                                pictureBox.Image = image;
                             }
-                            else
-                            {
-                                UpdatePropertyImage(propertyCard, image);
-                            }
+                        }));
+                    }
+                    else
+                    {
+                        var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
+                        if (pictureBox != null && !pictureBox.IsDisposed)
+                        {
+                            pictureBox.Image = image;
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading image: {ex.Message}");
-            }
         }
-
-        private void UpdateCityLabel(Panel propertyCard, string city)
-        {
-            var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
-            if (cityLabel != null)
-            {
-                cityLabel.Text = $"City: {city}";
-            }
-        }
-
-        private void UpdatePropertyImage(Panel propertyCard, Image image)
-        {
-            var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
-            if (pictureBox != null)
-            {
-                pictureBox.Image = image;
-            }
-        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error loading image: {ex.Message}");
+    }
+}
 
         private PictureBox CreatePropertyImageBox()
         {
@@ -236,7 +255,8 @@ namespace AirBnB
                 Height = 150,
                 Location = new Point(10, 10),
                 SizeMode = PictureBoxSizeMode.Zoom,
-                BackColor = Color.White
+                BackColor = Color.White,
+                Cursor = Cursors.Hand  // Add cursor to indicate clickable
             };
 
             // Add rounded corners
@@ -316,7 +336,6 @@ namespace AirBnB
                 }
             }
         }
-
 
         public async Task<List<Dictionary<string, object>>> SearchPropertiesByCity(string city)
         {
