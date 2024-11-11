@@ -76,6 +76,7 @@
             this.button_FinalBook = new System.Windows.Forms.Button();
             this.labelAddress = new System.Windows.Forms.Label();
             this.panelFinalBook = new System.Windows.Forms.Panel();
+            this.label10 = new System.Windows.Forms.Label();
             this.button_ConfirmBooking = new System.Windows.Forms.Button();
             this.labelTotalPrice = new System.Windows.Forms.Label();
             this.labelTotalNights = new System.Windows.Forms.Label();
@@ -93,7 +94,27 @@
             this.labelResCheckOut = new System.Windows.Forms.Label();
             this.labelResAddress = new System.Windows.Forms.Label();
             this.labelResCheckIn = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
+            this.panelPayment = new System.Windows.Forms.Panel();
+            this.txtPostCode = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.txtCVV = new System.Windows.Forms.TextBox();
+            this.txtAddressLine2 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtCiti = new System.Windows.Forms.TextBox();
+            this.txtCardNumber = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtExpiryDate = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtAddressLine1 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtFullName = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.buttonPay = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -105,6 +126,7 @@
             this.panelFinalBook.SuspendLayout();
             this.panelReservations.SuspendLayout();
             this.panelSelectedReservation.SuspendLayout();
+            this.panelPayment.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -621,11 +643,12 @@
             // 
             // label8
             // 
+            this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Font = new System.Drawing.Font("Nirmala UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
             this.label8.Location = new System.Drawing.Point(35, 43);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(150, 55);
+            this.label8.Size = new System.Drawing.Size(150, 47);
             this.label8.TabIndex = 0;
             this.label8.Text = "SEARCH";
             // 
@@ -719,6 +742,18 @@
             this.panelFinalBook.Name = "panelFinalBook";
             this.panelFinalBook.Size = new System.Drawing.Size(841, 852);
             this.panelFinalBook.TabIndex = 7;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.label10.Location = new System.Drawing.Point(53, 73);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(630, 47);
+            this.label10.TabIndex = 4;
+            this.label10.Text = "Select Check-In and Check-Out Dates";
             // 
             // button_ConfirmBooking
             // 
@@ -908,17 +943,271 @@
             this.labelResCheckIn.TabIndex = 7;
             this.labelResCheckIn.Text = "Check-in Date: Not selected";
             // 
-            // label10
+            // panelPayment
             // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
-            this.label10.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
-            this.label10.Location = new System.Drawing.Point(53, 73);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(630, 47);
-            this.label10.TabIndex = 4;
-            this.label10.Text = "Select Check-In and Check-Out Dates";
+            this.panelPayment.BackColor = System.Drawing.Color.SeaShell;
+            this.panelPayment.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
+            this.panelPayment.Controls.Add(this.buttonPay);
+            this.panelPayment.Controls.Add(this.txtPostCode);
+            this.panelPayment.Controls.Add(this.label21);
+            this.panelPayment.Controls.Add(this.txtCVV);
+            this.panelPayment.Controls.Add(this.txtAddressLine2);
+            this.panelPayment.Controls.Add(this.label15);
+            this.panelPayment.Controls.Add(this.txtCiti);
+            this.panelPayment.Controls.Add(this.txtCardNumber);
+            this.panelPayment.Controls.Add(this.label20);
+            this.panelPayment.Controls.Add(this.txtExpiryDate);
+            this.panelPayment.Controls.Add(this.label19);
+            this.panelPayment.Controls.Add(this.label13);
+            this.panelPayment.Controls.Add(this.txtAddressLine1);
+            this.panelPayment.Controls.Add(this.label14);
+            this.panelPayment.Controls.Add(this.label18);
+            this.panelPayment.Controls.Add(this.txtFullName);
+            this.panelPayment.Controls.Add(this.label12);
+            this.panelPayment.Controls.Add(this.label17);
+            this.panelPayment.Controls.Add(this.label16);
+            this.panelPayment.Controls.Add(this.label11);
+            this.panelPayment.Location = new System.Drawing.Point(300, 0);
+            this.panelPayment.Name = "panelPayment";
+            this.panelPayment.Size = new System.Drawing.Size(840, 855);
+            this.panelPayment.TabIndex = 10;
+            // 
+            // txtPostCode
+            // 
+            this.txtPostCode.BackColor = System.Drawing.Color.White;
+            this.txtPostCode.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPostCode.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPostCode.Location = new System.Drawing.Point(54, 752);
+            this.txtPostCode.Multiline = true;
+            this.txtPostCode.Name = "txtPostCode";
+            this.txtPostCode.Size = new System.Drawing.Size(394, 30);
+            this.txtPostCode.TabIndex = 7;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.BackColor = System.Drawing.Color.Transparent;
+            this.label21.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label21.Location = new System.Drawing.Point(49, 719);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(111, 30);
+            this.label21.TabIndex = 6;
+            this.label21.Text = "Post Code";
+            // 
+            // txtCVV
+            // 
+            this.txtCVV.BackColor = System.Drawing.Color.White;
+            this.txtCVV.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtCVV.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCVV.Location = new System.Drawing.Point(54, 419);
+            this.txtCVV.Multiline = true;
+            this.txtCVV.Name = "txtCVV";
+            this.txtCVV.Size = new System.Drawing.Size(394, 30);
+            this.txtCVV.TabIndex = 7;
+            // 
+            // txtAddressLine2
+            // 
+            this.txtAddressLine2.BackColor = System.Drawing.Color.White;
+            this.txtAddressLine2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtAddressLine2.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddressLine2.Location = new System.Drawing.Point(54, 620);
+            this.txtAddressLine2.Multiline = true;
+            this.txtAddressLine2.Name = "txtAddressLine2";
+            this.txtAddressLine2.Size = new System.Drawing.Size(394, 30);
+            this.txtAddressLine2.TabIndex = 7;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.BackColor = System.Drawing.Color.Transparent;
+            this.label15.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label15.Location = new System.Drawing.Point(49, 386);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(54, 30);
+            this.label15.TabIndex = 6;
+            this.label15.Text = "CVV";
+            // 
+            // txtCiti
+            // 
+            this.txtCiti.BackColor = System.Drawing.Color.White;
+            this.txtCiti.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtCiti.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCiti.Location = new System.Drawing.Point(54, 688);
+            this.txtCiti.Multiline = true;
+            this.txtCiti.Name = "txtCiti";
+            this.txtCiti.Size = new System.Drawing.Size(394, 30);
+            this.txtCiti.TabIndex = 7;
+            // 
+            // txtCardNumber
+            // 
+            this.txtCardNumber.BackColor = System.Drawing.Color.White;
+            this.txtCardNumber.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtCardNumber.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCardNumber.Location = new System.Drawing.Point(54, 287);
+            this.txtCardNumber.Multiline = true;
+            this.txtCardNumber.Name = "txtCardNumber";
+            this.txtCardNumber.Size = new System.Drawing.Size(394, 30);
+            this.txtCardNumber.TabIndex = 7;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.BackColor = System.Drawing.Color.Transparent;
+            this.label20.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label20.Location = new System.Drawing.Point(49, 587);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(156, 30);
+            this.label20.TabIndex = 6;
+            this.label20.Text = "Address Line 2";
+            // 
+            // txtExpiryDate
+            // 
+            this.txtExpiryDate.BackColor = System.Drawing.Color.White;
+            this.txtExpiryDate.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtExpiryDate.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtExpiryDate.Location = new System.Drawing.Point(54, 355);
+            this.txtExpiryDate.Multiline = true;
+            this.txtExpiryDate.Name = "txtExpiryDate";
+            this.txtExpiryDate.Size = new System.Drawing.Size(394, 30);
+            this.txtExpiryDate.TabIndex = 7;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.Color.Transparent;
+            this.label19.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label19.Location = new System.Drawing.Point(49, 655);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(51, 30);
+            this.label19.TabIndex = 6;
+            this.label19.Text = "City";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label13.Location = new System.Drawing.Point(49, 254);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(141, 30);
+            this.label13.TabIndex = 6;
+            this.label13.Text = "Card number";
+            // 
+            // txtAddressLine1
+            // 
+            this.txtAddressLine1.BackColor = System.Drawing.Color.White;
+            this.txtAddressLine1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtAddressLine1.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddressLine1.Location = new System.Drawing.Point(54, 556);
+            this.txtAddressLine1.Multiline = true;
+            this.txtAddressLine1.Name = "txtAddressLine1";
+            this.txtAddressLine1.Size = new System.Drawing.Size(394, 30);
+            this.txtAddressLine1.TabIndex = 7;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.Transparent;
+            this.label14.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label14.Location = new System.Drawing.Point(49, 322);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(124, 30);
+            this.label14.TabIndex = 6;
+            this.label14.Text = "Expiry date";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.BackColor = System.Drawing.Color.Transparent;
+            this.label18.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label18.Location = new System.Drawing.Point(49, 523);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(156, 30);
+            this.label18.TabIndex = 6;
+            this.label18.Text = "Address Line 1";
+            // 
+            // txtFullName
+            // 
+            this.txtFullName.BackColor = System.Drawing.Color.White;
+            this.txtFullName.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtFullName.Font = new System.Drawing.Font("MS UI Gothic", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFullName.Location = new System.Drawing.Point(54, 223);
+            this.txtFullName.Multiline = true;
+            this.txtFullName.Name = "txtFullName";
+            this.txtFullName.Size = new System.Drawing.Size(394, 30);
+            this.txtFullName.TabIndex = 7;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.Color.Transparent;
+            this.label12.Font = new System.Drawing.Font("Nirmala UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label12.Location = new System.Drawing.Point(49, 190);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(109, 30);
+            this.label12.TabIndex = 6;
+            this.label12.Text = "Full name";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.Color.Transparent;
+            this.label17.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.Color.Black;
+            this.label17.Location = new System.Drawing.Point(46, 474);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(373, 40);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Enter Your Billing Address";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.BackColor = System.Drawing.Color.Transparent;
+            this.label16.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.Color.Black;
+            this.label16.Location = new System.Drawing.Point(46, 143);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(333, 40);
+            this.label16.TabIndex = 5;
+            this.label16.Text = "Enter Your Card Details";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.label11.Location = new System.Drawing.Point(46, 43);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(339, 47);
+            this.label11.TabIndex = 5;
+            this.label11.Text = "Slect Your Payment";
+            // 
+            // buttonPay
+            // 
+            this.buttonPay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
+            this.buttonPay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonPay.FlatAppearance.BorderSize = 0;
+            this.buttonPay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPay.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonPay.ForeColor = System.Drawing.Color.White;
+            this.buttonPay.Location = new System.Drawing.Point(509, 733);
+            this.buttonPay.Name = "buttonPay";
+            this.buttonPay.Size = new System.Drawing.Size(300, 80);
+            this.buttonPay.TabIndex = 8;
+            this.buttonPay.Text = "Pay";
+            this.buttonPay.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonPay.UseVisualStyleBackColor = false;
+            this.buttonPay.Click += new System.EventHandler(this.buttonPay_Click);
             // 
             // frmDashboard
             // 
@@ -928,6 +1217,9 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.searchPanel);
+            this.Controls.Add(this.panelBook);
+            this.Controls.Add(this.panelPayment);
             this.Controls.Add(this.panelFinalBook);
             this.Controls.Add(this.panelPropertyDetails);
             this.Controls.Add(this.panelSelectedReservation);
@@ -935,8 +1227,6 @@
             this.Controls.Add(this.panelHome);
             this.Controls.Add(this.panelListed);
             this.Controls.Add(this.panelList);
-            this.Controls.Add(this.searchPanel);
-            this.Controls.Add(this.panelBook);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -963,6 +1253,8 @@
             this.panelReservations.PerformLayout();
             this.panelSelectedReservation.ResumeLayout(false);
             this.panelSelectedReservation.PerformLayout();
+            this.panelPayment.ResumeLayout(false);
+            this.panelPayment.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1034,5 +1326,26 @@
         private System.Windows.Forms.Label labelResAddress;
         private System.Windows.Forms.FlowLayoutPanel flowPanelSelectedResevation;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Panel panelPayment;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox txtFullName;
+        private System.Windows.Forms.TextBox txtCVV;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox txtCardNumber;
+        private System.Windows.Forms.TextBox txtExpiryDate;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox txtPostCode;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox txtAddressLine2;
+        private System.Windows.Forms.TextBox txtCiti;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox txtAddressLine1;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button buttonPay;
     }
 }

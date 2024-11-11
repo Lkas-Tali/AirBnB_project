@@ -271,8 +271,6 @@ namespace AirBnB
             await firebaseClient
                 .Child("Reservations")
                 .PostAsync(reservationData);
-
-            MessageBox.Show("Registration successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

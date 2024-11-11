@@ -33,6 +33,8 @@ namespace AirBnB
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
             propertyReservationManager = new PropertyReservationManager(firebaseClient);
 
+            this.ApplyRoundedCornersToAll();
+
             // Subscribe to the PropertySelected event
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
 
@@ -327,34 +329,9 @@ namespace AirBnB
             button_ConfirmBooking.Enabled = totalNights > 0;
         }
 
-        private async void button_ConfirmBooking_Click(object sender, EventArgs e)
+        private void button_ConfirmBooking_Click(object sender, EventArgs e)
         {
-            if (selectedPropertyData == null)
-            {
-                MessageBox.Show("Dictionary empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            DateTime checkInDate = bookingCalendar.SelectionStart.Date;
-            DateTime checkOutDate = bookingCalendar.SelectionEnd.Date;
-
-            string strCheckInDate = checkInDate.ToString("dd/MM/yyyy");
-            string strCheckOutDate = checkOutDate.ToString("dd/MM/yyyy");
-            string username = GlobalData.Username;
-            int totalNights = (checkOutDate - checkInDate).Days;
-
-            var properyData = await firebaseClient
-            .Child("Available Properties")
-            .Child(selectedPropertyData["Username"].ToString())
-            .OnceSingleAsync<Dictionary<string, object>>();
-
-            var addressData = await firebaseClient
-            .Child("Available Properties")
-            .Child(selectedPropertyData["Username"].ToString())
-            .Child("Address")
-            .OnceSingleAsync<Dictionary<string, object>>();
-
-            propertyBookingManager.AddReservationToDatabase(username, strCheckOutDate, totalNights, strCheckInDate, properyData, addressData);
+            ShowPanel(panelPayment);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -437,6 +414,78 @@ namespace AirBnB
 
                 // Refresh the reservations panel
                 buttonReservations_Click(sender, e);
+            }
+        }
+
+        private async void buttonPay_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var paymentManager = new PaymentManager();
+                var paymentDetails = new PaymentDetails
+                {
+                    FullName = txtFullName.Text,
+                    CardNumber = txtCardNumber.Text.Replace(" ", ""),  // Remove any spaces
+                    ExpiryDate = txtExpiryDate.Text,
+                    CVV = txtCVV.Text,
+                    AddressLine1 = txtAddressLine1.Text,
+                    AddressLine2 = txtAddressLine2.Text,
+                    City = txtCiti.Text,
+                    PostCode = txtPostCode.Text
+                };
+
+                // Calculate total price from labels
+                string priceText = labelTotalPrice.Text.Replace("Total Price: £", "");
+                if (!decimal.TryParse(priceText, out decimal totalAmount))
+                {
+                    MessageBox.Show("Invalid price amount.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Process the payment
+                paymentManager.ProcessPayment(paymentDetails, totalAmount);
+
+                // If we get here, payment was successful
+                MessageBox.Show("Payment processed successfully. Reservation successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Continue with the existing reservation process
+                if (selectedPropertyData == null)
+                {
+                    MessageBox.Show("Property data is missing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                DateTime checkInDate = bookingCalendar.SelectionStart.Date;
+                DateTime checkOutDate = bookingCalendar.SelectionEnd.Date;
+
+                string strCheckInDate = checkInDate.ToString("dd/MM/yyyy");
+                string strCheckOutDate = checkOutDate.ToString("dd/MM/yyyy");
+                string username = GlobalData.Username;
+                int totalNights = (checkOutDate - checkInDate).Days;
+
+                var propertyData = await firebaseClient
+                    .Child("Available Properties")
+                    .Child(selectedPropertyData["Username"].ToString())
+                    .OnceSingleAsync<Dictionary<string, object>>();
+
+                var addressData = await firebaseClient
+                    .Child("Available Properties")
+                    .Child(selectedPropertyData["Username"].ToString())
+                    .Child("Address")
+                    .OnceSingleAsync<Dictionary<string, object>>();
+
+                propertyBookingManager.AddReservationToDatabase(username, strCheckOutDate, totalNights, strCheckInDate, propertyData, addressData);
+
+                // Return to home panel or another appropriate panel
+                ShowPanel(panelHome);
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while processing the payment: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

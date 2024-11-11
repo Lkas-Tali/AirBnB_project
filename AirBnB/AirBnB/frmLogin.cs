@@ -24,6 +24,14 @@ namespace AirBnB
         {
             InitializeComponent();
             InitializeFirebase(); // Initialize Firebase when the form loads
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is TextBox textBox)
+                {
+                    textBox.ApplyRoundedCorners(25); // Increased corner radius
+                }
+            }
         }
 
         public void InitializeFirebase()
