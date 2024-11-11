@@ -16,22 +16,37 @@ namespace AirBnB
         private FirebaseClient firebaseClient;
         private const int PROPERTY_CARD_WIDTH = 200;
         private const int PROPERTY_CARD_HEIGHT = 300;
-        private static readonly HttpClient httpClient = new HttpClient();
+        private readonly ConcurrentDictionary<string, Image> imageCache = new ConcurrentDictionary<string, Image>();
+        private const int FLICKER_INTERVAL = 200; // milliseconds
+        private readonly Color LoadingColorDark = Color.FromArgb(230, 230, 230);
+        private readonly Color LoadingColorLight = Color.FromArgb(245, 245, 245);
+
+        //  Field to track loading timers
+        private readonly ConcurrentDictionary<Panel, System.Windows.Forms.Timer> loadingTimers =
+            new ConcurrentDictionary<Panel, System.Windows.Forms.Timer>();
+
+        // Configure all HttpClient settings in a single initialization
+        private static readonly HttpClient httpClient = new HttpClient()
+        {
+            Timeout = TimeSpan.FromSeconds(0.1),
+            DefaultRequestHeaders = { ConnectionClose = false }
+        };
 
         public event EventHandler<Dictionary<string, object>> PropertySelected;
 
         public PropertyBookingManager(FirebaseClient client)
         {
             firebaseClient = client;
-            // Set timeout for faster image loading
-            httpClient.Timeout = TimeSpan.FromSeconds(3);
         }
 
         public async Task<List<Dictionary<string, object>>> GetAvailablePropertiesFromFirebase()
         {
-            var properties = await firebaseClient
+            // Get properties and their addresses in a single query
+            var propertiesTask = firebaseClient
                 .Child("Available Properties")
                 .OnceSingleAsync<Dictionary<string, Dictionary<string, object>>>();
+
+            var properties = await propertiesTask;
 
             return properties?.Select(property =>
             {
@@ -41,7 +56,7 @@ namespace AirBnB
             }).ToList() ?? new List<Dictionary<string, object>>();
         }
 
-        public async void DisplayAvailableProperties(List<Dictionary<string, object>> properties, FlowLayoutPanel flowPanel)
+        public async Task DisplayAvailableProperties(List<Dictionary<string, object>> properties, FlowLayoutPanel flowPanel)
         {
             try
             {
@@ -63,38 +78,72 @@ namespace AirBnB
                 flowPanel.Controls.Add(loadingLabel);
                 flowPanel.ResumeLayout();
 
-                for (int i = 0; i < properties.Count; i += 3)
+                // Create cards and immediately set cached images if available
+                var cards = properties.Select(property =>
                 {
-                    var batch = properties.Skip(i).Take(3);
-                    var tasks = new List<Task>();
+                    var card = CreatePropertyCard(property);
 
-                    foreach (var property in batch)
+                    // Set cached image if available
+                    if (property.ContainsKey("Front Image"))
                     {
-                        var propertyCard = CreatePropertyCard(property);
-                        flowPanel.Controls.Add(propertyCard);
-
-                        if (property.ContainsKey("Front Image"))
+                        var imageUrl = property["Front Image"].ToString();
+                        if (imageCache.TryGetValue(imageUrl, out var cachedImage))
                         {
-                            tasks.Add(LoadPropertyImageAsync(property["Front Image"].ToString(), propertyCard));
+                            var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
+                            if (pictureBox != null)
+                            {
+                                pictureBox.Image = cachedImage;
+                                // Don't start loading effect for cards with cached images
+                                if (loadingTimers.TryGetValue(card, out var timer))
+                                {
+                                    timer.Stop();
+                                    timer.Dispose();
+                                    loadingTimers.TryRemove(card, out _);
+                                }
+                            }
                         }
-                        tasks.Add(LoadPropertyAddressAsync(property, propertyCard));
                     }
 
-                    if (i == 0)
-                    {
-                        flowPanel.Controls.Remove(loadingLabel);
-                    }
+                    return (card, property);
+                }).ToList();
 
-                    await Task.WhenAll(tasks);
-                }
+                flowPanel.SuspendLayout();
+                flowPanel.Controls.Remove(loadingLabel);
+                flowPanel.Controls.AddRange(cards.Select(c => c.card).ToArray());
+                flowPanel.ResumeLayout();
+
+                // Start loading data only for cards that need it
+                var loadingTasks = cards.Select(c => InitiateDataLoading(c.card, c.property));
+                await Task.WhenAll(loadingTasks);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading properties: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
+        }
+
+        private async Task InitiateDataLoading(Panel card, Dictionary<string, object> property)
+        {
+            try
             {
-                flowPanel.ResumeLayout();
+                var loadingTasks = new List<Task>();
+
+                // Load image if URL exists
+                if (property.ContainsKey("Front Image"))
+                {
+                    var imageUrl = property["Front Image"].ToString();
+                    loadingTasks.Add(LoadPropertyImageAsync(imageUrl, card));
+                }
+
+                // Load address data
+                loadingTasks.Add(LoadPropertyAddressAsync(property, card));
+
+                // Wait for all loading tasks to complete
+                await Task.WhenAll(loadingTasks);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error initiating data loading: {ex.Message}");
             }
         }
 
@@ -137,6 +186,9 @@ namespace AirBnB
                 // Add the regular controls
                 AddPropertyControls(card, property);
 
+                // Start loading effect
+                StartLoadingEffect(card);
+
                 // Add click handlers to all controls including the card itself
                 card.Click += (s, e) => PropertyCard_Click(card, e);
 
@@ -157,6 +209,81 @@ namespace AirBnB
             return card;
         }
 
+        private void StartLoadingEffect(Panel card)
+        {
+            var timer = new System.Windows.Forms.Timer
+            {
+                Interval = FLICKER_INTERVAL
+            };
+
+            bool isLight = true;
+            timer.Tick += (s, e) =>
+            {
+                if (card.IsDisposed)
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                    return;
+                }
+
+                if (card.InvokeRequired)
+                {
+                    card.Invoke(new Action(() => UpdateLoadingEffect(card, isLight)));
+                }
+                else
+                {
+                    UpdateLoadingEffect(card, isLight);
+                }
+                isLight = !isLight;
+            };
+
+            loadingTimers.TryAdd(card, timer);
+            timer.Start();
+        }
+
+        private void UpdateLoadingEffect(Panel card, bool isLight)
+        {
+            var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
+            if (pictureBox != null && pictureBox.Image == null)
+            {
+                pictureBox.BackColor = isLight ? LoadingColorLight : LoadingColorDark;
+            }
+
+            foreach (Control control in card.Controls)
+            {
+                if (control is Label label && label.Text.StartsWith("Loading"))
+                {
+                    label.BackColor = isLight ? LoadingColorLight : LoadingColorDark;
+                }
+            }
+        }
+
+        private void StopLoadingEffect(Panel card)
+        {
+            if (loadingTimers.TryRemove(card, out var timer))
+            {
+                timer.Stop();
+                timer.Dispose();
+            }
+
+            if (!card.IsDisposed)
+            {
+                var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
+                if (pictureBox != null)
+                {
+                    pictureBox.BackColor = Color.White;
+                }
+
+                foreach (Control control in card.Controls)
+                {
+                    if (control is Label)
+                    {
+                        control.BackColor = Color.White;
+                    }
+                }
+            }
+        }
+
         private void AddPropertyControls(Panel card, Dictionary<string, object> property)
         {
             // Add your existing control creation code here
@@ -165,35 +292,101 @@ namespace AirBnB
             AddPropertyLabels(card, property);
         }
 
+        private async Task LoadPropertyImageAsync(string imageUrl, Panel propertyCard)
+        {
+            try
+            {
+                // First check if the image is already in the cache
+                if (imageCache.TryGetValue(imageUrl, out Image cachedImage))
+                {
+                    // Use the cached image
+                    UpdatePropertyCardImage(propertyCard, cachedImage);
+                    StopLoadingEffect(propertyCard);
+                    return;
+                }
+
+                int maxRetries = 3;
+                int currentRetry = 0;
+
+                while (currentRetry < maxRetries && !propertyCard.IsDisposed)
+                {
+                    try
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            client.Timeout = TimeSpan.FromSeconds(10);
+                            var imageBytes = await client.GetByteArrayAsync(imageUrl);
+
+                            if (!propertyCard.IsDisposed)
+                            {
+                                using (var ms = new System.IO.MemoryStream(imageBytes))
+                                {
+                                    // Create image from stream
+                                    var image = Image.FromStream(ms);
+
+                                    // Store in cache first
+                                    if (!imageCache.ContainsKey(imageUrl))
+                                    {
+                                        // Create a new copy of the image for the cache to prevent disposal issues
+                                        var imageCopy = new Bitmap(image);
+                                        imageCache.TryAdd(imageUrl, imageCopy);
+                                    }
+
+                                    // Update the UI
+                                    UpdatePropertyCardImage(propertyCard, imageCache[imageUrl]);
+                                    StopLoadingEffect(propertyCard);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Attempt {currentRetry + 1} failed: {ex.Message}");
+                        currentRetry++;
+                        if (currentRetry < maxRetries)
+                        {
+                            await Task.Delay(1000 * currentRetry); // Exponential backoff
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading image: {ex.Message}");
+            }
+        }
+
         private async Task LoadPropertyAddressAsync(Dictionary<string, object> property, Panel propertyCard)
         {
             try
             {
-                var addressData = await firebaseClient
-                    .Child("Available Properties")
-                    .Child(property["Username"].ToString())
-                    .Child("Address")
-                    .OnceSingleAsync<Dictionary<string, object>>();
+                int maxRetries = 3;
+                int currentRetry = 0;
 
-                if (!propertyCard.IsDisposed && addressData != null && addressData.ContainsKey("City"))
+                while (currentRetry < maxRetries && !propertyCard.IsDisposed)
                 {
-                    if (propertyCard.InvokeRequired)
+                    try
                     {
-                        propertyCard.Invoke(new Action(() =>
+                        var addressData = await firebaseClient
+                            .Child("Available Properties")
+                            .Child(property["Username"].ToString())
+                            .Child("Address")
+                            .OnceSingleAsync<Dictionary<string, object>>();
+
+                        if (!propertyCard.IsDisposed && addressData != null && addressData.ContainsKey("City"))
                         {
-                            var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
-                            if (cityLabel != null && !cityLabel.IsDisposed)
-                            {
-                                cityLabel.Text = $"City: {addressData["City"]}";
-                            }
-                        }));
+                            UpdatePropertyCardAddress(propertyCard, addressData["City"].ToString());
+                            StopLoadingEffect(propertyCard);
+                            return;
+                        }
                     }
-                    else
+                    catch
                     {
-                        var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
-                        if (cityLabel != null && !cityLabel.IsDisposed)
+                        currentRetry++;
+                        if (currentRetry < maxRetries)
                         {
-                            cityLabel.Text = $"City: {addressData["City"]}";
+                            await Task.Delay(1000 * currentRetry); // Exponential backoff
                         }
                     }
                 }
@@ -204,48 +397,37 @@ namespace AirBnB
             }
         }
 
-        private async Task LoadPropertyImageAsync(string imageUrl, Panel propertyCard)
-{
-    try
-    {
-        using (var client = new HttpClient())
+        private void UpdatePropertyCardAddress(Panel propertyCard, string city)
         {
-            client.Timeout = TimeSpan.FromSeconds(10);
-            var imageBytes = await client.GetByteArrayAsync(imageUrl);
-
-            if (!propertyCard.IsDisposed)
+            if (propertyCard.InvokeRequired)
             {
-                using (var ms = new System.IO.MemoryStream(imageBytes))
-                {
-                    var image = Image.FromStream(ms);
-                    if (propertyCard.InvokeRequired)
-                    {
-                        propertyCard.Invoke(new Action(() =>
-                        {
-                            var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
-                            if (pictureBox != null && !pictureBox.IsDisposed)
-                            {
-                                pictureBox.Image = image;
-                            }
-                        }));
-                    }
-                    else
-                    {
-                        var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
-                        if (pictureBox != null && !pictureBox.IsDisposed)
-                        {
-                            pictureBox.Image = image;
-                        }
-                    }
-                }
+                propertyCard.Invoke(new Action(() => UpdatePropertyCardAddress(propertyCard, city)));
+                return;
+            }
+
+            var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
+            if (cityLabel != null && !cityLabel.IsDisposed)
+            {
+                cityLabel.Text = $"City: {city}";
+                cityLabel.BackColor = Color.White;
             }
         }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error loading image: {ex.Message}");
-    }
-}
+
+        private void UpdatePropertyCardImage(Panel propertyCard, Image image)
+        {
+            if (propertyCard.InvokeRequired)
+            {
+                propertyCard.Invoke(new Action(() => UpdatePropertyCardImage(propertyCard, image)));
+                return;
+            }
+
+            var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
+            if (pictureBox != null && !pictureBox.IsDisposed)
+            {
+                pictureBox.Image = image;
+                pictureBox.BackColor = Color.White;
+            }
+        }
 
         private PictureBox CreatePropertyImageBox()
         {
