@@ -47,6 +47,8 @@ namespace AirBnB
                 }
             }
             txtEmail?.ApplyRoundedCorners(25);
+            registerButton?.ApplyRoundedCorners(45);
+            clearButton?.ApplyRoundedCorners(45);
         }
 
         //Going back to the Login form

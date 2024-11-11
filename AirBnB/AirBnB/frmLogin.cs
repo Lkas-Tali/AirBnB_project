@@ -32,6 +32,8 @@ namespace AirBnB
                     textBox.ApplyRoundedCorners(25); // Increased corner radius
                 }
             }
+            loginButton?.ApplyRoundedCorners(45);
+            clearButton?.ApplyRoundedCorners(45);
         }
 
         public void InitializeFirebase()

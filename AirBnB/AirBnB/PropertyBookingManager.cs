@@ -3,10 +3,11 @@ using Firebase.Database.Query;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
+using System.Net.Http;
+using System.Collections.Concurrent;
 
 namespace AirBnB
 {
@@ -15,13 +16,18 @@ namespace AirBnB
         private FirebaseClient firebaseClient;
         private const int PROPERTY_CARD_WIDTH = 200;
         private const int PROPERTY_CARD_HEIGHT = 300;
+        private static readonly HttpClient httpClient = new HttpClient();
 
-        // Define event for property selection
+        // Image cache to store already loaded images
+        private static readonly ConcurrentDictionary<string, Image> imageCache = new ConcurrentDictionary<string, Image>();
+
         public event EventHandler<Dictionary<string, object>> PropertySelected;
 
         public PropertyBookingManager(FirebaseClient client)
         {
             firebaseClient = client;
+            // Set timeout for faster image loading
+            httpClient.Timeout = TimeSpan.FromSeconds(5);
         }
 
         public async Task<List<Dictionary<string, object>>> GetAvailablePropertiesFromFirebase()
@@ -30,174 +36,287 @@ namespace AirBnB
                 .Child("Available Properties")
                 .OnceSingleAsync<Dictionary<string, Dictionary<string, object>>>();
 
-            var propertyList = new List<Dictionary<string, object>>();
-
-            if (properties != null)
+            return properties?.Select(property =>
             {
-                foreach (var property in properties)
-                {
-                    if (property.Value != null)
-                    {
-                        var propertyData = new Dictionary<string, object>(property.Value);
-                        propertyData["Username"] = property.Key;
-                        propertyList.Add(propertyData);
-                    }
-                }
-            }
-
-            return propertyList;
+                var propertyData = new Dictionary<string, object>(property.Value);
+                propertyData["Username"] = property.Key;
+                return propertyData;
+            }).ToList() ?? new List<Dictionary<string, object>>();
         }
 
         public async void DisplayAvailableProperties(List<Dictionary<string, object>> properties, FlowLayoutPanel flowPanel)
         {
-            flowPanel.Controls.Clear();
-            flowPanel.AutoScroll = true;
-            flowPanel.WrapContents = true;
-            flowPanel.FlowDirection = FlowDirection.LeftToRight;
-            flowPanel.Padding = new Padding(10);
-
-            foreach (var property in properties)
+            try
             {
-                Panel propertyCard = new Panel
+                flowPanel.SuspendLayout();
+                flowPanel.Controls.Clear();
+                flowPanel.AutoScroll = true;
+                flowPanel.WrapContents = true;
+                flowPanel.FlowDirection = FlowDirection.LeftToRight;
+                flowPanel.Padding = new Padding(10);
+
+                // Process properties in batches of 5 for smoother loading
+                for (int i = 0; i < properties.Count; i += 5)
                 {
-                    Width = PROPERTY_CARD_WIDTH,
-                    Height = PROPERTY_CARD_HEIGHT,
-                    Margin = new Padding(10),
-                    BackColor = Color.White,
-                    Cursor = Cursors.Hand
-                };
+                    var batch = properties.Skip(i).Take(5);
+                    var tasks = new List<Task>();
 
-                // Add rounded corners
-                int radius = 20;
-                System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
-                path.AddArc(0, 0, radius, radius, 180, 90);
-                path.AddArc(propertyCard.Width - radius, 0, radius, radius, 270, 90);
-                path.AddArc(propertyCard.Width - radius, propertyCard.Height - radius, radius, radius, 0, 90);
-                path.AddArc(0, propertyCard.Height - radius, radius, radius, 90, 90);
-                propertyCard.Region = new Region(path);
-
-                // Store the property data
-                propertyCard.Tag = property;
-
-                // Add click event handler
-                propertyCard.Click += PropertyCard_Click;
-
-                // Property Image
-                PictureBox propertyImage = new PictureBox
-                {
-                    Width = PROPERTY_CARD_WIDTH - 20,
-                    Height = 150,
-                    Location = new Point(10, 10),
-                    SizeMode = PictureBoxSizeMode.Zoom
-                };
-
-                // Add rounded corners
-                int picRadius = 10; // Adjust this value to change how rounded the corners are
-                System.Drawing.Drawing2D.GraphicsPath picPath = new System.Drawing.Drawing2D.GraphicsPath();
-                picPath.AddArc(0, 0, picRadius, picRadius, 180, 90);
-                picPath.AddArc(propertyImage.Width - picRadius, 0, picRadius, picRadius, 270, 90);
-                picPath.AddArc(propertyImage.Width - picRadius, propertyImage.Height - picRadius, picRadius, picRadius, 0, 90);
-                picPath.AddArc(0, propertyImage.Height - picRadius, picRadius, picRadius, 90, 90);
-                propertyImage.Region = new Region(picPath);
-
-                try
-                {
-                    if (property.ContainsKey("Front Image"))
+                    foreach (var property in batch)
                     {
-                        propertyImage.Load(property["Front Image"].ToString());
+                        var propertyCard = CreatePropertyCard(property);
+                        flowPanel.Controls.Add(propertyCard);
+
+                        // Load address
+                        tasks.Add(LoadPropertyAddressAsync(property, propertyCard));
+
+                        // Load image if available
+                        if (property.ContainsKey("Front Image"))
+                        {
+                            tasks.Add(LoadPropertyImageAsync(property["Front Image"].ToString(), propertyCard));
+                        }
+                    }
+
+                    // Wait for current batch to complete before loading next batch
+                    await Task.WhenAll(tasks);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading properties: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                flowPanel.ResumeLayout();
+            }
+        }
+
+        private async Task LoadPropertyDataAsync(Dictionary<string, object> property, Panel propertyCard)
+        {
+            // Start both loading operations concurrently
+            var addressTask = LoadPropertyAddressAsync(property, propertyCard);
+            var imageTask = property.ContainsKey("Front Image") ?
+                LoadPropertyImageAsync(property["Front Image"].ToString(), propertyCard) :
+                Task.CompletedTask;
+
+            // Use WhenAny to handle whichever completes first
+            while (!addressTask.IsCompleted || !imageTask.IsCompleted)
+            {
+                var completedTask = await Task.WhenAny(addressTask, imageTask);
+                if (completedTask == addressTask)
+                {
+                    addressTask = Task.CompletedTask;
+                }
+                if (completedTask == imageTask)
+                {
+                    imageTask = Task.CompletedTask;
+                }
+            }
+        }
+
+        private Panel CreatePropertyCard(Dictionary<string, object> property)
+        {
+            Panel propertyCard = new Panel
+            {
+                Width = PROPERTY_CARD_WIDTH,
+                Height = PROPERTY_CARD_HEIGHT,
+                Margin = new Padding(10),
+                BackColor = Color.White,
+                Cursor = Cursors.Hand,
+                Tag = property
+            };
+
+            // Add rounded corners
+            int radius = 20;
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(propertyCard.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(propertyCard.Width - radius, propertyCard.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, propertyCard.Height - radius, radius, radius, 90, 90);
+            propertyCard.Region = new Region(path);
+
+            propertyCard.Click += PropertyCard_Click;
+
+            // Add initial controls
+            PictureBox propertyImage = CreatePropertyImageBox();
+            propertyCard.Controls.Add(propertyImage);
+            AddPropertyLabels(propertyCard, property);
+
+            return propertyCard;
+        }
+
+        private async Task LoadPropertyAddressAsync(Dictionary<string, object> property, Panel propertyCard)
+        {
+            try
+            {
+                var addressData = await firebaseClient
+                    .Child("Available Properties")
+                    .Child(property["Username"].ToString())
+                    .Child("Address")
+                    .OnceSingleAsync<Dictionary<string, object>>();
+
+                if (!propertyCard.IsDisposed && addressData != null && addressData.ContainsKey("City"))
+                {
+                    if (propertyCard.InvokeRequired)
+                    {
+                        propertyCard.Invoke(new Action(() =>
+                        {
+                            UpdateCityLabel(propertyCard, addressData["City"].ToString());
+                        }));
+                    }
+                    else
+                    {
+                        UpdateCityLabel(propertyCard, addressData["City"].ToString());
                     }
                 }
-                catch
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading address: {ex.Message}");
+            }
+        }
+
+        private async Task LoadPropertyImageAsync(string imageUrl, Panel propertyCard)
+        {
+            try
+            {
+                using (var client = new HttpClient())
                 {
-                    // Handle image loading error if needed
-                }
+                    client.Timeout = TimeSpan.FromSeconds(10);
+                    var imageBytes = await client.GetByteArrayAsync(imageUrl);
 
-                // Start labels right after the image
-                int yPosition = 170;
-                int spacing = 25;
-
-                // Get city from the nested "Address" dictionary
-                string city = "Unknown";
-
-                try
-                {
-                    var addressData = await firebaseClient
-                        .Child("Available Properties")
-                        .Child(property["Username"].ToString())
-                        .Child("Address")
-                        .OnceSingleAsync<Dictionary<string, object>>();
-
-                    if (addressData != null && addressData.ContainsKey("City"))
+                    if (!propertyCard.IsDisposed)
                     {
-                        city = addressData["City"].ToString();
+                        using (var ms = new System.IO.MemoryStream(imageBytes))
+                        {
+                            var image = Image.FromStream(ms);
+                            if (propertyCard.InvokeRequired)
+                            {
+                                propertyCard.Invoke(new Action(() =>
+                                {
+                                    UpdatePropertyImage(propertyCard, image);
+                                }));
+                            }
+                            else
+                            {
+                                UpdatePropertyImage(propertyCard, image);
+                            }
+                        }
                     }
                 }
-                catch (Exception ex)
-                {
-                    // Log or handle any potential errors
-                    Console.WriteLine($"Error fetching city: {ex.Message}");
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading image: {ex.Message}");
+            }
+        }
 
-                // City Label
-                Label cityLabel = new Label
-                {
-                    Location = new Point(10, yPosition),
-                    AutoSize = false,
-                    Width = PROPERTY_CARD_WIDTH - 20,
-                    Height = 20,
-                    Text = $"City: {city}"
-                };
-                propertyCard.Controls.Add(cityLabel);
-                yPosition += spacing;
+        private void UpdateCityLabel(Panel propertyCard, string city)
+        {
+            var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
+            if (cityLabel != null)
+            {
+                cityLabel.Text = $"City: {city}";
+            }
+        }
 
-                // Price Label
-                Label priceLabel = new Label
-                {
-                    Location = new Point(10, yPosition),
-                    AutoSize = false,
-                    Width = PROPERTY_CARD_WIDTH - 20,
-                    Height = 20,
-                    Text = $"Price per night: £{property["PricePerNight"]}"
-                };
-                propertyCard.Controls.Add(priceLabel);
-                yPosition += spacing;
+        private void UpdatePropertyImage(Panel propertyCard, Image image)
+        {
+            var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
+            if (pictureBox != null)
+            {
+                pictureBox.Image = image;
+            }
+        }
 
-                // Host Label
-                Label hostLabel = new Label
-                {
-                    Location = new Point(10, yPosition),
-                    AutoSize = false,
-                    Width = PROPERTY_CARD_WIDTH - 20,
-                    Height = 20,
-                    Text = $"Host: {property["Name"]}"
-                };
-                propertyCard.Controls.Add(hostLabel);
-                yPosition += spacing;
+        private PictureBox CreatePropertyImageBox()
+        {
+            PictureBox propertyImage = new PictureBox
+            {
+                Width = PROPERTY_CARD_WIDTH - 20,
+                Height = 150,
+                Location = new Point(10, 10),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BackColor = Color.White
+            };
 
-                // Contact Label
-                Label contactLabel = new Label
-                {
-                    Location = new Point(10, yPosition),
-                    AutoSize = false,
-                    Width = PROPERTY_CARD_WIDTH - 20,
-                    Height = 20,
-                    Text = $"Contact: {property["Email"]}"
-                };
-                propertyCard.Controls.Add(contactLabel);
+            // Add rounded corners
+            int picRadius = 10;
+            System.Drawing.Drawing2D.GraphicsPath picPath = new System.Drawing.Drawing2D.GraphicsPath();
+            picPath.AddArc(0, 0, picRadius, picRadius, 180, 90);
+            picPath.AddArc(propertyImage.Width - picRadius, 0, picRadius, picRadius, 270, 90);
+            picPath.AddArc(propertyImage.Width - picRadius, propertyImage.Height - picRadius, picRadius, picRadius, 0, 90);
+            picPath.AddArc(0, propertyImage.Height - picRadius, picRadius, picRadius, 90, 90);
+            propertyImage.Region = new Region(picPath);
 
-                // Add image to property card
-                propertyCard.Controls.Add(propertyImage);
+            return propertyImage;
+        }
 
+        private void AddPropertyLabels(Panel propertyCard, Dictionary<string, object> property)
+        {
+            int yPosition = 170;
+            int spacing = 25;
 
-                foreach (Control control in propertyCard.Controls)
+            // City Label (placeholder)
+            Label cityLabel = new Label
+            {
+                Location = new Point(10, yPosition),
+                AutoSize = false,
+                Width = PROPERTY_CARD_WIDTH - 20,
+                Height = 20,
+                Text = "Loading city...",
+                Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
+            };
+            propertyCard.Controls.Add(cityLabel);
+            yPosition += spacing;
+
+            // Price Label
+            Label priceLabel = new Label
+            {
+                Location = new Point(10, yPosition),
+                AutoSize = false,
+                Width = PROPERTY_CARD_WIDTH - 20,
+                Height = 20,
+                Text = $"Price per night: £{property["PricePerNight"]}",
+                Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
+            };
+            propertyCard.Controls.Add(priceLabel);
+            yPosition += spacing;
+
+            // Host Label
+            Label hostLabel = new Label
+            {
+                Location = new Point(10, yPosition),
+                AutoSize = false,
+                Width = PROPERTY_CARD_WIDTH - 20,
+                Height = 20,
+                Text = $"Host: {property["Name"]}",
+                Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
+            };
+            propertyCard.Controls.Add(hostLabel);
+            yPosition += spacing;
+
+            // Contact Label
+            Label contactLabel = new Label
+            {
+                Location = new Point(10, yPosition),
+                AutoSize = false,
+                Width = PROPERTY_CARD_WIDTH - 20,
+                Height = 20,
+                Text = $"Contact: {property["Email"]}",
+                Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
+            };
+            propertyCard.Controls.Add(contactLabel);
+
+            // Add click handlers to all labels
+            foreach (Control control in propertyCard.Controls)
+            {
+                if (control is Label)
                 {
                     control.Click += (s, e) => PropertyCard_Click(propertyCard, e);
                 }
-
-                // Add property card to flow panel
-                flowPanel.Controls.Add(propertyCard);
             }
         }
+
 
         public async Task<List<Dictionary<string, object>>> SearchPropertiesByCity(string city)
         {

@@ -34,6 +34,13 @@ namespace AirBnB
             propertyReservationManager = new PropertyReservationManager(firebaseClient);
 
             this.ApplyRoundedCornersToAll();
+            txtCardNumber?.ApplyRoundedCorners(25);
+            txtAddressLine2?.ApplyRoundedCorners(25);
+            button_ConfirmBooking?.ApplyRoundedCorners(75);
+            txtPrice?.ApplyRoundedCorners(25);
+            txtDescription?.ApplyRoundedCorners(25);
+            uploadButton?.ApplyRoundedCorners(75);
+            searchButton?.ApplyRoundedCorners(25);
 
             // Subscribe to the PropertySelected event
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;

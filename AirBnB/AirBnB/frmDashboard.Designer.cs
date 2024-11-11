@@ -115,10 +115,12 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.buttonPay = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelListed.SuspendLayout();
+            this.panelHome.SuspendLayout();
             this.panelBook.SuspendLayout();
             this.panelList.SuspendLayout();
             this.searchPanel.SuspendLayout();
@@ -307,9 +309,9 @@
             // flowPanelImages
             // 
             this.flowPanelImages.BackColor = System.Drawing.Color.Transparent;
-            this.flowPanelImages.Location = new System.Drawing.Point(6, 92);
+            this.flowPanelImages.Location = new System.Drawing.Point(0, 92);
             this.flowPanelImages.Name = "flowPanelImages";
-            this.flowPanelImages.Size = new System.Drawing.Size(835, 763);
+            this.flowPanelImages.Size = new System.Drawing.Size(841, 763);
             this.flowPanelImages.TabIndex = 1;
             // 
             // label1
@@ -328,8 +330,9 @@
             // 
             this.panelHome.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelHome.BackColor = System.Drawing.Color.SeaShell;
-            this.panelHome.BackgroundImage = global::AirBnB.Properties.Resources.airbnb_logo;
-            this.panelHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panelHome.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
+            this.panelHome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panelHome.Controls.Add(this.flowLayoutPanel1);
             this.panelHome.Location = new System.Drawing.Point(300, 0);
             this.panelHome.Name = "panelHome";
             this.panelHome.Size = new System.Drawing.Size(841, 855);
@@ -622,7 +625,7 @@
             this.searchButton.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchButton.ForeColor = System.Drawing.Color.SeaShell;
             this.searchButton.Image = global::AirBnB.Properties.Resources.search_13_32;
-            this.searchButton.Location = new System.Drawing.Point(606, 93);
+            this.searchButton.Location = new System.Drawing.Point(577, 92);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(49, 32);
             this.searchButton.TabIndex = 5;
@@ -655,6 +658,7 @@
             // panelPropertyDetails
             // 
             this.panelPropertyDetails.BackColor = System.Drawing.Color.SeaShell;
+            this.panelPropertyDetails.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.panelPropertyDetails.Controls.Add(this.flowLayoutPanelImages);
             this.panelPropertyDetails.Controls.Add(this.labelContact);
             this.panelPropertyDetails.Controls.Add(this.labelPricePerNight);
@@ -667,6 +671,7 @@
             // 
             // flowLayoutPanelImages
             // 
+            this.flowLayoutPanelImages.BackColor = System.Drawing.Color.Transparent;
             this.flowLayoutPanelImages.Location = new System.Drawing.Point(0, 107);
             this.flowLayoutPanelImages.Name = "flowLayoutPanelImages";
             this.flowLayoutPanelImages.Size = new System.Drawing.Size(839, 427);
@@ -731,6 +736,7 @@
             // panelFinalBook
             // 
             this.panelFinalBook.BackColor = System.Drawing.Color.SeaShell;
+            this.panelFinalBook.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.panelFinalBook.Controls.Add(this.label10);
             this.panelFinalBook.Controls.Add(this.button_ConfirmBooking);
             this.panelFinalBook.Controls.Add(this.labelTotalPrice);
@@ -775,6 +781,7 @@
             // labelTotalPrice
             // 
             this.labelTotalPrice.AutoSize = true;
+            this.labelTotalPrice.BackColor = System.Drawing.Color.Transparent;
             this.labelTotalPrice.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
             this.labelTotalPrice.Location = new System.Drawing.Point(54, 690);
             this.labelTotalPrice.Name = "labelTotalPrice";
@@ -785,6 +792,7 @@
             // labelTotalNights
             // 
             this.labelTotalNights.AutoSize = true;
+            this.labelTotalNights.BackColor = System.Drawing.Color.Transparent;
             this.labelTotalNights.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
             this.labelTotalNights.Location = new System.Drawing.Point(54, 640);
             this.labelTotalNights.Name = "labelTotalNights";
@@ -795,6 +803,7 @@
             // labelCheckOut
             // 
             this.labelCheckOut.AutoSize = true;
+            this.labelCheckOut.BackColor = System.Drawing.Color.Transparent;
             this.labelCheckOut.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
             this.labelCheckOut.Location = new System.Drawing.Point(54, 587);
             this.labelCheckOut.Name = "labelCheckOut";
@@ -805,6 +814,7 @@
             // labelCheckIn
             // 
             this.labelCheckIn.AutoSize = true;
+            this.labelCheckIn.BackColor = System.Drawing.Color.Transparent;
             this.labelCheckIn.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold);
             this.labelCheckIn.Location = new System.Drawing.Point(54, 537);
             this.labelCheckIn.Name = "labelCheckIn";
@@ -826,6 +836,7 @@
             // panelReservations
             // 
             this.panelReservations.BackColor = System.Drawing.Color.SeaShell;
+            this.panelReservations.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.panelReservations.Controls.Add(this.label9);
             this.panelReservations.Controls.Add(this.flowPanelReservations);
             this.panelReservations.Location = new System.Drawing.Point(300, 0);
@@ -856,6 +867,7 @@
             // panelSelectedReservation
             // 
             this.panelSelectedReservation.BackColor = System.Drawing.Color.SeaShell;
+            this.panelSelectedReservation.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.panelSelectedReservation.Controls.Add(this.flowPanelSelectedResevation);
             this.panelSelectedReservation.Controls.Add(this.buttonCancelReservation);
             this.panelSelectedReservation.Controls.Add(this.labelResTotalPrice);
@@ -896,6 +908,7 @@
             // labelResTotalPrice
             // 
             this.labelResTotalPrice.AutoSize = true;
+            this.labelResTotalPrice.BackColor = System.Drawing.Color.Transparent;
             this.labelResTotalPrice.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelResTotalPrice.Location = new System.Drawing.Point(55, 695);
             this.labelResTotalPrice.Name = "labelResTotalPrice";
@@ -906,6 +919,7 @@
             // labelResTotalNights
             // 
             this.labelResTotalNights.AutoSize = true;
+            this.labelResTotalNights.BackColor = System.Drawing.Color.Transparent;
             this.labelResTotalNights.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelResTotalNights.Location = new System.Drawing.Point(55, 645);
             this.labelResTotalNights.Name = "labelResTotalNights";
@@ -916,6 +930,7 @@
             // labelResCheckOut
             // 
             this.labelResCheckOut.AutoSize = true;
+            this.labelResCheckOut.BackColor = System.Drawing.Color.Transparent;
             this.labelResCheckOut.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelResCheckOut.Location = new System.Drawing.Point(55, 592);
             this.labelResCheckOut.Name = "labelResCheckOut";
@@ -926,6 +941,7 @@
             // labelResAddress
             // 
             this.labelResAddress.AutoSize = true;
+            this.labelResAddress.BackColor = System.Drawing.Color.Transparent;
             this.labelResAddress.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelResAddress.Location = new System.Drawing.Point(55, 495);
             this.labelResAddress.Name = "labelResAddress";
@@ -936,6 +952,7 @@
             // labelResCheckIn
             // 
             this.labelResCheckIn.AutoSize = true;
+            this.labelResCheckIn.BackColor = System.Drawing.Color.Transparent;
             this.labelResCheckIn.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelResCheckIn.Location = new System.Drawing.Point(55, 545);
             this.labelResCheckIn.Name = "labelResCheckIn";
@@ -1209,6 +1226,16 @@
             this.buttonPay.UseVisualStyleBackColor = false;
             this.buttonPay.Click += new System.EventHandler(this.buttonPay_Click);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel1.BackgroundImage = global::AirBnB.Properties.Resources.airbnb_logo;
+            this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(841, 855);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
             // frmDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1217,7 +1244,6 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.searchPanel);
             this.Controls.Add(this.panelBook);
             this.Controls.Add(this.panelPayment);
             this.Controls.Add(this.panelFinalBook);
@@ -1227,6 +1253,7 @@
             this.Controls.Add(this.panelHome);
             this.Controls.Add(this.panelListed);
             this.Controls.Add(this.panelList);
+            this.Controls.Add(this.searchPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -1239,6 +1266,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelListed.ResumeLayout(false);
             this.panelListed.PerformLayout();
+            this.panelHome.ResumeLayout(false);
             this.panelBook.ResumeLayout(false);
             this.panelBook.PerformLayout();
             this.panelList.ResumeLayout(false);
@@ -1347,5 +1375,6 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button buttonPay;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
