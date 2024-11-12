@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|c:\\users\\zacht\\onedrive\\desktop\\airbnb project\\airbnb_project\\airbnb\\airbnb\\propertybookingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\propertybookingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\propertybookingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|c:\\users\\zacht\\onedrive\\desktop\\airbnb project\\airbnb_project\\airbnb\\airbnb\\frmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\frmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\propertyreservationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\propertyreservationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\listpropertymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\listpropertymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\frmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\frmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\frmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\frmdashboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\listpropertymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\listpropertymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\frmregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
@@ -94,7 +94,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ListPropertyManager.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\ListPropertyManager.cs",
               "RelativeDocumentMoniker": "AirBnB\\ListPropertyManager.cs",
@@ -102,8 +102,7 @@
               "RelativeToolTip": "AirBnB\\ListPropertyManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T14:37:11.617Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-13T14:37:11.617Z"
             },
             {
               "$type": "Document",
@@ -111,50 +110,49 @@
               "Title": "PropertyBookingManager.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyBookingManager.cs",
               "RelativeDocumentMoniker": "AirBnB\\PropertyBookingManager.cs",
-              "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyBookingManager.cs",
-              "RelativeToolTip": "AirBnB\\PropertyBookingManager.cs",
-              "ViewState": "AgIAADcAAAAAAAAAAAAAwLkBAAAJAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyBookingManager.cs*",
+              "RelativeToolTip": "AirBnB\\PropertyBookingManager.cs*",
+              "ViewState": "AgIAACwBAAAAAAAAAAAQwF0BAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-13T14:38:50.499Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "PropertyReservationManager.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyReservationManager.cs",
               "RelativeDocumentMoniker": "AirBnB\\PropertyReservationManager.cs",
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyReservationManager.cs",
               "RelativeToolTip": "AirBnB\\PropertyReservationManager.cs",
-              "ViewState": "AgIAAH4BAAAAAAAAAAAiwL0BAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAgwEIAAAB7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-09T00:21:22.771Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "frmDashboard.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmDashboard.cs",
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs",
               "RelativeToolTip": "AirBnB\\frmDashboard.cs",
-              "ViewState": "AgIAALsBAAAAAAAAAAAAAPsBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAALAAAAAAAAAAAAAmwJsBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-04T10:51:44.976Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "frmDashboard.cs [Design]",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmDashboard.cs",
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs [Design]",
               "RelativeToolTip": "AirBnB\\frmDashboard.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-04T10:51:27.416Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-10-04T10:51:27.416Z"
             },
             {
               "$type": "Document",

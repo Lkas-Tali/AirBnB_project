@@ -66,17 +66,29 @@ namespace AirBnB
 
         private async void bookButton_Click(object sender, EventArgs e)
         {
+            // Show panel before starting to load
             ShowPanel(panelBook);
 
-            var properties = await propertyBookingManager.GetAvailablePropertiesFromFirebase();
+            // Disable the book button while loading to prevent double-clicks
+            bookButton.Enabled = false;
 
-            if (properties != null && properties.Count > 0)
+            try
             {
-                propertyBookingManager.DisplayAvailableProperties(properties, flowPanelBook);
+                var properties = await propertyBookingManager.GetAvailablePropertiesFromFirebase();
+
+                if (properties != null && properties.Count > 0)
+                {
+                    await propertyBookingManager.DisplayAvailableProperties(properties, flowPanelBook);
+                }
+                else
+                {
+                    MessageBox.Show("No available properties found.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            else
+            finally
             {
-                MessageBox.Show("No available properties found.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Re-enable the button whether the operation succeeded or failed
+                bookButton.Enabled = true;
             }
         }
 
@@ -148,7 +160,7 @@ namespace AirBnB
 
             if (properties != null && properties.Count > 0)
             {
-                propertyBookingManager.DisplayAvailableProperties(properties, flowPanelSearch);
+                await propertyBookingManager.DisplayAvailableProperties(properties, flowPanelSearch);
             }
             else
             {
@@ -187,118 +199,13 @@ namespace AirBnB
 
                 // Show details panel
                 ShowPanel(panelPropertyDetails);
+
+                await propertyBookingManager.DisplayPropertyDetails(propertyData, flowLayoutPanelImages);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading property details: {ex.Message}", "Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-            DisplaySelectedPropertyImages(sender, propertyData, flowLayoutPanelImages);
-        }
-
-        private async void DisplaySelectedPropertyImages(object sender, Dictionary<string, object> propertyData, FlowLayoutPanel flowPanel)
-        {
-            flowPanel.Controls.Clear();
-            flowPanel.AutoScroll = true;
-            flowPanel.WrapContents = true;
-            flowPanel.FlowDirection = FlowDirection.LeftToRight;
-            flowPanel.Padding = new Padding(10);
-
-            if (propertyData.ContainsKey("Username"))
-            {
-                var images = await firebaseClient
-                    .Child("Available Properties")
-                    .Child(propertyData["Username"].ToString())
-                    .Child("ImageUrls")
-                    .OnceSingleAsync<List<string>>();
-
-                foreach (var imageUrl in images)
-                {
-                    // Create card panel with rounded corners
-                    Panel imageCard = new Panel
-                    {
-                        Width = PROPERTY_CARD_WIDTH,
-                        Height = PROPERTY_CARD_HEIGHT,
-                        Margin = new Padding(10),
-                        BackColor = Color.White
-                    };
-
-                    // Add rounded corners to card
-                    int cardRadius = 20;
-                    System.Drawing.Drawing2D.GraphicsPath cardPath = new System.Drawing.Drawing2D.GraphicsPath();
-                    cardPath.AddArc(0, 0, cardRadius, cardRadius, 180, 90);
-                    cardPath.AddArc(imageCard.Width - cardRadius, 0, cardRadius, cardRadius, 270, 90);
-                    cardPath.AddArc(imageCard.Width - cardRadius, imageCard.Height - cardRadius, cardRadius, cardRadius, 0, 90);
-                    cardPath.AddArc(0, imageCard.Height - cardRadius, cardRadius, cardRadius, 90, 90);
-                    imageCard.Region = new Region(cardPath);
-
-                    // Create PictureBox with rounded corners
-                    PictureBox propertyImage = new PictureBox
-                    {
-                        Width = PROPERTY_CARD_WIDTH - (IMAGE_PADDING * 2),
-                        Height = PROPERTY_CARD_HEIGHT - (IMAGE_PADDING * 2),
-                        Location = new Point(IMAGE_PADDING, IMAGE_PADDING),
-                        SizeMode = PictureBoxSizeMode.Zoom
-                    };
-
-                    // Add rounded corners to image
-                    int imageRadius = 10;
-                    System.Drawing.Drawing2D.GraphicsPath imagePath = new System.Drawing.Drawing2D.GraphicsPath();
-                    imagePath.AddArc(0, 0, imageRadius, imageRadius, 180, 90);
-                    imagePath.AddArc(propertyImage.Width - imageRadius, 0, imageRadius, imageRadius, 270, 90);
-                    imagePath.AddArc(propertyImage.Width - imageRadius, propertyImage.Height - imageRadius, imageRadius, imageRadius, 0, 90);
-                    imagePath.AddArc(0, propertyImage.Height - imageRadius, imageRadius, imageRadius, 90, 90);
-                    propertyImage.Region = new Region(imagePath);
-
-                    propertyImage.Load(imageUrl);
-                    imageCard.Controls.Add(propertyImage);
-                    flowPanel.Controls.Add(imageCard);
-                }
-            }
-            else
-            {
-                var imageUrl = propertyData["mainImage"];
-
-                // Create card panel with rounded corners
-                Panel imageCard = new Panel
-                {
-                    Width = PROPERTY_CARD_WIDTH,
-                    Height = PROPERTY_CARD_HEIGHT,
-                    Margin = new Padding(10),
-                    BackColor = Color.White
-                };
-
-                // Add rounded corners to card
-                int cardRadius = 20;
-                System.Drawing.Drawing2D.GraphicsPath cardPath = new System.Drawing.Drawing2D.GraphicsPath();
-                cardPath.AddArc(0, 0, cardRadius, cardRadius, 180, 90);
-                cardPath.AddArc(imageCard.Width - cardRadius, 0, cardRadius, cardRadius, 270, 90);
-                cardPath.AddArc(imageCard.Width - cardRadius, imageCard.Height - cardRadius, cardRadius, cardRadius, 0, 90);
-                cardPath.AddArc(0, imageCard.Height - cardRadius, cardRadius, cardRadius, 90, 90);
-                imageCard.Region = new Region(cardPath);
-
-                // Create PictureBox with rounded corners
-                PictureBox propertyImage = new PictureBox
-                {
-                    Width = PROPERTY_CARD_WIDTH - (IMAGE_PADDING * 2),
-                    Height = PROPERTY_CARD_HEIGHT - (IMAGE_PADDING * 2),
-                    Location = new Point(IMAGE_PADDING, IMAGE_PADDING),
-                    SizeMode = PictureBoxSizeMode.Zoom
-                };
-
-                // Add rounded corners to image
-                int imageRadius = 10;
-                System.Drawing.Drawing2D.GraphicsPath imagePath = new System.Drawing.Drawing2D.GraphicsPath();
-                imagePath.AddArc(0, 0, imageRadius, imageRadius, 180, 90);
-                imagePath.AddArc(propertyImage.Width - imageRadius, 0, imageRadius, imageRadius, 270, 90);
-                imagePath.AddArc(propertyImage.Width - imageRadius, propertyImage.Height - imageRadius, imageRadius, imageRadius, 0, 90);
-                imagePath.AddArc(0, propertyImage.Height - imageRadius, imageRadius, imageRadius, 90, 90);
-                propertyImage.Region = new Region(imagePath);
-
-                propertyImage.Load(imageUrl.ToString());
-                imageCard.Controls.Add(propertyImage);
-                flowPanel.Controls.Add(imageCard);
             }
         }
 
@@ -360,7 +267,7 @@ namespace AirBnB
 
             if (reservations.Count != 0)
             {
-                propertyReservationManager.DisplayUserReservations(reservations, flowPanelReservations);
+                await propertyReservationManager.DisplayUserReservations(reservations, flowPanelReservations);
             }
             else
             {
@@ -368,10 +275,8 @@ namespace AirBnB
             }
         }
 
-        private void PropertyReservationManager_ReservationSelected(object sender, Dictionary<string, object> reservationData)
+        private async void PropertyReservationManager_ReservationSelected(object sender, Dictionary<string, object> reservationData)
         {
-            ShowPanel(panelSelectedReservation);
-
             // Store the selected reservation data
             selectedReservationData = reservationData;
 
@@ -399,11 +304,10 @@ namespace AirBnB
 
                 labelResTotalPrice.Text = $"Total Price: £{totalPrice}";
             }
-
-            DisplaySelectedPropertyImages(sender, reservationData, flowPanelSelectedResevation);
-
-            // Show details panel
             ShowPanel(panelSelectedReservation);
+
+            // Use the new method instead of DisplaySelectedPropertyImages
+            await propertyBookingManager.DisplayPropertyDetails(reservationData, flowPanelSelectedResevation);
         }
 
         private async void buttonCancelReservation_Click(object sender, EventArgs e)

@@ -69,63 +69,36 @@ namespace AirBnB
             try
             {
                 EnableDoubleBuffering(flowPanel);
+
+                // Create all property cards first before modifying the panel
+                var propertyCards = reservations.Select(property => CreateReservationCard(property)).ToList();
+
+                // Suspend layout once before making changes
                 flowPanel.SuspendLayout();
+
+                // Configure panel
                 flowPanel.Controls.Clear();
                 flowPanel.AutoScroll = true;
                 flowPanel.WrapContents = true;
                 flowPanel.FlowDirection = FlowDirection.LeftToRight;
                 flowPanel.Padding = new Padding(10);
 
-                var loadingLabel = new Label
-                {
-                    Text = "Loading reservations...",
-                    Font = new Font("Nirmala UI", 20, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(255, 56, 92),
-                    AutoSize = true,
-                    Location = new Point(flowPanel.Width / 2 - 100, flowPanel.Height / 2 - 15),
-                };
-                flowPanel.Controls.Add(loadingLabel);
+                // Add all cards at once
+                flowPanel.Controls.AddRange(propertyCards.ToArray());
+
+                // Resume layout once after all changes
                 flowPanel.ResumeLayout();
 
-                // Create cards and immediately set cached images if available
-                var cards = reservations.Select(reservation =>
-                {
-                    var card = CreateReservationCard(reservation);
+                // Load data for all cards asynchronously
+                var loadingTasks = propertyCards.Select((card, index) =>
+                    LoadReservationData(card, reservations[index]));
 
-                    if (reservation.ContainsKey("mainImage"))
-                    {
-                        var imageUrl = reservation["mainImage"].ToString();
-                        if (imageCache.TryGetValue(imageUrl, out var cachedImage))
-                        {
-                            var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
-                            if (pictureBox != null)
-                            {
-                                pictureBox.Image = ResizeImage(cachedImage, pictureBox.Width, pictureBox.Height);
-                                if (loadingTimers.TryGetValue(card, out var timer))
-                                {
-                                    timer.Stop();
-                                    timer.Dispose();
-                                    loadingTimers.TryRemove(card, out _);
-                                }
-                            }
-                        }
-                    }
-
-                    return (card, reservation);
-                }).ToList();
-
-                flowPanel.SuspendLayout();
-                flowPanel.Controls.Remove(loadingLabel);
-                flowPanel.Controls.AddRange(cards.Select(c => c.card).ToArray());
-                flowPanel.ResumeLayout();
-
-                // Start loading data for all cards after they're added to the panel
-                var loadingTasks = cards.Select(c => LoadReservationData(c.card, c.reservation));
                 await Task.WhenAll(loadingTasks);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading reservations: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading properties: {ex.Message}", "Error",
+                               MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

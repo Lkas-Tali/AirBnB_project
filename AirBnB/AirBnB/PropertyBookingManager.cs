@@ -21,6 +21,9 @@ namespace AirBnB
         private readonly Color LoadingColorDark = Color.FromArgb(230, 230, 230);
         private readonly Color LoadingColorLight = Color.FromArgb(245, 245, 245);
 
+        private const int DETAIL_CARD_WIDTH = 350;
+        private const int DETAIL_CARD_HEIGHT = 300;
+
         //  Field to track loading timers
         private readonly ConcurrentDictionary<Panel, System.Windows.Forms.Timer> loadingTimers =
             new ConcurrentDictionary<Panel, System.Windows.Forms.Timer>();
@@ -61,6 +64,45 @@ namespace AirBnB
             try
             {
                 EnableDoubleBuffering(flowPanel);
+
+                // Create all property cards first before modifying the panel
+                var propertyCards = properties.Select(property => CreatePropertyCard(property)).ToList();
+
+                // Suspend layout once before making changes
+                flowPanel.SuspendLayout();
+
+                // Configure panel
+                flowPanel.Controls.Clear();
+                flowPanel.AutoScroll = true;
+                flowPanel.WrapContents = true;
+                flowPanel.FlowDirection = FlowDirection.LeftToRight;
+                flowPanel.Padding = new Padding(10);
+
+                // Add all cards at once
+                flowPanel.Controls.AddRange(propertyCards.ToArray());
+
+                // Resume layout once after all changes
+                flowPanel.ResumeLayout();
+
+                // Load data for all cards asynchronously
+                var loadingTasks = propertyCards.Select((card, index) =>
+                    InitiateDataLoading(card, properties[index]));
+
+                await Task.WhenAll(loadingTasks);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading properties: {ex.Message}", "Error",
+                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public async Task DisplayPropertyDetails(Dictionary<string, object> propertyData, FlowLayoutPanel flowPanel)
+        {
+            try
+            {
+                EnableDoubleBuffering(flowPanel);
+
                 flowPanel.SuspendLayout();
                 flowPanel.Controls.Clear();
                 flowPanel.AutoScroll = true;
@@ -68,55 +110,152 @@ namespace AirBnB
                 flowPanel.FlowDirection = FlowDirection.LeftToRight;
                 flowPanel.Padding = new Padding(10);
 
-                var loadingLabel = new Label
-                {
-                    Text = "Loading properties...",
-                    Font = new Font("Nirmala UI", 20, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(255, 56, 92),
-                    AutoSize = true,
-                    Location = new Point(flowPanel.Width / 2 - 100, flowPanel.Height / 2 - 15),
-                };
-                flowPanel.Controls.Add(loadingLabel);
+                var images = await GetPropertyImages(propertyData);
+                var imageCards = images.Select(imageUrl => CreateDetailImageCard(imageUrl)).ToList();
+
+                flowPanel.Controls.AddRange(imageCards.ToArray());
                 flowPanel.ResumeLayout();
 
-                // Create cards and set cached images with proper sizing
-                var cards = properties.Select(property =>
-                {
-                    var card = CreatePropertyCard(property);
+                // Load images for all cards asynchronously
+                var loadingTasks = imageCards.Select((card, index) =>
+                    LoadDetailImageAsync(images[index], card));
 
-                    if (property.ContainsKey("Front Image"))
-                    {
-                        var imageUrl = property["Front Image"].ToString();
-                        if (imageCache.TryGetValue(imageUrl, out var cachedImage))
-                        {
-                            var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
-                            if (pictureBox != null)
-                            {
-                                pictureBox.Image = ResizeImage(cachedImage, pictureBox.Width, pictureBox.Height);
-                                if (loadingTimers.TryGetValue(card, out var timer))
-                                {
-                                    timer.Stop();
-                                    timer.Dispose();
-                                    loadingTimers.TryRemove(card, out _);
-                                }
-                            }
-                        }
-                    }
-
-                    return (card, property);
-                }).ToList();
-
-                flowPanel.SuspendLayout();
-                flowPanel.Controls.Remove(loadingLabel);
-                flowPanel.Controls.AddRange(cards.Select(c => c.card).ToArray());
-                flowPanel.ResumeLayout();
-
-                var loadingTasks = cards.Select(c => InitiateDataLoading(c.card, c.property));
                 await Task.WhenAll(loadingTasks);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading properties: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading property details: {ex.Message}", "Error",
+                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task<List<string>> GetPropertyImages(Dictionary<string, object> propertyData)
+        {
+            if (propertyData.ContainsKey("Username"))
+            {
+                // Get multiple images for available properties
+                var images = await firebaseClient
+                    .Child("Available Properties")
+                    .Child(propertyData["Username"].ToString())
+                    .Child("ImageUrls")
+                    .OnceSingleAsync<List<string>>();
+                return images ?? new List<string>();
+            }
+            else if (propertyData.ContainsKey("mainImage"))
+            {
+                // Return single image for reservations
+                return new List<string> { propertyData["mainImage"].ToString() };
+            }
+            return new List<string>();
+        }
+
+        private Panel CreateDetailImageCard(string imageUrl)
+        {
+            var card = new Panel
+            {
+                Width = DETAIL_CARD_WIDTH,
+                Height = DETAIL_CARD_HEIGHT,
+                Margin = new Padding(10),
+                BackColor = Color.White,
+                Tag = imageUrl
+            };
+
+            // Add rounded corners to card
+            int cardRadius = 20;
+            System.Drawing.Drawing2D.GraphicsPath cardPath = new System.Drawing.Drawing2D.GraphicsPath();
+            cardPath.AddArc(0, 0, cardRadius, cardRadius, 180, 90);
+            cardPath.AddArc(card.Width - cardRadius, 0, cardRadius, cardRadius, 270, 90);
+            cardPath.AddArc(card.Width - cardRadius, card.Height - cardRadius, cardRadius, cardRadius, 0, 90);
+            cardPath.AddArc(0, card.Height - cardRadius, cardRadius, cardRadius, 90, 90);
+            card.Region = new Region(cardPath);
+
+            // Create PictureBox with rounded corners
+            PictureBox propertyImage = new PictureBox
+            {
+                Width = DETAIL_CARD_WIDTH - 20,
+                Height = DETAIL_CARD_HEIGHT - 20,
+                Location = new Point(10, 10),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BackColor = Color.White
+            };
+
+            // Add rounded corners to image
+            int imageRadius = 10;
+            System.Drawing.Drawing2D.GraphicsPath imagePath = new System.Drawing.Drawing2D.GraphicsPath();
+            imagePath.AddArc(0, 0, imageRadius, imageRadius, 180, 90);
+            imagePath.AddArc(propertyImage.Width - imageRadius, 0, imageRadius, imageRadius, 270, 90);
+            imagePath.AddArc(propertyImage.Width - imageRadius, propertyImage.Height - imageRadius, imageRadius, imageRadius, 0, 90);
+            imagePath.AddArc(0, propertyImage.Height - imageRadius, imageRadius, imageRadius, 90, 90);
+            propertyImage.Region = new Region(imagePath);
+
+            card.Controls.Add(propertyImage);
+            StartLoadingEffect(card);
+
+            return card;
+        }
+
+        private async Task LoadDetailImageAsync(string imageUrl, Panel imageCard)
+        {
+            try
+            {
+                if (imageCache.TryGetValue(imageUrl, out Image cachedImage))
+                {
+                    var pictureBox = imageCard.Controls.OfType<PictureBox>().FirstOrDefault();
+                    if (pictureBox != null)
+                    {
+                        UpdatePropertyCardImage(imageCard, cachedImage);
+                        StopLoadingEffect(imageCard);
+                    }
+                    return;
+                }
+
+                int maxRetries = 3;
+                int currentRetry = 0;
+
+                while (currentRetry < maxRetries && !imageCard.IsDisposed)
+                {
+                    try
+                    {
+                        using (var client = new HttpClient())
+                        {
+                            client.Timeout = TimeSpan.FromSeconds(10);
+                            var imageBytes = await client.GetByteArrayAsync(imageUrl);
+
+                            if (!imageCard.IsDisposed)
+                            {
+                                using (var ms = new System.IO.MemoryStream(imageBytes))
+                                {
+                                    var image = Image.FromStream(ms);
+                                    if (!imageCache.ContainsKey(imageUrl))
+                                    {
+                                        imageCache.TryAdd(imageUrl, new Bitmap(image));
+                                    }
+
+                                    var pictureBox = imageCard.Controls.OfType<PictureBox>().FirstOrDefault();
+                                    if (pictureBox != null)
+                                    {
+                                        UpdatePropertyCardImage(imageCard, imageCache[imageUrl]);
+                                        StopLoadingEffect(imageCard);
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Attempt {currentRetry + 1} failed: {ex.Message}");
+                        currentRetry++;
+                        if (currentRetry < maxRetries)
+                        {
+                            await Task.Delay(1000 * currentRetry);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading image: {ex.Message}");
             }
         }
 
@@ -199,24 +338,30 @@ namespace AirBnB
                 // Start loading effect
                 StartLoadingEffect(card);
 
-                // Add click handlers to all controls including the card itself
-                card.Click += (s, e) => PropertyCard_Click(card, e);
+                // Add click handler to the card
+                card.Click += (s, e) => CardClick(card);
 
-                // Make all child controls trigger the parent card's click
+                // Add click handlers to interactive elements
                 foreach (Control control in card.Controls)
                 {
-                    control.Click += (s, e) => PropertyCard_Click(card, e);
-
-                    // If the control is a PictureBox, make sure it's clickable
-                    if (control is PictureBox pictureBox)
+                    if (control is PictureBox || control is Label)
                     {
-                        pictureBox.Cursor = Cursors.Hand;
-                        pictureBox.Click += (s, e) => PropertyCard_Click(card, e);
+                        control.Click += (s, e) => CardClick(card);
+                        control.Cursor = Cursors.Hand;
                     }
                 }
             }
 
             return card;
+        }
+
+        // Separate method to handle card clicks to ensure consistent behavior
+        private void CardClick(Panel card)
+        {
+            if (card.Tag is Dictionary<string, object> propertyData)
+            {
+                PropertySelected?.Invoke(this, propertyData);
+            }
         }
 
         private void StartLoadingEffect(Panel card)
@@ -296,7 +441,6 @@ namespace AirBnB
 
         private void AddPropertyControls(Panel card, Dictionary<string, object> property)
         {
-            // Add your existing control creation code here
             PictureBox propertyImage = CreatePropertyImageBox();
             card.Controls.Add(propertyImage);
             AddPropertyLabels(card, property);
@@ -520,15 +664,6 @@ namespace AirBnB
                 Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
             };
             propertyCard.Controls.Add(contactLabel);
-
-            // Add click handlers to all labels
-            foreach (Control control in propertyCard.Controls)
-            {
-                if (control is Label)
-                {
-                    control.Click += (s, e) => PropertyCard_Click(propertyCard, e);
-                }
-            }
         }
 
         public async Task<List<Dictionary<string, object>>> SearchPropertiesByCity(string city)
@@ -558,16 +693,7 @@ namespace AirBnB
             return matchingProperties;
         }
 
-        private void PropertyCard_Click(object sender, EventArgs e)
-        {
-            if (sender is Panel propertyCard && propertyCard.Tag is Dictionary<string, object> propertyData)
-            {
-                // Trigger the event with the selected property data
-                PropertySelected?.Invoke(this, propertyData);
-            }
-        }
-
-        // Enable double buffering on the existing panel
+        // Enable double buffering on the panel
         private void EnableDoubleBuffering(FlowLayoutPanel panel)
         {
             typeof(Control).GetProperty("DoubleBuffered",
