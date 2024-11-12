@@ -18,6 +18,7 @@ namespace AirBnB
         private Dictionary<string, object> selectedPropertyData;
         private Dictionary<string, object> selectedReservationData;
         private PropertyReservationManager propertyReservationManager;
+        private SelectedProperty selectedPropertyManager;
 
         const int IMAGE_PADDING = 10;
         private const int PROPERTY_CARD_WIDTH = 350;
@@ -32,6 +33,7 @@ namespace AirBnB
             listedPropertyViewer = new ListedPropertyViewer(firebaseClient);
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
             propertyReservationManager = new PropertyReservationManager(firebaseClient);
+            selectedPropertyManager = new SelectedProperty(firebaseClient);
 
             this.ApplyRoundedCornersToAll();
             txtCardNumber?.ApplyRoundedCorners(25);
@@ -172,15 +174,9 @@ namespace AirBnB
         {
             try
             {
-                // Store the selected property data
                 selectedPropertyData = propertyData;
 
-                // Get the complete address data
-                var addressData = await firebaseClient
-                    .Child("Available Properties")
-                    .Child(propertyData["Username"].ToString())
-                    .Child("Address")
-                    .OnceSingleAsync<Dictionary<string, object>>();
+                var addressData = await selectedPropertyManager.GetPropertyAddress(propertyData["Username"].ToString());
 
                 if (labelAddress != null)
                 {
@@ -197,10 +193,9 @@ namespace AirBnB
                     labelContact.Text = $"Contact: {propertyData["Email"]}";
                 }
 
-                // Show details panel
                 ShowPanel(panelPropertyDetails);
 
-                await propertyBookingManager.DisplayPropertyDetails(propertyData, flowLayoutPanelImages);
+                await selectedPropertyManager.DisplayPropertyDetails(propertyData, flowLayoutPanelImages);
             }
             catch (Exception ex)
             {
@@ -307,7 +302,7 @@ namespace AirBnB
             ShowPanel(panelSelectedReservation);
 
             // Use the new method instead of DisplaySelectedPropertyImages
-            await propertyBookingManager.DisplayPropertyDetails(reservationData, flowPanelSelectedResevation);
+            await selectedPropertyManager.DisplayPropertyDetails(reservationData, flowPanelSelectedResevation);
         }
 
         private async void buttonCancelReservation_Click(object sender, EventArgs e)
@@ -385,7 +380,7 @@ namespace AirBnB
                     .Child("Address")
                     .OnceSingleAsync<Dictionary<string, object>>();
 
-                propertyBookingManager.AddReservationToDatabase(username, strCheckOutDate, totalNights, strCheckInDate, propertyData, addressData);
+                selectedPropertyManager.AddReservationToDatabase(username, strCheckOutDate, totalNights, strCheckInDate, propertyData, addressData);
 
                 // Return to home panel or another appropriate panel
                 ShowPanel(panelHome);

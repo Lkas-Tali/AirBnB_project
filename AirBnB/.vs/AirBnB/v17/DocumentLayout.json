@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|c:\\users\\zacht\\onedrive\\desktop\\airbnb project\\airbnb_project\\airbnb\\airbnb\\selectedproperty.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\selectedproperty.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\propertybookingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\propertybookingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -62,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 225,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -70,7 +74,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 0,
+              "Title": "SelectedProperty.cs",
+              "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\SelectedProperty.cs",
+              "RelativeDocumentMoniker": "AirBnB\\SelectedProperty.cs",
+              "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\SelectedProperty.cs",
+              "RelativeToolTip": "AirBnB\\SelectedProperty.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAQwBUAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-12T14:43:06.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "frmLogin.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmLogin.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmLogin.cs",
@@ -82,7 +99,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ListedPropertyViewer.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\ListedPropertyViewer.cs",
               "RelativeDocumentMoniker": "AirBnB\\ListedPropertyViewer.cs",
@@ -94,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ListPropertyManager.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\ListPropertyManager.cs",
               "RelativeDocumentMoniker": "AirBnB\\ListPropertyManager.cs",
@@ -106,46 +123,46 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "PropertyBookingManager.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyBookingManager.cs",
               "RelativeDocumentMoniker": "AirBnB\\PropertyBookingManager.cs",
-              "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyBookingManager.cs*",
-              "RelativeToolTip": "AirBnB\\PropertyBookingManager.cs*",
-              "ViewState": "AgIAAGsCAAAAAAAAAAAswJkCAAA0AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyBookingManager.cs",
+              "RelativeToolTip": "AirBnB\\PropertyBookingManager.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAAA4wPwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-13T14:38:50.499Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "PropertyReservationManager.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyReservationManager.cs",
               "RelativeDocumentMoniker": "AirBnB\\PropertyReservationManager.cs",
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PropertyReservationManager.cs",
               "RelativeToolTip": "AirBnB\\PropertyReservationManager.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAgwEIAAAB7AAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAgwL4BAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-09T00:21:22.771Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "frmDashboard.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmDashboard.cs",
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs",
               "RelativeToolTip": "AirBnB\\frmDashboard.cs",
-              "ViewState": "AgIAALAAAAAAAAAAAAAmwJsBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAL8AAAAAAAAAAAAAwDABAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-04T10:51:44.976Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "frmDashboard.cs [Design]",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmDashboard.cs",
@@ -156,7 +173,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "frmRegistration.cs [Design]",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmRegistration.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmRegistration.cs",
@@ -167,7 +184,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "RoundEdgesExtensions.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\RoundEdgesExtensions.cs",
               "RelativeDocumentMoniker": "AirBnB\\RoundEdgesExtensions.cs",
@@ -179,7 +196,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "PaymentManager.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\PaymentManager.cs",
               "RelativeDocumentMoniker": "AirBnB\\PaymentManager.cs",
@@ -191,7 +208,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "frmRegistration.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmRegistration.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmRegistration.cs",
@@ -203,7 +220,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "frmLogin.cs [Design]",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmLogin.cs",
               "RelativeDocumentMoniker": "AirBnB\\frmLogin.cs",
@@ -214,7 +231,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\Program.cs",
               "RelativeDocumentMoniker": "AirBnB\\Program.cs",

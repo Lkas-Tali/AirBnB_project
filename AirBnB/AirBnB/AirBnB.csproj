@@ -321,6 +321,7 @@
     <Compile Include="PropertyBookingManager.cs" />
     <Compile Include="PropertyReservationManager.cs" />
     <Compile Include="RoundEdgesExtensions.cs" />
+    <Compile Include="SelectedProperty.cs" />
     <EmbeddedResource Include="frmDashboard.resx">
       <DependentUpon>frmDashboard.cs</DependentUpon>
     </EmbeddedResource>
