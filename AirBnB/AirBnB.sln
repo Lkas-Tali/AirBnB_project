@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirBnB", "AirBnB\AirBnB.csproj", "{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{627D6E8F-D875-4DDF-AF0C-97B5C87B1450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{627D6E8F-D875-4DDF-AF0C-97B5C87B1450}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirBnB.Tests", "AirBnB.Tests\AirBnB.Tests.csproj", "{2CE5B5D6-E590-45A5-A8BA-4F7D456B91A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{627D6E8F-D875-4DDF-AF0C-97B5C87B1450}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{627D6E8F-D875-4DDF-AF0C-97B5C87B1450}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{627D6E8F-D875-4DDF-AF0C-97B5C87B1450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CE5B5D6-E590-45A5-A8BA-4F7D456B91A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CE5B5D6-E590-45A5-A8BA-4F7D456B91A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CE5B5D6-E590-45A5-A8BA-4F7D456B91A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CE5B5D6-E590-45A5-A8BA-4F7D456B91A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
