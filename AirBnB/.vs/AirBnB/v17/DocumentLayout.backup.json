@@ -11,7 +11,7 @@
       "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|c:\\users\\zacht\\onedrive\\desktop\\airbnb project\\airbnb_project\\airbnb\\airbnb\\selectedproperty.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\airbnb\\selectedproperty.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF1A2CB4-F4C3-4DF8-BF35-B9B86D89977A}|AirBnB\\AirBnB.csproj|solutionrelative:airbnb\\selectedproperty.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -84,7 +84,7 @@
               "RelativeDocumentMoniker": "AirBnB.Tests\\UnitTest1.cs",
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB.Tests\\UnitTest1.cs",
               "RelativeToolTip": "AirBnB.Tests\\UnitTest1.cs",
-              "ViewState": "AgIAACYBAAAAAAAAAAAAABEBAABOAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAHIAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-14T17:05:45.452Z",
               "EditorCaption": ""
@@ -99,8 +99,7 @@
               "RelativeToolTip": "AirBnB\\ListedPropertyViewer.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T14:38:06.433Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-13T14:38:06.433Z"
             },
             {
               "$type": "Document",
@@ -112,8 +111,7 @@
               "RelativeToolTip": "AirBnB\\ListPropertyManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T14:37:11.617Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-13T14:37:11.617Z"
             },
             {
               "$type": "Document",
@@ -125,8 +123,7 @@
               "RelativeToolTip": "AirBnB\\PropertyBookingManager.cs",
               "ViewState": "AgIAAGQAAAAAAAAAAAA4wPwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T14:38:50.499Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-13T14:38:50.499Z"
             },
             {
               "$type": "Document",
@@ -138,8 +135,7 @@
               "RelativeToolTip": "AirBnB\\PropertyReservationManager.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAgwL4BAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-09T00:21:22.771Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-09T00:21:22.771Z"
             },
             {
               "$type": "Document",
@@ -151,8 +147,7 @@
               "RelativeToolTip": "AirBnB\\frmDashboard.cs",
               "ViewState": "AgIAAL8AAAAAAAAAAAAAwDABAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-04T10:51:44.976Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-04T10:51:44.976Z"
             },
             {
               "$type": "Document",
@@ -163,8 +158,7 @@
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmDashboard.cs [Design]",
               "RelativeToolTip": "AirBnB\\frmDashboard.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-04T10:51:27.416Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-10-04T10:51:27.416Z"
             },
             {
               "$type": "Document",
@@ -175,8 +169,7 @@
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmRegistration.cs [Design]",
               "RelativeToolTip": "AirBnB\\frmRegistration.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-11T13:43:39.286Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-11-11T13:43:39.286Z"
             },
             {
               "$type": "Document",
@@ -188,8 +181,7 @@
               "RelativeToolTip": "AirBnB\\RoundEdgesExtensions.cs",
               "ViewState": "AgIAAEcAAAAAAAAAAAAIwA8AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-11T13:48:43.055Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-11T13:48:43.055Z"
             },
             {
               "$type": "Document",
@@ -201,8 +193,7 @@
               "RelativeToolTip": "AirBnB\\PaymentManager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGUAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-11T12:47:25.016Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-11T12:47:25.016Z"
             },
             {
               "$type": "Document",
@@ -214,8 +205,7 @@
               "RelativeToolTip": "AirBnB\\frmRegistration.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-04T10:57:31.494Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-04T10:57:31.494Z"
             },
             {
               "$type": "Document",
@@ -227,8 +217,7 @@
               "RelativeToolTip": "AirBnB\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-01T20:36:08.122Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-01T20:36:08.122Z"
             },
             {
               "$type": "Document",
@@ -240,8 +229,7 @@
               "RelativeToolTip": "AirBnB\\SelectedProperty.cs",
               "ViewState": "AgIAABQAAAAAAAAAAAAQwCwAAABXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-12T14:43:06.21Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-12T14:43:06.21Z"
             },
             {
               "$type": "Document",
@@ -253,8 +241,7 @@
               "RelativeToolTip": "AirBnB\\frmLogin.cs",
               "ViewState": "AgIAAJYAAAAAAAAAAAA3wCMAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T14:53:16.02Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-13T14:53:16.02Z"
             },
             {
               "$type": "Document",
@@ -265,8 +252,7 @@
               "ToolTip": "C:\\Users\\zacht\\OneDrive\\Desktop\\AirBnB Project\\AirBnB_project\\AirBnB\\AirBnB\\frmLogin.cs [Design]",
               "RelativeToolTip": "AirBnB\\frmLogin.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-11T14:02:16.627Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2024-11-11T14:02:16.627Z"
             }
           ]
         },
