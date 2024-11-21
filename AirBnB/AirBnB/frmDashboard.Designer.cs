@@ -43,6 +43,7 @@
             this.flowPanelImages = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.panelHome = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panelBook = new System.Windows.Forms.Panel();
             this.searchLabel = new System.Windows.Forms.Label();
             this.flowPanelBook = new System.Windows.Forms.FlowLayoutPanel();
@@ -95,6 +96,7 @@
             this.labelResAddress = new System.Windows.Forms.Label();
             this.labelResCheckIn = new System.Windows.Forms.Label();
             this.panelPayment = new System.Windows.Forms.Panel();
+            this.buttonPay = new System.Windows.Forms.Button();
             this.txtPostCode = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.txtCVV = new System.Windows.Forms.TextBox();
@@ -114,8 +116,6 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.buttonPay = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -338,6 +338,16 @@
             this.panelHome.Size = new System.Drawing.Size(841, 855);
             this.panelHome.TabIndex = 2;
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.flowLayoutPanel1.BackgroundImage = global::AirBnB.Properties.Resources.airbnb_logo;
+            this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(841, 855);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
             // panelBook
             // 
             this.panelBook.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -368,7 +378,7 @@
             this.flowPanelBook.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowPanelBook.Location = new System.Drawing.Point(0, 89);
             this.flowPanelBook.Name = "flowPanelBook";
-            this.flowPanelBook.Size = new System.Drawing.Size(835, 763);
+            this.flowPanelBook.Size = new System.Drawing.Size(841, 763);
             this.flowPanelBook.TabIndex = 1;
             // 
             // label2
@@ -989,6 +999,23 @@
             this.panelPayment.Size = new System.Drawing.Size(840, 855);
             this.panelPayment.TabIndex = 10;
             // 
+            // buttonPay
+            // 
+            this.buttonPay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
+            this.buttonPay.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonPay.FlatAppearance.BorderSize = 0;
+            this.buttonPay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPay.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonPay.ForeColor = System.Drawing.Color.White;
+            this.buttonPay.Location = new System.Drawing.Point(509, 733);
+            this.buttonPay.Name = "buttonPay";
+            this.buttonPay.Size = new System.Drawing.Size(300, 80);
+            this.buttonPay.TabIndex = 8;
+            this.buttonPay.Text = "Pay";
+            this.buttonPay.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonPay.UseVisualStyleBackColor = false;
+            this.buttonPay.Click += new System.EventHandler(this.buttonPay_Click);
+            // 
             // txtPostCode
             // 
             this.txtPostCode.BackColor = System.Drawing.Color.White;
@@ -1208,33 +1235,6 @@
             this.label11.Size = new System.Drawing.Size(339, 47);
             this.label11.TabIndex = 5;
             this.label11.Text = "Slect Your Payment";
-            // 
-            // buttonPay
-            // 
-            this.buttonPay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(90)))), ((int)(((byte)(95)))));
-            this.buttonPay.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonPay.FlatAppearance.BorderSize = 0;
-            this.buttonPay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonPay.Font = new System.Drawing.Font("Nirmala UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonPay.ForeColor = System.Drawing.Color.White;
-            this.buttonPay.Location = new System.Drawing.Point(509, 733);
-            this.buttonPay.Name = "buttonPay";
-            this.buttonPay.Size = new System.Drawing.Size(300, 80);
-            this.buttonPay.TabIndex = 8;
-            this.buttonPay.Text = "Pay";
-            this.buttonPay.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.buttonPay.UseVisualStyleBackColor = false;
-            this.buttonPay.Click += new System.EventHandler(this.buttonPay_Click);
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.flowLayoutPanel1.BackgroundImage = global::AirBnB.Properties.Resources.airbnb_logo;
-            this.flowLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(841, 855);
-            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // frmDashboard
             // 

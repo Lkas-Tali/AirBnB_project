@@ -8,12 +8,17 @@ using System.Windows.Forms;
 using System.Linq;
 using System.Net.Http;
 using System.Collections.Concurrent;
+using System.Threading;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace AirBnB
 {
-    public class PropertyBookingManager
+    public partial class PropertyBookingManager
     {
         private FirebaseClient firebaseClient;
+        private readonly CityCardManager cityCardManager;
         private const int PROPERTY_CARD_WIDTH = 200;
         private const int PROPERTY_CARD_HEIGHT = 300;
         private readonly ConcurrentDictionary<string, Image> imageCache = new ConcurrentDictionary<string, Image>();
@@ -21,17 +26,25 @@ namespace AirBnB
         private readonly Color LoadingColorDark = Color.FromArgb(230, 230, 230);
         private readonly Color LoadingColorLight = Color.FromArgb(245, 245, 245);
 
+        private readonly SemaphoreSlim imageSemaphore;
+        private readonly int maxConcurrentDownloads;
+        private readonly TaskFactory uiTaskFactory;
+        private static readonly int MaxConcurrentTasks = Math.Max(2, Environment.ProcessorCount);
+
+        private readonly ConcurrentDictionary<string, Task<Image>> imageLoadingTasks = new ConcurrentDictionary<string, Task<Image>>();
+
+        public event EventHandler<string> CitySelected;
+
         private const int DETAIL_CARD_WIDTH = 350;
         private const int DETAIL_CARD_HEIGHT = 300;
 
-        //  Field to track loading timers
         private readonly ConcurrentDictionary<Panel, System.Windows.Forms.Timer> loadingTimers =
             new ConcurrentDictionary<Panel, System.Windows.Forms.Timer>();
 
-        // Configure all HttpClient settings in a single initialization
         private static readonly HttpClient httpClient = new HttpClient()
         {
-            Timeout = TimeSpan.FromSeconds(0.1),
+            Timeout = TimeSpan.FromSeconds(10),
+            MaxResponseContentBufferSize = 1024 * 1024 * 10, // 10MB max
             DefaultRequestHeaders = { ConnectionClose = false }
         };
 
@@ -40,11 +53,26 @@ namespace AirBnB
         public PropertyBookingManager(FirebaseClient client)
         {
             firebaseClient = client;
+            cityCardManager = new CityCardManager(client);
+            uiTaskFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
+
+            maxConcurrentDownloads = Math.Min(Environment.ProcessorCount * 2, 12);
+            imageSemaphore = new SemaphoreSlim(maxConcurrentDownloads);
+
+            // Forward the CitySelected event from CityCardManager
+            cityCardManager.CitySelected += (sender, city) => {
+                CitySelected?.Invoke(this, city);
+            };
+
+            ThreadPool.GetMinThreads(out int workerThreads, out int completionPortThreads);
+            ThreadPool.SetMinThreads(
+                Math.Max(workerThreads, maxConcurrentDownloads * 2),
+                Math.Max(completionPortThreads, maxConcurrentDownloads * 2)
+            );
         }
 
         public async Task<List<Dictionary<string, object>>> GetAvailablePropertiesFromFirebase()
         {
-            // Get properties and their addresses in a single query
             var propertiesTask = firebaseClient
                 .Child("Available Properties")
                 .OnceSingleAsync<Dictionary<string, Dictionary<string, object>>>();
@@ -59,32 +87,38 @@ namespace AirBnB
             }).ToList() ?? new List<Dictionary<string, object>>();
         }
 
-        public async Task DisplayAvailableProperties(List<Dictionary<string, object>> properties, FlowLayoutPanel flowPanel)
+        public async Task DisplayAvailableProperties(List<Dictionary<string, object>> properties, FlowLayoutPanel flowPanel, string title = null)
         {
             try
             {
                 EnableDoubleBuffering(flowPanel);
 
-                // Create all property cards first before modifying the panel
                 var propertyCards = properties.Select(property => CreatePropertyCard(property)).ToList();
 
-                // Suspend layout once before making changes
                 flowPanel.SuspendLayout();
-
-                // Configure panel
                 flowPanel.Controls.Clear();
                 flowPanel.AutoScroll = true;
                 flowPanel.WrapContents = true;
                 flowPanel.FlowDirection = FlowDirection.LeftToRight;
                 flowPanel.Padding = new Padding(10);
 
-                // Add all cards at once
-                flowPanel.Controls.AddRange(propertyCards.ToArray());
+                if (!string.IsNullOrEmpty(title))
+                {
+                    Label titleLabel = new Label
+                    {
+                        Text = title,
+                        Font = new Font("Nirmala UI", 16, FontStyle.Bold),
+                        ForeColor = Color.FromArgb(255, 56, 92),
+                        AutoSize = true,
+                        Margin = new Padding(10),
+                        Dock = DockStyle.Top
+                    };
+                    flowPanel.Controls.Add(titleLabel);
+                }
 
-                // Resume layout once after all changes
+                flowPanel.Controls.AddRange(propertyCards.ToArray());
                 flowPanel.ResumeLayout();
 
-                // Load data for all cards asynchronously
                 var loadingTasks = propertyCards.Select((card, index) =>
                     InitiateDataLoading(card, properties[index]));
 
@@ -97,13 +131,12 @@ namespace AirBnB
             }
         }
 
-        // Image resizing
         private Image ResizeImage(Image image, int width, int height)
         {
             var resized = new Bitmap(width, height);
             using (var g = Graphics.FromImage(resized))
             {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.DrawImage(image, 0, 0, width, height);
             }
             return resized;
@@ -115,17 +148,14 @@ namespace AirBnB
             {
                 var loadingTasks = new List<Task>();
 
-                // Load image if URL exists
                 if (property.ContainsKey("Front Image"))
                 {
                     var imageUrl = property["Front Image"].ToString();
                     loadingTasks.Add(LoadPropertyImageAsync(imageUrl, card));
                 }
 
-                // Load address data
                 loadingTasks.Add(LoadPropertyAddressAsync(property, card));
 
-                // Wait for all loading tasks to complete
                 await Task.WhenAll(loadingTasks);
             }
             catch (Exception ex)
@@ -146,9 +176,8 @@ namespace AirBnB
                 Tag = property
             };
 
-            // Add rounded corners
             int radius = 20;
-            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            GraphicsPath path = new GraphicsPath();
             path.AddArc(0, 0, radius, radius, 180, 90);
             path.AddArc(card.Width - radius, 0, radius, radius, 270, 90);
             path.AddArc(card.Width - radius, card.Height - radius, radius, radius, 0, 90);
@@ -157,7 +186,6 @@ namespace AirBnB
 
             if (isLoading)
             {
-                // Add a loading indicator instead of placeholder text
                 var loadingLabel = new Label
                 {
                     Text = "Loading...",
@@ -170,16 +198,10 @@ namespace AirBnB
             }
             else
             {
-                // Add the regular controls
                 AddPropertyControls(card, property);
-
-                // Start loading effect
                 StartLoadingEffect(card);
-
-                // Add click handler to the card
                 card.Click += (s, e) => CardClick(card);
 
-                // Add click handlers to interactive elements
                 foreach (Control control in card.Controls)
                 {
                     if (control is PictureBox || control is Label)
@@ -193,7 +215,6 @@ namespace AirBnB
             return card;
         }
 
-        // Separate method to handle card clicks to ensure consistent behavior
         private void CardClick(Panel card)
         {
             if (card.Tag is Dictionary<string, object> propertyData)
@@ -313,19 +334,17 @@ namespace AirBnB
 
                             if (!propertyCard.IsDisposed)
                             {
-                                using (var ms = new System.IO.MemoryStream(imageBytes))
+                                using (var ms = new MemoryStream(imageBytes))
                                 {
                                     var image = Image.FromStream(ms);
                                     if (!imageCache.ContainsKey(imageUrl))
                                     {
-                                        // Store original size in cache
                                         imageCache.TryAdd(imageUrl, new Bitmap(image));
                                     }
 
                                     var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
                                     if (pictureBox != null)
                                     {
-                                        // Resize for display
                                         UpdatePropertyCardImage(propertyCard, imageCache[imageUrl]);
                                         StopLoadingEffect(propertyCard);
                                     }
@@ -380,7 +399,7 @@ namespace AirBnB
                         currentRetry++;
                         if (currentRetry < maxRetries)
                         {
-                            await Task.Delay(1000 * currentRetry); // Exponential backoff
+                            await Task.Delay(1000 * currentRetry);
                         }
                     }
                 }
@@ -432,12 +451,12 @@ namespace AirBnB
                 Location = new Point(10, 10),
                 SizeMode = PictureBoxSizeMode.Zoom,
                 BackColor = Color.White,
-                Cursor = Cursors.Hand  // Add cursor to indicate clickable
+                Cursor = Cursors.Hand
             };
 
             // Add rounded corners
             int picRadius = 10;
-            System.Drawing.Drawing2D.GraphicsPath picPath = new System.Drawing.Drawing2D.GraphicsPath();
+            GraphicsPath picPath = new GraphicsPath();
             picPath.AddArc(0, 0, picRadius, picRadius, 180, 90);
             picPath.AddArc(propertyImage.Width - picRadius, 0, picRadius, picRadius, 270, 90);
             picPath.AddArc(propertyImage.Width - picRadius, propertyImage.Height - picRadius, picRadius, picRadius, 0, 90);
@@ -506,32 +525,35 @@ namespace AirBnB
 
         public async Task<List<Dictionary<string, object>>> SearchPropertiesByCity(string city)
         {
-            if (string.IsNullOrWhiteSpace(city)) return await GetAvailablePropertiesFromFirebase();
+            if (string.IsNullOrWhiteSpace(city))
+                return await GetAvailablePropertiesFromFirebase();
 
-            var allProperties = await GetAvailablePropertiesFromFirebase();
-            var matchingProperties = new List<Dictionary<string, object>>();
-
-            //Capitalise city
-            city = char.ToUpper(city[0]) + city.Substring(1).ToLower();
-
-            foreach (var property in allProperties)
+            try
             {
-                var addressData = await firebaseClient
-                        .Child("Available Properties")
-                        .Child(property["Username"].ToString())
-                        .Child("Address")
-                        .OnceSingleAsync<Dictionary<string, object>>();
+                // Capitalize city name
+                city = char.ToUpper(city[0]) + city.Substring(1).ToLower();
 
-                if (addressData != null && addressData["City"].ToString() == city)
+                // Use orderBy and equalTo to filter by city directly on Firebase
+                var query = await firebaseClient
+                    .Child("Available Properties")
+                    .OrderBy("Address/City")
+                    .EqualTo(city)
+                    .OnceAsync<Dictionary<string, object>>();
+
+                return query.Select(item =>
                 {
-                    matchingProperties.Add(property);
-                }
+                    var propertyData = new Dictionary<string, object>(item.Object);
+                    propertyData["Username"] = item.Key;
+                    return propertyData;
+                }).ToList();
             }
-
-            return matchingProperties;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Search error: {ex.Message}");
+                return new List<Dictionary<string, object>>();
+            }
         }
 
-        // Enable double buffering on the panel
         private void EnableDoubleBuffering(FlowLayoutPanel panel)
         {
             typeof(Control).GetProperty("DoubleBuffered",
@@ -540,42 +562,10 @@ namespace AirBnB
                 .SetValue(panel, true, null);
         }
 
-        public async void AddReservationToDatabase(string customerName, string endDate, int nights, string startDate, Dictionary<string, object> propertyData, Dictionary<string, object> propertyAddress)
+        // Method to handle displaying city cards using the CityCardManager
+        public async Task DisplayCitiesPanel(FlowLayoutPanel flowPanel)
         {
-
-            //debug:
-            // Debug: Print all keys in the dictionaries
-            Console.WriteLine("Available propertyAddress:");
-            foreach (var key in propertyAddress.Keys)
-            {
-                Console.WriteLine($"Key: '{key}'");
-            }
-
-            foreach (var key in propertyData.Keys)
-            {
-                Console.WriteLine($"Key: '{key}'");
-            }
-
-            // Initialize reservation data dictionary with booking details
-            var reservationData = new Dictionary<string, object>
-            {
-                { "address", propertyAddress["Address"]},
-                { "city", propertyAddress["City"] },
-                { "customerName", customerName },
-                { "description", propertyAddress["Description"] },
-                { "email", propertyData["Email"] },
-                { "endDate", endDate },
-                { "mainImage", propertyData["Front Image"] },
-                { "nights", nights },
-                { "owner", propertyData["Name"] },
-                { "pricePerNight", propertyData["PricePerNight"]},
-                { "startDate", startDate },
-                { "title", propertyAddress["Title"] }
-            };
-
-            await firebaseClient
-                .Child("Reservations")
-                .PostAsync(reservationData);
+            await cityCardManager.DisplayCityCards(flowPanel);
         }
     }
 }

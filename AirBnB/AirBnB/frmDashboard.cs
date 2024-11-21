@@ -48,6 +48,8 @@ namespace AirBnB
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
 
             propertyReservationManager.ReservationSelected += PropertyReservationManager_ReservationSelected;
+
+            propertyBookingManager.CitySelected += PropertyBookingManager_CitySelected;
         }
 
         public void InitializeFirebase()
@@ -68,30 +70,8 @@ namespace AirBnB
 
         private async void bookButton_Click(object sender, EventArgs e)
         {
-            // Show panel before starting to load
             ShowPanel(panelBook);
-
-            // Disable the book button while loading to prevent double-clicks
-            bookButton.Enabled = false;
-
-            try
-            {
-                var properties = await propertyBookingManager.GetAvailablePropertiesFromFirebase();
-
-                if (properties != null && properties.Count > 0)
-                {
-                    await propertyBookingManager.DisplayAvailableProperties(properties, flowPanelBook);
-                }
-                else
-                {
-                    MessageBox.Show("No available properties found.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            finally
-            {
-                // Re-enable the button whether the operation succeeded or failed
-                bookButton.Enabled = true;
-            }
+            await propertyBookingManager.DisplayCitiesPanel(flowPanelBook);
         }
 
         private async void listedButton_Click(object sender, EventArgs e)
@@ -392,6 +372,32 @@ namespace AirBnB
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred while processing the payment: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async void PropertyBookingManager_CitySelected(object sender, string city)
+        {
+            try
+            {
+                var properties = await propertyBookingManager.SearchPropertiesByCity(city);
+
+                if (properties != null && properties.Count > 0)
+                {
+                    await propertyBookingManager.DisplayAvailableProperties(
+                        properties,
+                        flowPanelBook
+                    );
+                }
+                else
+                {
+                    MessageBox.Show($"No properties found in {city}.", "Search Result",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading properties: {ex.Message}", "Error",
+                               MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
