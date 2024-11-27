@@ -16,11 +16,15 @@ namespace AirBnB
         private readonly object imageLock = new object();
         private readonly ConcurrentDictionary<string, Image> imageCache;
         private volatile bool isDisposed;
+        private readonly ConcurrentDictionary<string, ManualResetEventSlim> loadingEvents;
+        private readonly SynchronizationContext synchronizationContext;
 
         public ImageLoader(int maxThreads)
         {
             threadManager = new ThreadManager(maxThreads);
             imageCache = new ConcurrentDictionary<string, Image>();
+            loadingEvents = new ConcurrentDictionary<string, ManualResetEventSlim>();
+            synchronizationContext = SynchronizationContext.Current;
         }
 
         public void LoadImage(string imageUrl, PictureBox pictureBox, Panel card)
@@ -28,26 +32,32 @@ namespace AirBnB
             if (isDisposed)
                 throw new ObjectDisposedException(nameof(ImageLoader));
 
+            if (synchronizationContext == null)
+                throw new InvalidOperationException("ImageLoader must be created on UI thread");
+
             // Try to get from cache first
             if (imageCache.TryGetValue(imageUrl, out Image cachedImage))
             {
-                if (!pictureBox.IsDisposed)
+                SafeUpdateUI(pictureBox, cachedImage);
+                return;
+            }
+
+            // If already loading this URL, wait for it
+            var loadingEvent = loadingEvents.GetOrAdd(imageUrl, _ => new ManualResetEventSlim(false));
+            if (loadingEvent.IsSet)
+            {
+                if (imageCache.TryGetValue(imageUrl, out cachedImage))
                 {
-                    pictureBox.Invoke((MethodInvoker)delegate
-                    {
-                        pictureBox.Image = cachedImage;
-                        pictureBox.BackColor = Color.White;
-                    });
+                    SafeUpdateUI(pictureBox, cachedImage);
                 }
                 return;
             }
 
-            // Create new thread for image loading
             threadManager.GetThread(() =>
             {
                 try
                 {
-                    if (card.IsDisposed || pictureBox.IsDisposed)
+                    if (IsControlDisposed(card) || IsControlDisposed(pictureBox))
                         return;
 
                     using (var client = new HttpClient())
@@ -61,37 +71,90 @@ namespace AirBnB
                                 using (var ms = new MemoryStream(imageData))
                                 {
                                     var originalImage = Image.FromStream(ms);
-                                    var optimizedImage = new Bitmap(pictureBox.Width, pictureBox.Height);
+                                    Image optimizedImage = null;
 
-                                    using (var g = Graphics.FromImage(optimizedImage))
+                                    // Get dimensions on UI thread
+                                    int width = 0, height = 0;
+                                    synchronizationContext.Send(_ =>
                                     {
-                                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                                        g.DrawImage(originalImage, 0, 0, optimizedImage.Width, optimizedImage.Height);
-                                    }
+                                        if (!IsControlDisposed(pictureBox))
+                                        {
+                                            width = pictureBox.Width;
+                                            height = pictureBox.Height;
+                                        }
+                                    }, null);
 
-                                    imageCache.TryAdd(imageUrl, optimizedImage);
+                                    if (width > 0 && height > 0)
+                                    {
+                                        optimizedImage = new Bitmap(width, height);
+                                        using (var g = Graphics.FromImage(optimizedImage))
+                                        {
+                                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                            g.DrawImage(originalImage, 0, 0, width, height);
+                                        }
+                                        imageCache.TryAdd(imageUrl, optimizedImage);
+                                    }
                                 }
                             }
                         }
 
-                        if (!pictureBox.IsDisposed)
+                        if (imageCache.TryGetValue(imageUrl, out Image finalImage))
                         {
-                            pictureBox.Invoke((MethodInvoker)delegate
-                            {
-                                if (!pictureBox.IsDisposed)
-                                {
-                                    pictureBox.Image = imageCache[imageUrl];
-                                    pictureBox.BackColor = Color.White;
-                                }
-                            });
+                            SafeUpdateUI(pictureBox, finalImage);
                         }
                     }
                 }
-                catch (Exception ex)
+                finally
                 {
-                    Console.WriteLine($"Error loading image: {ex.Message}");
+                    loadingEvent.Set();
                 }
             });
+        }
+
+        private void SafeUpdateUI(PictureBox pictureBox, Image image)
+        {
+            if (synchronizationContext == null || IsControlDisposed(pictureBox))
+                return;
+
+            synchronizationContext.Post(_ =>
+            {
+                try
+                {
+                    if (!IsControlDisposed(pictureBox))
+                    {
+                        pictureBox.Image = image;
+                        pictureBox.BackColor = Color.White;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // Control might have been disposed between the check and the update
+                }
+            }, null);
+        }
+
+        private bool IsControlDisposed(Control control)
+        {
+            if (control == null)
+                return true;
+
+            bool disposed = true;
+            try
+            {
+                if (synchronizationContext != null)
+                {
+                    synchronizationContext.Send(_ =>
+                    {
+                        disposed = control.IsDisposed;
+                    }, null);
+                }
+            }
+            catch
+            {
+                // If we can't check, assume it's disposed
+                disposed = true;
+            }
+            return disposed;
         }
 
         public void WaitForAllImages()
@@ -112,6 +175,12 @@ namespace AirBnB
                 image.Dispose();
             }
             imageCache.Clear();
+
+            foreach (var evt in loadingEvents.Values)
+            {
+                evt.Dispose();
+            }
+            loadingEvents.Clear();
         }
     }
 }

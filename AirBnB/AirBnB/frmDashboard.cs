@@ -19,6 +19,10 @@ namespace AirBnB
         private Dictionary<string, object> selectedReservationData;
         private PropertyReservationManager propertyReservationManager;
         private SelectedProperty selectedPropertyManager;
+        private Saka saka;
+        private CityCardManager cityCardManager;
+
+
 
         const int IMAGE_PADDING = 10;
         private const int PROPERTY_CARD_WIDTH = 350;
@@ -34,6 +38,8 @@ namespace AirBnB
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
             propertyReservationManager = new PropertyReservationManager(firebaseClient);
             selectedPropertyManager = new SelectedProperty(firebaseClient);
+            saka = new Saka(firebaseClient);
+            cityCardManager = new CityCardManager(firebaseClient);
 
             this.ApplyRoundedCornersToAll();
             txtCardNumber?.ApplyRoundedCorners(25);
@@ -70,8 +76,11 @@ namespace AirBnB
 
         private async void bookButton_Click(object sender, EventArgs e)
         {
-            ShowPanel(panelBook);
-            await propertyBookingManager.DisplayCitiesPanel(flowPanelBook);
+            ShowPanel(panelCities);
+
+            await propertyBookingManager.DisplayCitiesPanel(flowLayoutCities, buttonPrevious, buttonNext);
+
+
         }
 
         private async void listedButton_Click(object sender, EventArgs e)
@@ -377,6 +386,8 @@ namespace AirBnB
 
         private async void PropertyBookingManager_CitySelected(object sender, string city)
         {
+            ShowPanel(panelBook);
+
             try
             {
                 var properties = await propertyBookingManager.SearchPropertiesByCity(city);
@@ -408,6 +419,21 @@ namespace AirBnB
             {
                 Application.Exit();
             }
+        }
+
+        private void labelSearchCities_Click(object sender, EventArgs e)
+        {
+            ShowPanel(searchPanel);
+        }
+
+        private void buttonPrevious_Click(object sender, EventArgs e)
+        {
+            propertyBookingManager.CityCardManager.PreviousPage();
+        }
+
+        private void buttonNext_Click(object sender, EventArgs e)
+        {
+            propertyBookingManager.CityCardManager.NextPage();
         }
     }
 }

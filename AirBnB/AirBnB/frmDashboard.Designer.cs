@@ -116,6 +116,12 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.panelCities = new System.Windows.Forms.Panel();
+            this.flowLayoutCities = new System.Windows.Forms.FlowLayoutPanel();
+            this.labelSearchCities = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.buttonNext = new System.Windows.Forms.Button();
+            this.buttonPrevious = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -129,6 +135,7 @@
             this.panelReservations.SuspendLayout();
             this.panelSelectedReservation.SuspendLayout();
             this.panelPayment.SuspendLayout();
+            this.panelCities.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -1236,6 +1243,85 @@
             this.label11.TabIndex = 5;
             this.label11.Text = "Slect Your Payment";
             // 
+            // panelCities
+            // 
+            this.panelCities.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panelCities.BackColor = System.Drawing.Color.Transparent;
+            this.panelCities.Controls.Add(this.buttonPrevious);
+            this.panelCities.Controls.Add(this.buttonNext);
+            this.panelCities.Controls.Add(this.flowLayoutCities);
+            this.panelCities.Controls.Add(this.labelSearchCities);
+            this.panelCities.Controls.Add(this.label23);
+            this.panelCities.Location = new System.Drawing.Point(300, 0);
+            this.panelCities.Name = "panelCities";
+            this.panelCities.Size = new System.Drawing.Size(841, 852);
+            this.panelCities.TabIndex = 11;
+            // 
+            // flowLayoutCities
+            // 
+            this.flowLayoutCities.Location = new System.Drawing.Point(3, 143);
+            this.flowLayoutCities.Name = "flowLayoutCities";
+            this.flowLayoutCities.Size = new System.Drawing.Size(834, 708);
+            this.flowLayoutCities.TabIndex = 5;
+            // 
+            // labelSearchCities
+            // 
+            this.labelSearchCities.AutoSize = true;
+            this.labelSearchCities.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.labelSearchCities.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelSearchCities.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.labelSearchCities.Location = new System.Drawing.Point(542, 43);
+            this.labelSearchCities.Name = "labelSearchCities";
+            this.labelSearchCities.Size = new System.Drawing.Size(156, 47);
+            this.labelSearchCities.TabIndex = 4;
+            this.labelSearchCities.Text = "SEARCH";
+            this.labelSearchCities.Click += new System.EventHandler(this.labelSearchCities_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Nirmala UI", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.ForeColor = System.Drawing.Color.Black;
+            this.label23.Location = new System.Drawing.Point(29, 39);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(352, 47);
+            this.label23.TabIndex = 3;
+            this.label23.Text = "Available Properties";
+            // 
+            // buttonNext
+            // 
+            this.buttonNext.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.buttonNext.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonNext.FlatAppearance.BorderSize = 0;
+            this.buttonNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonNext.Font = new System.Drawing.Font("Nirmala UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNext.ForeColor = System.Drawing.Color.White;
+            this.buttonNext.Location = new System.Drawing.Point(739, 107);
+            this.buttonNext.Name = "buttonNext";
+            this.buttonNext.Size = new System.Drawing.Size(97, 33);
+            this.buttonNext.TabIndex = 6;
+            this.buttonNext.Text = "Next";
+            this.buttonNext.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonNext.UseVisualStyleBackColor = false;
+            this.buttonNext.Click += new System.EventHandler(this.buttonNext_Click);
+            // 
+            // buttonPrevious
+            // 
+            this.buttonPrevious.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(56)))), ((int)(((byte)(92)))));
+            this.buttonPrevious.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonPrevious.FlatAppearance.BorderSize = 0;
+            this.buttonPrevious.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPrevious.Font = new System.Drawing.Font("Nirmala UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonPrevious.ForeColor = System.Drawing.Color.White;
+            this.buttonPrevious.Location = new System.Drawing.Point(3, 107);
+            this.buttonPrevious.Name = "buttonPrevious";
+            this.buttonPrevious.Size = new System.Drawing.Size(97, 33);
+            this.buttonPrevious.TabIndex = 6;
+            this.buttonPrevious.Text = "previous";
+            this.buttonPrevious.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.buttonPrevious.UseVisualStyleBackColor = false;
+            this.buttonPrevious.Click += new System.EventHandler(this.buttonPrevious_Click);
+            // 
             // frmDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1243,6 +1329,7 @@
             this.BackgroundImage = global::AirBnB.Properties.Resources.AdobeStock_288768256_2mb;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1140, 855);
+            this.Controls.Add(this.panelCities);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelBook);
             this.Controls.Add(this.panelPayment);
@@ -1283,6 +1370,8 @@
             this.panelSelectedReservation.PerformLayout();
             this.panelPayment.ResumeLayout(false);
             this.panelPayment.PerformLayout();
+            this.panelCities.ResumeLayout(false);
+            this.panelCities.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1302,7 +1391,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowPanelImages;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panelHome;
-        private System.Windows.Forms.Panel panelBook;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panelList;
         private System.Windows.Forms.Label label3;
@@ -1376,5 +1464,12 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button buttonPay;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Panel panelBook;
+        private System.Windows.Forms.Panel panelCities;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutCities;
+        private System.Windows.Forms.Label labelSearchCities;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Button buttonPrevious;
+        private System.Windows.Forms.Button buttonNext;
     }
 }

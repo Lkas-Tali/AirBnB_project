@@ -9,17 +9,74 @@ namespace AirBnB
     {
         private readonly int maxThreads;
         private readonly List<Thread> activeThreads;
-        private readonly ConcurrentQueue<Thread> availableThreads;
+        private readonly ConcurrentQueue<WorkItem> workQueue;
         private readonly object threadLock = new object();
-        private readonly ManualResetEventSlim threadAvailableEvent;
         private volatile bool isDisposed;
+        private int currentThreadCount;
+        private readonly AutoResetEvent workAvailable;
+
+        private class WorkItem
+        {
+            public ThreadStart Work { get; set; }
+            public ManualResetEventSlim CompletedEvent { get; set; }
+        }
 
         public ThreadManager(int maxThreadCount)
         {
             maxThreads = maxThreadCount;
             activeThreads = new List<Thread>();
-            availableThreads = new ConcurrentQueue<Thread>();
-            threadAvailableEvent = new ManualResetEventSlim(true);
+            workQueue = new ConcurrentQueue<WorkItem>();
+            workAvailable = new AutoResetEvent(false);
+            currentThreadCount = 0;
+
+            // Create worker threads
+            for (int i = 0; i < maxThreads; i++)
+            {
+                CreateWorkerThread();
+            }
+        }
+
+        private void CreateWorkerThread()
+        {
+            var thread = 
+                new Thread(() =>
+                { 
+                    while (!isDisposed)
+                {
+                        workAvailable.WaitOne();
+
+                        if (isDisposed) break;
+
+                        while (workQueue.TryDequeue(out WorkItem workItem))
+                        {
+                            if (isDisposed) break;
+
+                            try
+                            {
+                                workItem.Work();
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Thread error: {ex.Message}");
+                            }
+                            finally
+                            {
+                                workItem.CompletedEvent.Set();
+                            }
+                        }
+                    }
+                })
+                {
+                    IsBackground = true
+                };
+
+            lock (threadLock)
+            {
+                activeThreads.Add(thread);
+                currentThreadCount++;
+            }
+
+            thread.Start();
         }
 
         public Thread GetThread(ThreadStart threadStart)
@@ -27,49 +84,37 @@ namespace AirBnB
             if (isDisposed)
                 throw new ObjectDisposedException(nameof(ThreadManager));
 
-            Thread thread = null;
-            bool threadCreated = false;
-
-            if (threadCreated)
+            var completedEvent = new ManualResetEventSlim(false);
+            var workItem = new WorkItem
             {
-                thread.Start();
-            }
-            else
-            {
-                // Reuse existing thread
-                ThreadPool.QueueUserWorkItem(_ => threadStart());
-            }
+                Work = threadStart,
+                CompletedEvent = completedEvent
+            };
 
-            return thread;
-        }
+            workQueue.Enqueue(workItem);
+            workAvailable.Set();
 
-        private void ReleaseThread(Thread thread)
-        {
-            if (isDisposed)
-                return;
-
-            lock (threadLock)
-            {
-                activeThreads.Remove(thread);
-                if (!isDisposed)
-                {
-                    availableThreads.Enqueue(thread);
-                    threadAvailableEvent.Set();
-                }
-            }
+            // Return a dummy thread just to maintain compatibility
+            // The actual work is handled by our worker threads
+            return new Thread(() => { });
         }
 
         public void WaitForAllThreads()
         {
-            List<Thread> threadsToWaitFor;
-            lock (threadLock)
+            while (workQueue.TryPeek(out _))
             {
-                threadsToWaitFor = new List<Thread>(activeThreads);
+                Thread.Sleep(100);
             }
 
-            foreach (var thread in threadsToWaitFor)
+            lock (threadLock)
             {
-                thread.Join();
+                foreach (var thread in activeThreads)
+                {
+                    if (thread.IsAlive)
+                    {
+                        thread.Join();
+                    }
+                }
             }
         }
 
@@ -80,22 +125,36 @@ namespace AirBnB
 
             isDisposed = true;
 
+            // Signal all waiting threads to wake up
+            for (int i = 0; i < maxThreads; i++)
+            {
+                workAvailable.Set();
+            }
+
             lock (threadLock)
             {
                 foreach (var thread in activeThreads)
                 {
                     try
                     {
-                        thread.Join(10); // Give threads a chance to complete
+                        if (thread.IsAlive)
+                        {
+                            thread.Join(100);
+                        }
                     }
                     catch { }
                 }
 
                 activeThreads.Clear();
-                while (availableThreads.TryDequeue(out _)) { }
             }
 
-            threadAvailableEvent.Dispose();
+            workAvailable.Dispose();
+
+            // Clear any remaining work items
+            while (workQueue.TryDequeue(out WorkItem workItem))
+            {
+                workItem.CompletedEvent.Dispose();
+            }
         }
     }
 }

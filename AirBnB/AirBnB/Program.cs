@@ -14,6 +14,9 @@ namespace AirBnB
     internal static class Program
     {
         private static FirebaseClient firebaseClient; // Declare FirebaseClient to interact with the database
+        private static CityPreloader cityPreloader;
+        private static ImageLoader imageLoader;
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,12 +25,31 @@ namespace AirBnB
         static void Main()
         {
             InitializeFirebase(); // Call to initialize Firebase on program start
+            InitializePreloader();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            frmRegister mainForm = new frmRegister();
-            // Handle the form closed event
-            mainForm.FormClosed += (s, args) => Application.Exit();
+            var mainForm = new frmRegister();
+            mainForm.FormClosed += (s, args) => {
+                cityPreloader?.Stop();
+                imageLoader?.Dispose();
+                Application.Exit();
+            };
+
+            // Start preloading in the background
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await cityPreloader.Initialize();
+                    await cityPreloader.StartPreloading(CityCardManager.AVAILABLE_CITIES);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error during preloading: {ex.Message}");
+                }
+            });
 
             Application.Run(mainForm);
         }
@@ -46,5 +68,19 @@ namespace AirBnB
             // Initialize Firebase Realtime Database client
             firebaseClient = new FirebaseClient("https://airbnb-d4964-default-rtdb.europe-west1.firebasedatabase.app/");
         }
+
+        private static void InitializePreloader()
+        {
+            // Note that we now only pass the citiesPerPage parameter
+            cityPreloader = new CityPreloader(firebaseClient, 6);  // 6 cities per page
+
+            cityPreloader.PageLoadComplete += (sender, pageIndex) =>
+            {
+                Console.WriteLine($"Finished preloading page {pageIndex + 1}");
+            };
+        }
+
+        public static CityPreloader GetCityPreloader() => cityPreloader;
     }
 }
+

@@ -299,6 +299,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CityCardManager.cs" />
+    <Compile Include="CityCardManager1.cs" />
+    <Compile Include="CityPreloader.cs" />
     <Compile Include="ControlExtensions.cs" />
     <Compile Include="frmDashboard.cs">
       <SubType>Form</SubType>
@@ -328,6 +330,7 @@
     <Compile Include="PropertyReservationManager.cs" />
     <Compile Include="RoundEdgesExtensions.cs" />
     <Compile Include="SelectedProperty.cs" />
+    <Compile Include="SharedImageCache.cs" />
     <Compile Include="ThreadManager.cs" />
     <EmbeddedResource Include="frmDashboard.resx">
       <DependentUpon>frmDashboard.cs</DependentUpon>
