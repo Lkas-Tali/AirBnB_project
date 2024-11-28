@@ -41,7 +41,7 @@ namespace AirBnB
             firebaseClient = client;
         }
 
-        public async Task<List<Dictionary<string, object>>> RetrieveUserReservationDetails(string username)
+        public virtual async Task<List<Dictionary<string, object>>> RetrieveUserReservationDetails(string username)
         {
             var reservationData = await firebaseClient
                 .Child("Reservations")
@@ -419,7 +419,7 @@ namespace AirBnB
             }
         }
 
-        public async Task CancelReservation(Dictionary<string, object> reservation)
+        public virtual async Task CancelReservation(Dictionary<string, object> reservation)
         {
             try
             {

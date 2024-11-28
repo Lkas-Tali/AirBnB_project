@@ -19,7 +19,6 @@ namespace AirBnB
         private Dictionary<string, object> selectedReservationData;
         private PropertyReservationManager propertyReservationManager;
         private SelectedProperty selectedPropertyManager;
-        private Saka saka;
         private CityCardManager cityCardManager;
 
 
@@ -37,8 +36,7 @@ namespace AirBnB
             listedPropertyViewer = new ListedPropertyViewer(firebaseClient);
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
             propertyReservationManager = new PropertyReservationManager(firebaseClient);
-            selectedPropertyManager = new SelectedProperty(firebaseClient);
-            saka = new Saka(firebaseClient);
+            selectedPropertyManager = new SelectedProperty(firebaseClient);;
             cityCardManager = new CityCardManager(firebaseClient);
 
             this.ApplyRoundedCornersToAll();
@@ -49,6 +47,10 @@ namespace AirBnB
             txtDescription?.ApplyRoundedCorners(25);
             uploadButton?.ApplyRoundedCorners(75);
             searchButton?.ApplyRoundedCorners(25);
+            buttonNext?.ApplyRoundedCorners(25);
+            buttonPrevious?.ApplyRoundedCorners(25);
+
+            button_ConfirmBooking.Enabled = false;
 
             // Subscribe to the PropertySelected event
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
@@ -182,6 +184,14 @@ namespace AirBnB
                     labelContact.Text = $"Contact: {propertyData["Email"]}";
                 }
 
+                // Reset the booking calendar and labels when showing property details
+                bookingCalendar.SelectionStart = bookingCalendar.SelectionEnd = DateTime.Today;
+                labelCheckIn.Text = "Check-in Date: Not selected";
+                labelCheckOut.Text = "Check-out Date: Not selected";
+                labelTotalNights.Text = "Total Nights: 0";
+                labelTotalPrice.Text = "Total Price: £0.00";
+                button_ConfirmBooking.Enabled = false;
+
                 ShowPanel(panelPropertyDetails);
 
                 await selectedPropertyManager.DisplayPropertyDetails(propertyData, flowLayoutPanelImages);
@@ -203,14 +213,36 @@ namespace AirBnB
             DateTime checkInDate = bookingCalendar.SelectionStart;
             DateTime checkOutDate = bookingCalendar.SelectionEnd;
 
-            // Update labels
-            labelCheckIn.Text = $"Check-in Date: {checkInDate:d}";
-            labelCheckOut.Text = $"Check-out Date: {checkOutDate:d}";
+            // First, validate that check-in isn't in the past
+            if (checkInDate < DateTime.Today)
+            {
+                MessageBox.Show("Please select a check-in date from today onwards.",
+                    "Invalid Check-in Date",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-            // Calculate total nights and price
+                // Reset the calendar selection
+                bookingCalendar.SetSelectionRange(DateTime.Today, DateTime.Today);
+
+                // Clear all booking information and disable button
+                ClearBookingInformation();
+                return;
+            }
+
+            // Calculate total nights - this is the key calculation for validation
             int totalNights = (checkOutDate - checkInDate).Days;
 
-            // Get price from the previous screen
+            // Now check if the stay is at least one night (two days)
+            if (totalNights < 1)
+            {
+                
+                // Clear all booking information and disable button
+                ClearBookingInformation();
+                return;
+            }
+
+            // If we get here, we have a valid date range of at least one night
+            // Calculate the price and update the display
             decimal pricePerNight = 0;
             if (labelPricePerNight != null)
             {
@@ -220,11 +252,24 @@ namespace AirBnB
 
             decimal totalPrice = totalNights * pricePerNight;
 
+            // Update all the labels with the valid selection
+            labelCheckIn.Text = $"Check-in Date: {checkInDate:d}";
+            labelCheckOut.Text = $"Check-out Date: {checkOutDate:d}";
             labelTotalNights.Text = $"Total Nights: {totalNights}";
             labelTotalPrice.Text = $"Total Price: £{totalPrice:N2}";
 
-            // Enable confirm button if dates are valid
-            button_ConfirmBooking.Enabled = totalNights > 0;
+            // Enable the booking button only when we have a valid selection
+            button_ConfirmBooking.Enabled = true;
+        }
+
+        // Helper method to clear booking information
+        private void ClearBookingInformation()
+        {
+            labelCheckIn.Text = "Check-in Date: Not selected";
+            labelCheckOut.Text = "Check-out Date: Not selected";
+            labelTotalNights.Text = "Total Nights: 0";
+            labelTotalPrice.Text = "Total Price: £0.00";
+            button_ConfirmBooking.Enabled = false;
         }
 
         private void button_ConfirmBooking_Click(object sender, EventArgs e)
@@ -412,15 +457,6 @@ namespace AirBnB
             }
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                Application.Exit();
-            }
-        }
-
         private void labelSearchCities_Click(object sender, EventArgs e)
         {
             ShowPanel(searchPanel);
@@ -434,6 +470,15 @@ namespace AirBnB
         private void buttonNext_Click(object sender, EventArgs e)
         {
             propertyBookingManager.CityCardManager.NextPage();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                Application.Exit();
+            }
         }
     }
 }

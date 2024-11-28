@@ -24,7 +24,6 @@ namespace AirBnB
         // Core dependencies and database connection
         private FirebaseClient firebaseClient;
         private readonly CityCardManager cityCardManager;
-        private readonly Saka saka;
 
 
 
@@ -72,7 +71,6 @@ namespace AirBnB
         {
             firebaseClient = client;
             cityCardManager = new CityCardManager(client);
-            saka = new Saka(client);
 
             // Ensure UI updates happen on the correct thread
             uiTaskFactory = new TaskFactory(TaskScheduler.FromCurrentSynchronizationContext());
@@ -83,10 +81,6 @@ namespace AirBnB
 
             // Forward city selection events
             cityCardManager.CitySelected += (sender, city) => {
-                CitySelected?.Invoke(this, city);
-            };
-
-            saka.CitySelected += (sender, city) => {
                 CitySelected?.Invoke(this, city);
             };
 
@@ -102,7 +96,7 @@ namespace AirBnB
         /// Retrieves available properties from Firebase and transforms them into a structured format.
         /// </summary>
         /// <returns>List of property information dictionaries</returns>
-        public async Task<List<Dictionary<string, object>>> GetAvailablePropertiesFromFirebase()
+        public virtual async Task<List<Dictionary<string, object>>> GetAvailablePropertiesFromFirebase()
         {
             var propertiesTask = firebaseClient
                 .Child("Available Properties")
@@ -191,7 +185,7 @@ namespace AirBnB
         /// Initiates asynchronous loading of property data including images and address information.
         /// Uses concurrent operations for better performance.
         /// </summary>
-        private async Task InitiateDataLoading(Panel card, Dictionary<string, object> property)
+        public virtual async Task InitiateDataLoading(Panel card, Dictionary<string, object> property)
         {
             try
             {
@@ -331,7 +325,7 @@ namespace AirBnB
         /// Updates the visual state of loading elements within a property card.
         /// Applies alternating colors to create a subtle loading animation effect.
         /// </summary>
-        private void UpdateLoadingEffect(Panel card, bool isLight)
+        public virtual void UpdateLoadingEffect(Panel card, bool isLight)
         {
             // Update PictureBox background if image hasn't loaded yet
             var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
@@ -648,7 +642,7 @@ namespace AirBnB
         /// Searches for properties by city name using Firebase's query capabilities.
         /// Implements case-insensitive search with proper capitalization.
         /// </summary>
-        public async Task<List<Dictionary<string, object>>> SearchPropertiesByCity(string city)
+        public virtual async Task<List<Dictionary<string, object>>> SearchPropertiesByCity(string city)
         {
             if (string.IsNullOrWhiteSpace(city))
                 return await GetAvailablePropertiesFromFirebase();
@@ -698,9 +692,6 @@ namespace AirBnB
         /// </summary>
         public async Task DisplayCitiesPanel(FlowLayoutPanel flowPanel, Button prevButton = null, Button nextButton = null)
         {
-            //var cities = await saka.FetchCityImages();
-
-            //await saka.DisplayAvailableCities(cities, flowPanel);
 
             await cityCardManager.DisplayCityCards(flowPanel, prevButton, nextButton);
         }

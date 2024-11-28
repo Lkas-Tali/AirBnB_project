@@ -38,13 +38,13 @@ namespace AirBnB
             }
 
             // Get or create loading task
-            // We create an explicit Func<string, Task<Image>> to match the expected delegate type
+            // create an explicit Func<string, Task<Image>> to match the expected delegate type
             var loadingTask = loadingTasks.GetOrAdd(imageUrl, async (url) =>
             {
                 await loadingSemaphore.WaitAsync();
                 try
                 {
-                    // Double-check cache in case another task completed while we were waiting
+                    // Double-check cache in case another task completed while waiting
                     if (imageCache.TryGetValue(url, out Image alreadyLoadedImage))
                     {
                         return alreadyLoadedImage;
