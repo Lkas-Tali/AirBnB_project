@@ -1,6 +1,5 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,7 +14,7 @@ namespace AirBnB
             firebaseClient = client;
         }
 
-        public async Task<List<string>> GetImageUrlsFromFirebase(string username)
+        public async Task<string> GetImageUrlFromFirebase(string username)
         {
             var userCredsRef = firebaseClient
                 .Child("Users")
@@ -23,14 +22,14 @@ namespace AirBnB
                 .Child("Listed Property")
                 .Child("ImageUrls");
 
-            return await userCredsRef.OnceSingleAsync<List<string>>();
+            return await userCredsRef.OnceSingleAsync<string>();
         }
 
-        public void DisplayImages(List<string> imageUrls, FlowLayoutPanel flowPanelImages)
+        public void DisplayImages(string imageUrl, FlowLayoutPanel flowPanelImages)
         {
             flowPanelImages.Controls.Clear();
 
-            foreach (var imageUrl in imageUrls)
+            if (!string.IsNullOrEmpty(imageUrl))
             {
                 PictureBox pictureBox = new PictureBox
                 {

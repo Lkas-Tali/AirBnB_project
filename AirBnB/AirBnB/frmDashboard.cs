@@ -36,7 +36,7 @@ namespace AirBnB
             listedPropertyViewer = new ListedPropertyViewer(firebaseClient);
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
             propertyReservationManager = new PropertyReservationManager(firebaseClient);
-            selectedPropertyManager = new SelectedProperty(firebaseClient);;
+            selectedPropertyManager = new SelectedProperty(firebaseClient); ;
             cityCardManager = new CityCardManager(firebaseClient);
 
             this.ApplyRoundedCornersToAll();
@@ -91,11 +91,11 @@ namespace AirBnB
 
             string username = GlobalData.Username;
 
-            var imageUrls = await listedPropertyViewer.GetImageUrlsFromFirebase(username);
+            string imageUrl = await listedPropertyViewer.GetImageUrlFromFirebase(username);
 
-            if (imageUrls != null && imageUrls.Count > 0)
+            if (imageUrl != null)
             {
-                listedPropertyViewer.DisplayImages(imageUrls, flowPanelImages);
+                listedPropertyViewer.DisplayImages(imageUrl, flowPanelImages);
             }
             else
             {
@@ -235,7 +235,7 @@ namespace AirBnB
             // Now check if the stay is at least one night (two days)
             if (totalNights < 1)
             {
-                
+
                 // Clear all booking information and disable button
                 ClearBookingInformation();
                 return;
