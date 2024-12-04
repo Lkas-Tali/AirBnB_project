@@ -1,5 +1,6 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,29 +17,46 @@ namespace AirBnB
 
         public async Task<string> GetImageUrlFromFirebase(string username)
         {
-            var userCredsRef = firebaseClient
-                .Child("Users")
-                .Child(username)
-                .Child("Listed Property")
-                .Child("ImageUrls");
+            try
+            {
+                var userCredsRef = firebaseClient
+                    .Child("Users")
+                    .Child(username)
+                    .Child("Listed Property")
+                    .Child("ImageUrls");
 
-            return await userCredsRef.OnceSingleAsync<string>();
+                return await userCredsRef.OnceSingleAsync<string>();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error retrieving image: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
 
         public void DisplayImages(string imageUrl, FlowLayoutPanel flowPanelImages)
         {
-            flowPanelImages.Controls.Clear();
-
-            if (!string.IsNullOrEmpty(imageUrl))
+            try
             {
-                PictureBox pictureBox = new PictureBox
-                {
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    Size = new System.Drawing.Size(200, 200)
-                };
-                pictureBox.Load(imageUrl);
+                flowPanelImages.Controls.Clear();
 
-                flowPanelImages.Controls.Add(pictureBox);
+                if (!string.IsNullOrEmpty(imageUrl))
+                {
+                    PictureBox pictureBox = new PictureBox
+                    {
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        Size = new System.Drawing.Size(200, 200),
+                        Margin = new Padding(5)
+                    };
+                    pictureBox.Load(imageUrl);
+                    flowPanelImages.Controls.Add(pictureBox);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error displaying image: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
