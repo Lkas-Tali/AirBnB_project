@@ -599,6 +599,24 @@ namespace AirBnB
             propertyCard.Controls.Add(cityLabel);
             yPosition += spacing;
 
+            // Get title from Address node
+            var addressData = property["Address"] as Dictionary<string, object>;
+            string title = addressData != null && addressData.ContainsKey("Title") ?
+                          addressData["Title"].ToString() : "No title available";
+
+            // Title Label
+            Label titleLabel = new Label
+            {
+                Location = new Point(10, yPosition),
+                AutoSize = false,
+                Width = PROPERTY_CARD_WIDTH - 20,
+                Height = 20,
+                Text = $"Title: {title}",
+                Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
+            };
+            propertyCard.Controls.Add(titleLabel);
+            yPosition += spacing;
+
             // Price Label
             Label priceLabel = new Label
             {
@@ -632,6 +650,7 @@ namespace AirBnB
                 AutoSize = false,
                 Width = PROPERTY_CARD_WIDTH - 20,
                 Height = 20,
+                AutoEllipsis = true,  // Add "..." if text is too long
                 Text = $"Contact: {property["Email"]}",
                 Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
             };

@@ -34,20 +34,28 @@ namespace AirBnB
             //Capitalise city
             city = char.ToUpper(city[0]) + city.Substring(1).ToLower();
 
-            var propertyDetails = new Dictionary<string, object>
+            // Create the Address node data
+            var addressDetails = new Dictionary<string, object>
             {
                 { "Address", address },
                 { "City", city },
                 { "Title", title },
-                { "PricePerNight", price },
                 { "Description", description }
             };
 
+            // First update the Address node
             await firebaseClient
                 .Child("Available Properties")
                 .Child(username)
                 .Child("Address")
-                .PutAsync(propertyDetails);
+                .PutAsync(addressDetails);
+
+            // Then update PricePerNight at the root level
+            await firebaseClient
+                .Child("Available Properties")
+                .Child(username)
+                .Child("PricePerNight")
+                .PutAsync(price);
 
             await firebaseClient
                 .Child("Users")
