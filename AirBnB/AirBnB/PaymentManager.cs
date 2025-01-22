@@ -96,17 +96,6 @@ namespace AirBnB
 
         public void ProcessPayment(PaymentDetails details, decimal amount)
         {
-            // This is where you would integrate with a real payment gateway
-            // For now, we'll just simulate a successful payment
-
-            // In a real implementation, you would:
-            // 1. Connect to payment gateway
-            // 2. Encrypt sensitive data
-            // 3. Send payment request
-            // 4. Handle response
-            // 5. Log transaction
-
-            // For demonstration, we'll just validate the details
             ValidatePaymentDetails(details);
         }
     }

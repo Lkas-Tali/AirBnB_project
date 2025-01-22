@@ -95,7 +95,7 @@ namespace AirBnB
             workAvailable.Set();
 
             // Return a dummy thread just to maintain compatibility
-            // The actual work is handled by our worker threads
+            // The actual work is handled by the worker threads
             return new Thread(() => { });
         }
 

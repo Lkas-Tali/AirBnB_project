@@ -484,9 +484,13 @@ namespace AirBnB
                             .Child("Address")
                             .OnceSingleAsync<Dictionary<string, object>>();
 
-                        if (!propertyCard.IsDisposed && addressData != null && addressData.ContainsKey("City"))
+                        if (!propertyCard.IsDisposed && addressData != null)
                         {
-                            UpdatePropertyCardAddress(propertyCard, addressData["City"].ToString());
+                            // Update both city and title
+                            string city = addressData.ContainsKey("City") ? addressData["City"].ToString() : "Loading...";
+                            string title = addressData.ContainsKey("Title") ? addressData["Title"].ToString() : "Loading...";
+
+                            UpdatePropertyCardAddress(propertyCard, city, title);
                             StopLoadingEffect(propertyCard);
                             return;
                         }
@@ -496,7 +500,6 @@ namespace AirBnB
                         currentRetry++;
                         if (currentRetry < maxRetries)
                         {
-                            // Implement exponential backoff
                             await Task.Delay(1000 * currentRetry);
                         }
                     }
@@ -511,20 +514,29 @@ namespace AirBnB
         /// <summary>
         /// Updates the address display on a property card, ensuring the update occurs on the UI thread.
         /// </summary>
-        private void UpdatePropertyCardAddress(Panel propertyCard, string city)
+        private void UpdatePropertyCardAddress(Panel propertyCard, string city, string title)
         {
-            // Ensure UI updates happen on the correct thread
             if (propertyCard.InvokeRequired)
             {
-                propertyCard.Invoke(new Action(() => UpdatePropertyCardAddress(propertyCard, city)));
+                propertyCard.Invoke(new Action(() => UpdatePropertyCardAddress(propertyCard, city, title)));
                 return;
             }
 
-            var cityLabel = propertyCard.Controls.OfType<Label>().FirstOrDefault();
-            if (cityLabel != null && !cityLabel.IsDisposed)
+            foreach (Control control in propertyCard.Controls)
             {
-                cityLabel.Text = $"City: {city}";
-                cityLabel.BackColor = Color.White;
+                if (control is Label label)
+                {
+                    if (label.Text.StartsWith("Loading city"))
+                    {
+                        label.Text = $"City: {city}";
+                        label.BackColor = Color.White;
+                    }
+                    else if (label.Text.StartsWith("Title:") || label.Text.StartsWith("Loading title"))
+                    {
+                        label.Text = $"Title: {title}";
+                        label.BackColor = Color.White;
+                    }
+                }
             }
         }
 
@@ -599,20 +611,16 @@ namespace AirBnB
             propertyCard.Controls.Add(cityLabel);
             yPosition += spacing;
 
-            // Get title from Address node
-            var addressData = property["Address"] as Dictionary<string, object>;
-            string title = addressData != null && addressData.ContainsKey("Title") ?
-                          addressData["Title"].ToString() : "No title available";
-
-            // Title Label
+            // Title Label (placeholder until data is loaded)
             Label titleLabel = new Label
             {
                 Location = new Point(10, yPosition),
                 AutoSize = false,
                 Width = PROPERTY_CARD_WIDTH - 20,
                 Height = 20,
-                Text = $"Title: {title}",
-                Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
+                Text = "Loading title...",
+                Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold),
+                AutoEllipsis = true  // Add ellipsis if text is too long
             };
             propertyCard.Controls.Add(titleLabel);
             yPosition += spacing;
@@ -650,7 +658,7 @@ namespace AirBnB
                 AutoSize = false,
                 Width = PROPERTY_CARD_WIDTH - 20,
                 Height = 20,
-                AutoEllipsis = true,  // Add "..." if text is too long
+                AutoEllipsis = true,
                 Text = $"Contact: {property["Email"]}",
                 Font = new Font("Nirmala UI", 9.75f, FontStyle.Bold)
             };
