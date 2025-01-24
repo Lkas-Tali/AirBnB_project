@@ -29,6 +29,7 @@ namespace AirBnB
         private Button previousButton;
         private Button nextButton;
 
+        // List of available cities
         public static readonly List<string> AVAILABLE_CITIES = new List<string>
         {
             "Bath", "Belfast", "Birmingham", "Brighton", "Bristol", "Cambridge",
@@ -36,7 +37,7 @@ namespace AirBnB
             "Manchester", "Newcastle", "Nottingham", "Oxford", "Sheffield", "York"
         };
 
-
+        // Event raised when a city is selected
         public event EventHandler<string> CitySelected;
 
         public CityCardManager(FirebaseClient client)
@@ -49,6 +50,7 @@ namespace AirBnB
             threadManager = new ThreadManager(processorCount);
         }
 
+        // Display city cards in the provided FlowLayoutPanel
         public async Task DisplayCityCards(FlowLayoutPanel flowPanel, Button prevButton = null, Button nextButton = null)
         {
             if (isDisposed)
@@ -83,7 +85,7 @@ namespace AirBnB
             }
         }
 
-        // New method to display the current page
+        // Display the current page of city cards
         public async Task DisplayCurrentPage()
         {
             if (activeFlowPanel == null) return;
@@ -133,6 +135,7 @@ namespace AirBnB
             UpdatePaginationButtons();
         }
 
+        // Load the image for a city card asynchronously
         private async void LoadImageForCard(string imageUrl, PictureBox pictureBox, Panel card)
         {
             try
@@ -155,7 +158,7 @@ namespace AirBnB
             }
         }
 
-        // New method to handle moving to the next page
+        // Move to the next page of city cards
         public void NextPage()
         {
             if (HasNextPage())
@@ -166,7 +169,7 @@ namespace AirBnB
             }
         }
 
-        // New method to handle moving to the previous page
+        // Move to the previous page of city cards
         public void PreviousPage()
         {
             if (HasPreviousPage())
@@ -177,20 +180,20 @@ namespace AirBnB
             }
         }
 
-        // Helper method to check if there is a next page
+        // Check if there is a next page of city cards
         private bool HasNextPage()
         {
             int totalPages = (AVAILABLE_CITIES.Count + CITIES_PER_PAGE - 1) / CITIES_PER_PAGE;
             return currentPage < totalPages - 1;
         }
 
-        // Helper method to check if there is a previous page
+        // Check if there is a previous page of city cards
         private bool HasPreviousPage()
         {
             return currentPage > 0;
         }
 
-        // Method to update button states
+        // Update the states of the pagination buttons
         private void UpdatePaginationButtons()
         {
             if (previousButton != null)
@@ -204,6 +207,7 @@ namespace AirBnB
             }
         }
 
+        // Check if a city card is visible within the FlowLayoutPanel
         private bool IsCardVisible(Panel card, FlowLayoutPanel flowPanel)
         {
             try
@@ -224,6 +228,7 @@ namespace AirBnB
             }
         }
 
+        // Handle the scroll event of the FlowLayoutPanel
         private void HandleScroll(object sender, ScrollEventArgs e)
         {
             try
@@ -257,6 +262,7 @@ namespace AirBnB
             }
         }
 
+        // Create a city card with rounded corners and city image and label
         private Panel CreateCityCard(string city)
         {
             var card = new Panel
@@ -295,6 +301,7 @@ namespace AirBnB
             return card;
         }
 
+        // Create the city image picture box with rounded corners
         private PictureBox CreateCityImageBox()
         {
             var cityImage = new PictureBox
@@ -321,6 +328,7 @@ namespace AirBnB
             return cityImage;
         }
 
+        // Create the city label with the specified city name
         private Label CreateCityLabel(string city)
         {
             return new Label
@@ -336,6 +344,7 @@ namespace AirBnB
             };
         }
 
+        // Load city images from Firebase asynchronously
         private async Task LoadCityImages()
         {
             if (cityImages == null)
@@ -354,6 +363,7 @@ namespace AirBnB
             }
         }
 
+        // Enable double buffering for the FlowLayoutPanel to reduce flickering
         private void EnableDoubleBuffering(FlowLayoutPanel panel)
         {
             typeof(Control).GetProperty("DoubleBuffered",
@@ -362,6 +372,7 @@ namespace AirBnB
                 .SetValue(panel, true, null);
         }
 
+        // Wait for all images to finish loading
         public void WaitForAllImages()
         {
             if (!isDisposed)
@@ -370,6 +381,7 @@ namespace AirBnB
             }
         }
 
+        // Dispose the CityCardManager and its resources
         public void Dispose()
         {
             if (isDisposed)

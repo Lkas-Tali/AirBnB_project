@@ -20,20 +20,21 @@ namespace AirBnB
         private readonly Color LoadingColorDark = Color.FromArgb(230, 230, 230);
         private readonly Color LoadingColorLight = Color.FromArgb(245, 245, 245);
 
-        // Field to track loading timers
+        // Field to track loading timers for each property card
         private readonly ConcurrentDictionary<Panel, System.Windows.Forms.Timer> loadingTimers =
             new ConcurrentDictionary<Panel, System.Windows.Forms.Timer>();
 
-        // Image cache
+        // Cache to store downloaded images to avoid redundant downloads
         private readonly ConcurrentDictionary<string, Image> imageCache = new ConcurrentDictionary<string, Image>();
 
-        // Configure HttpClient settings
+        // Configure HttpClient settings for optimal performance
         private static readonly HttpClient httpClient = new HttpClient()
         {
             Timeout = TimeSpan.FromSeconds(0.1),
             DefaultRequestHeaders = { ConnectionClose = false }
         };
 
+        // Event to notify when a reservation is selected
         public event EventHandler<Dictionary<string, object>> ReservationSelected;
 
         public PropertyReservationManager(FirebaseClient client)
@@ -41,6 +42,7 @@ namespace AirBnB
             firebaseClient = client;
         }
 
+        // Retrieves reservation details for a specific user from Firebase
         public virtual async Task<List<Dictionary<string, object>>> RetrieveUserReservationDetails(string username)
         {
             var reservationData = await firebaseClient
@@ -64,10 +66,12 @@ namespace AirBnB
             return reservations;
         }
 
+        // Displays user reservations in a FlowLayoutPanel
         public async Task DisplayUserReservations(List<Dictionary<string, object>> reservations, FlowLayoutPanel flowPanel)
         {
             try
             {
+                // Enable double buffering for smoother rendering
                 EnableDoubleBuffering(flowPanel);
 
                 // Create all property cards first before modifying the panel
@@ -76,20 +80,20 @@ namespace AirBnB
                 // Suspend layout once before making changes
                 flowPanel.SuspendLayout();
 
-                // Configure panel
+                // Configure panel properties
                 flowPanel.Controls.Clear();
                 flowPanel.AutoScroll = true;
                 flowPanel.WrapContents = true;
                 flowPanel.FlowDirection = FlowDirection.LeftToRight;
                 flowPanel.Padding = new Padding(10);
 
-                // Add all cards at once
+                // Add all cards at once for better performance
                 flowPanel.Controls.AddRange(propertyCards.ToArray());
 
                 // Resume layout once after all changes
                 flowPanel.ResumeLayout();
 
-                // Load data for all cards asynchronously
+                // Load data for all cards asynchronously to improve responsiveness
                 var loadingTasks = propertyCards.Select((card, index) =>
                     LoadReservationData(card, reservations[index]));
 
@@ -102,7 +106,7 @@ namespace AirBnB
             }
         }
 
-        // Helper method at the start of the class
+        // Helper method to enable double buffering for a FlowLayoutPanel
         private void EnableDoubleBuffering(FlowLayoutPanel panel)
         {
             typeof(Control).GetProperty("DoubleBuffered",
@@ -111,7 +115,7 @@ namespace AirBnB
                 .SetValue(panel, true, null);
         }
 
-        // Helper method for image resizing
+        // Helper method for resizing images while preserving aspect ratio
         private Image ResizeImage(Image image, int width, int height)
         {
             var resized = new Bitmap(width, height);
@@ -123,6 +127,7 @@ namespace AirBnB
             return resized;
         }
 
+        // Loads reservation data asynchronously for a property card
         private async Task LoadReservationData(Panel card, Dictionary<string, object> reservation)
         {
             try
@@ -139,6 +144,7 @@ namespace AirBnB
             }
         }
 
+        // Creates a reservation card panel for a reservation
         private Panel CreateReservationCard(Dictionary<string, object> reservation)
         {
             var card = new Panel
@@ -151,7 +157,7 @@ namespace AirBnB
                 Tag = reservation
             };
 
-            // Add rounded corners
+            // Add rounded corners to the card
             int radius = 20;
             System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
             path.AddArc(0, 0, radius, radius, 180, 90);
@@ -160,13 +166,13 @@ namespace AirBnB
             path.AddArc(0, card.Height - radius, radius, radius, 90, 90);
             card.Region = new Region(path);
 
-            // Add the regular controls
+            // Add the regular controls to the card
             AddReservationControls(card, reservation);
 
-            // Start loading effect
+            // Start loading effect for the card
             StartLoadingEffect(card);
 
-            // Add click handlers
+            // Add click handlers for the card and its controls
             card.Click += (s, e) => reservationCard_Click(card, e);
             foreach (Control control in card.Controls)
             {
@@ -181,13 +187,14 @@ namespace AirBnB
             return card;
         }
 
+        // Adds controls to a reservation card panel
         private void AddReservationControls(Panel card, Dictionary<string, object> reservation)
         {
             // Add property image
             PictureBox propertyImage = CreatePropertyImageBox();
             card.Controls.Add(propertyImage);
 
-            // Add labels
+            // Add labels for reservation details
             int yPosition = 170;
             int spacing = 25;
 
@@ -247,6 +254,7 @@ namespace AirBnB
             card.Controls.Add(contactLabel);
         }
 
+        // Creates a PictureBox for the property image with rounded corners
         private PictureBox CreatePropertyImageBox()
         {
             PictureBox propertyImage = new PictureBox
@@ -259,7 +267,7 @@ namespace AirBnB
                 Cursor = Cursors.Hand
             };
 
-            // Add rounded corners
+            // Add rounded corners to the PictureBox
             int picRadius = 10;
             System.Drawing.Drawing2D.GraphicsPath picPath = new System.Drawing.Drawing2D.GraphicsPath();
             picPath.AddArc(0, 0, picRadius, picRadius, 180, 90);
@@ -271,6 +279,7 @@ namespace AirBnB
             return propertyImage;
         }
 
+        // Starts the loading effect for a property card
         private void StartLoadingEffect(Panel card)
         {
             var timer = new System.Windows.Forms.Timer
@@ -303,6 +312,7 @@ namespace AirBnB
             timer.Start();
         }
 
+        // Updates the loading effect for a property card
         private void UpdateLoadingEffect(Panel card, bool isLight)
         {
             var pictureBox = card.Controls.OfType<PictureBox>().FirstOrDefault();
@@ -312,6 +322,7 @@ namespace AirBnB
             }
         }
 
+        // Stops the loading effect for a property card
         private void StopLoadingEffect(Panel card)
         {
             if (loadingTimers.TryRemove(card, out var timer))
@@ -330,10 +341,12 @@ namespace AirBnB
             }
         }
 
+        // Loads the property image asynchronously and updates the card
         private async Task LoadPropertyImageAsync(string imageUrl, Panel propertyCard)
         {
             try
             {
+                // Check if the image is already cached
                 if (imageCache.TryGetValue(imageUrl, out Image cachedImage))
                 {
                     var pictureBox = propertyCard.Controls.OfType<PictureBox>().FirstOrDefault();
@@ -364,7 +377,7 @@ namespace AirBnB
                                     var image = Image.FromStream(ms);
                                     if (!imageCache.ContainsKey(imageUrl))
                                     {
-                                        // Store original size in cache
+                                        // Store original size image in cache
                                         imageCache.TryAdd(imageUrl, new Bitmap(image));
                                     }
 
@@ -395,6 +408,7 @@ namespace AirBnB
             }
         }
 
+        // Updates the property card image with the resized image
         private void UpdatePropertyCardImage(Panel propertyCard, Image originalImage)
         {
             if (propertyCard.InvokeRequired)
@@ -411,6 +425,7 @@ namespace AirBnB
             }
         }
 
+        // Event handler for when a reservation card is clicked
         private void reservationCard_Click(object sender, EventArgs e)
         {
             if (sender is Panel propertyCard && propertyCard.Tag is Dictionary<string, object> propertyData)
@@ -419,6 +434,7 @@ namespace AirBnB
             }
         }
 
+        // Cancels a reservation by deleting it from Firebase
         public virtual async Task CancelReservation(Dictionary<string, object> reservation)
         {
             try
@@ -427,11 +443,9 @@ namespace AirBnB
                 {
                     string reservationId = reservation["firebaseKey"].ToString();
                     await firebaseClient
-                        .Child("Reservations")
-                        .Child(reservationId)
-                        .DeleteAsync();
-
-                    MessageBox.Show("Reservation cancelled successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    .Child("Reservations")
+                    .Child(reservationId)
+                    .DeleteAsync(); MessageBox.Show("Reservation cancelled successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {

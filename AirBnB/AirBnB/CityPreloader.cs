@@ -15,10 +15,14 @@ namespace AirBnB
         private bool isInitialized;
         private CancellationTokenSource cancellationTokenSource;
 
+        // Constants for city image dimensions
         public const int CITY_IMAGE_WIDTH = 230;
         public const int CITY_IMAGE_HEIGHT = 250;
 
+        // Event raised when a page load is complete
         public event EventHandler<int> PageLoadComplete;
+
+        // Property to check if the preloader is initialized
         public bool IsInitialized => isInitialized;
 
         public CityPreloader(FirebaseClient client, int citiesPerPage = 6)
@@ -28,6 +32,7 @@ namespace AirBnB
             cancellationTokenSource = new CancellationTokenSource();
         }
 
+        // Initialize the preloader by loading city images from Firebase
         public async Task Initialize()
         {
             if (isInitialized) return;
@@ -39,6 +44,7 @@ namespace AirBnB
             isInitialized = true;
         }
 
+        // Start preloading city images for the specified cities
         public async Task StartPreloading(List<string> cities)
         {
             if (!isInitialized) await Initialize();
@@ -54,6 +60,7 @@ namespace AirBnB
             }
         }
 
+        // Preload a specific page of city images
         private async Task PreloadPage(List<string> cities, int pageIndex)
         {
             int startIndex = pageIndex * citiesPerPage;
@@ -77,9 +84,12 @@ namespace AirBnB
             }
 
             await Task.WhenAll(loadingTasks);
+
+            // Raise the PageLoadComplete event with the loaded page index
             PageLoadComplete?.Invoke(this, pageIndex);
         }
 
+        // Stop the preloading process
         public void Stop()
         {
             cancellationTokenSource.Cancel();

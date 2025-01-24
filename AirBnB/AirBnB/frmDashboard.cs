@@ -21,8 +21,7 @@ namespace AirBnB
         private SelectedProperty selectedPropertyManager;
         private CityCardManager cityCardManager;
 
-
-
+        // Constants for image padding and property card dimensions
         const int IMAGE_PADDING = 10;
         private const int PROPERTY_CARD_WIDTH = 350;
         private const int PROPERTY_CARD_HEIGHT = 300;
@@ -32,6 +31,7 @@ namespace AirBnB
             InitializeComponent();
             InitializeFirebase();
 
+            // Initialize various managers and viewers
             listPropertyManager = new ListPropertyManager(firebaseClient);
             listedPropertyViewer = new ListedPropertyViewer(firebaseClient);
             propertyBookingManager = new PropertyBookingManager(firebaseClient);
@@ -39,6 +39,7 @@ namespace AirBnB
             selectedPropertyManager = new SelectedProperty(firebaseClient); ;
             cityCardManager = new CityCardManager(firebaseClient);
 
+            // Apply rounded corners to various UI elements
             this.ApplyRoundedCornersToAll();
             txtCardNumber?.ApplyRoundedCorners(25);
             txtAddressLine2?.ApplyRoundedCorners(25);
@@ -50,16 +51,16 @@ namespace AirBnB
             buttonNext?.ApplyRoundedCorners(25);
             buttonPrevious?.ApplyRoundedCorners(25);
 
+            // Disable confirm booking button initially
             button_ConfirmBooking.Enabled = false;
 
-            // Subscribe to the PropertySelected event
+            // Subscribe to events
             propertyBookingManager.PropertySelected += PropertyBookingManager_PropertySelected;
-
             propertyReservationManager.ReservationSelected += PropertyReservationManager_ReservationSelected;
-
             propertyBookingManager.CitySelected += PropertyBookingManager_CitySelected;
         }
 
+        // Initialize Firebase connection
         public void InitializeFirebase()
         {
             firebaseClient = new FirebaseClient("https://airbnb-d4964-default-rtdb.europe-west1.firebasedatabase.app/");
@@ -67,32 +68,30 @@ namespace AirBnB
 
         private void frmListed_Load(object sender, EventArgs e)
         {
+            // Set username label and show home panel on form load
             usernameLabel.Text = GlobalData.Username;
             ShowPanel(panelHome);
         }
 
         private void listButton_Click(object sender, EventArgs e)
         {
+            // Show list property panel
             ShowPanel(panelList);
         }
 
         private async void bookButton_Click(object sender, EventArgs e)
         {
+            // Show cities panel and display cities
             ShowPanel(panelCities);
-
             await propertyBookingManager.DisplayCitiesPanel(flowLayoutCities, buttonPrevious, buttonNext);
-
-
         }
 
         private async void listedButton_Click(object sender, EventArgs e)
         {
+            // Show listed properties panel and display user's listed properties
             ShowPanel(panelListed);
-
             string username = GlobalData.Username;
-
             string imageUrl = await listedPropertyViewer.GetImageUrlFromFirebase(username);
-
             if (imageUrl != null)
             {
                 listedPropertyViewer.DisplayImages(imageUrl, flowPanelImages);
@@ -105,12 +104,14 @@ namespace AirBnB
 
         private void button3_Click(object sender, EventArgs e)
         {
+            // Show login form and hide dashboard
             new frmLogin().Show();
             this.Hide();
         }
 
         private void ShowPanel(Panel panel)
         {
+            // Bring the specified panel to front
             panel.BringToFront();
         }
 
@@ -118,6 +119,7 @@ namespace AirBnB
         {
             try
             {
+                // Select files and upload property details
                 listPropertyManager.SelectFiles();
                 await listPropertyManager.UploadProperty(
                     GlobalData.Username,
@@ -137,20 +139,22 @@ namespace AirBnB
 
         private async void frontImageButton_Click(object sender, EventArgs e)
         {
+            // Upload front image for the property
             await listPropertyManager.UploadFrontImage(GlobalData.Username, GlobalData.email);
             MessageBox.Show("Front image uploaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void searchLabel_Click(object sender, EventArgs e)
         {
+            // Show search panel
             ShowPanel(searchPanel);
         }
 
         private async void searchButton_Click(object sender, EventArgs e)
         {
+            // Search properties by city and display results
             string city = txtSearch.Text;
             var properties = await propertyBookingManager.SearchPropertiesByCity(city);
-
             if (properties != null && properties.Count > 0)
             {
                 await propertyBookingManager.DisplayAvailableProperties(properties, flowPanelSearch);
@@ -165,26 +169,23 @@ namespace AirBnB
         {
             try
             {
+                // Handle property selection and display property details
                 selectedPropertyData = propertyData;
-
                 var addressData = await selectedPropertyManager.GetPropertyAddress(propertyData["Username"].ToString());
-
                 if (labelAddress != null)
                 {
                     labelAddress.Text = $"Address: {addressData["Address"]}";
                 }
-
                 if (labelPricePerNight != null)
                 {
                     labelPricePerNight.Text = $"Price per night: £{propertyData["PricePerNight"]}";
                 }
-
                 if (labelContact != null)
                 {
                     labelContact.Text = $"Contact: {propertyData["Email"]}";
                 }
 
-                // Reset the booking calendar and labels when showing property details
+                // Reset booking information
                 bookingCalendar.SelectionStart = bookingCalendar.SelectionEnd = DateTime.Today;
                 labelCheckIn.Text = "Check-in Date: Not selected";
                 labelCheckOut.Text = "Check-out Date: Not selected";
@@ -193,7 +194,6 @@ namespace AirBnB
                 button_ConfirmBooking.Enabled = false;
 
                 ShowPanel(panelPropertyDetails);
-
                 await selectedPropertyManager.DisplayPropertyDetails(propertyData, flowLayoutPanelImages);
             }
             catch (Exception ex)
@@ -205,66 +205,60 @@ namespace AirBnB
 
         private void button_FinalBook_Click(object sender, EventArgs e)
         {
+            // Show final booking panel
             ShowPanel(panelFinalBook);
         }
 
         private void bookingCalendar_DateSelected(object sender, DateRangeEventArgs e)
         {
+            // Handle booking date selection and update booking information
             DateTime checkInDate = bookingCalendar.SelectionStart;
             DateTime checkOutDate = bookingCalendar.SelectionEnd;
 
-            // First, validate that check-in isn't in the past
+            // Validate check-in date
             if (checkInDate < DateTime.Today)
             {
                 MessageBox.Show("Please select a check-in date from today onwards.",
                     "Invalid Check-in Date",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
-
-                // Reset the calendar selection
                 bookingCalendar.SetSelectionRange(DateTime.Today, DateTime.Today);
-
-                // Clear all booking information and disable button
                 ClearBookingInformation();
                 return;
             }
 
-            // Calculate total nights - this is the key calculation for validation
+            // Calculate total nights
             int totalNights = (checkOutDate - checkInDate).Days;
 
-            // Now check if the stay is at least one night (two days)
+            // Validate stay duration
             if (totalNights < 1)
             {
-
-                // Clear all booking information and disable button
                 ClearBookingInformation();
                 return;
             }
 
-            // If we get here, we have a valid date range of at least one night
-            // Calculate the price and update the display
+            // Calculate total price
             decimal pricePerNight = 0;
             if (labelPricePerNight != null)
             {
                 string priceText = labelPricePerNight.Text.Replace("Price per night: £", "");
                 decimal.TryParse(priceText, out pricePerNight);
             }
-
             decimal totalPrice = totalNights * pricePerNight;
 
-            // Update all the labels with the valid selection
+            // Update booking information labels
             labelCheckIn.Text = $"Check-in Date: {checkInDate:d}";
             labelCheckOut.Text = $"Check-out Date: {checkOutDate:d}";
             labelTotalNights.Text = $"Total Nights: {totalNights}";
             labelTotalPrice.Text = $"Total Price: £{totalPrice:N2}";
 
-            // Enable the booking button only when we have a valid selection
+            // Enable booking button
             button_ConfirmBooking.Enabled = true;
         }
 
-        // Helper method to clear booking information
         private void ClearBookingInformation()
         {
+            // Clear booking information labels and disable booking button
             labelCheckIn.Text = "Check-in Date: Not selected";
             labelCheckOut.Text = "Check-out Date: Not selected";
             labelTotalNights.Text = "Total Nights: 0";
@@ -274,26 +268,28 @@ namespace AirBnB
 
         private void button_ConfirmBooking_Click(object sender, EventArgs e)
         {
+            // Show payment panel
             ShowPanel(panelPayment);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+            // Show home panel
             ShowPanel(panelHome);
         }
 
         private void usernameLabel_Click(object sender, EventArgs e)
         {
+            // Show home panel
             ShowPanel(panelHome);
         }
 
         private async void buttonReservations_Click(object sender, EventArgs e)
         {
+            // Show reservations panel and display user's reservations
             string username = GlobalData.Username;
             ShowPanel(panelReservations);
-
             var reservations = await propertyReservationManager.RetrieveUserReservationDetails(username);
-
             if (reservations.Count != 0)
             {
                 await propertyReservationManager.DisplayUserReservations(reservations, flowPanelReservations);
@@ -306,9 +302,8 @@ namespace AirBnB
 
         private async void PropertyReservationManager_ReservationSelected(object sender, Dictionary<string, object> reservationData)
         {
-            // Store the selected reservation data
+            // Handle reservation selection and display reservation details
             selectedReservationData = reservationData;
-
             if (labelResAddress != null)
             {
                 labelResAddress.Text = $"Address: {reservationData["address"]}";
@@ -330,29 +325,24 @@ namespace AirBnB
                 decimal pricePerNight = decimal.Parse(reservationData["pricePerNight"].ToString());
                 int nights = int.Parse(reservationData["nights"].ToString());
                 decimal totalPrice = pricePerNight * nights;
-
                 labelResTotalPrice.Text = $"Total Price: £{totalPrice}";
             }
             ShowPanel(panelSelectedReservation);
-
-            // Use the new method instead of DisplaySelectedPropertyImages
             await selectedPropertyManager.DisplayPropertyDetails(reservationData, flowPanelSelectedResevation);
         }
 
         private async void buttonCancelReservation_Click(object sender, EventArgs e)
         {
+            // Handle reservation cancellation
             DialogResult result = MessageBox.Show(
                 "Are you sure you want to cancel this reservation?",
                 "Confirm Cancellation",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question
             );
-
             if (result == DialogResult.Yes)
             {
                 await propertyReservationManager.CancelReservation(selectedReservationData);
-
-                // Refresh the reservations panel
                 buttonReservations_Click(sender, e);
             }
         }
@@ -361,11 +351,12 @@ namespace AirBnB
         {
             try
             {
+                // Process payment and create reservation
                 var paymentManager = new PaymentManager();
                 var paymentDetails = new PaymentDetails
                 {
                     FullName = txtFullName.Text,
-                    CardNumber = txtCardNumber.Text.Replace(" ", ""),  // Remove any spaces
+                    CardNumber = txtCardNumber.Text.Replace(" ", ""),
                     ExpiryDate = txtExpiryDate.Text,
                     CVV = txtCVV.Text,
                     AddressLine1 = txtAddressLine1.Text,
@@ -373,50 +364,36 @@ namespace AirBnB
                     City = txtCiti.Text,
                     PostCode = txtPostCode.Text
                 };
-
-                // Calculate total price from labels
                 string priceText = labelTotalPrice.Text.Replace("Total Price: £", "");
                 if (!decimal.TryParse(priceText, out decimal totalAmount))
                 {
                     MessageBox.Show("Invalid price amount.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
-                // Process the payment
                 paymentManager.ProcessPayment(paymentDetails, totalAmount);
-
-                // If we get here, payment was successful
                 MessageBox.Show("Payment processed successfully. Reservation successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Continue with the existing reservation process
                 if (selectedPropertyData == null)
                 {
                     MessageBox.Show("Property data is missing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
                 DateTime checkInDate = bookingCalendar.SelectionStart.Date;
                 DateTime checkOutDate = bookingCalendar.SelectionEnd.Date;
-
                 string strCheckInDate = checkInDate.ToString("dd/MM/yyyy");
                 string strCheckOutDate = checkOutDate.ToString("dd/MM/yyyy");
                 string username = GlobalData.Username;
                 int totalNights = (checkOutDate - checkInDate).Days;
-
                 var propertyData = await firebaseClient
                     .Child("Available Properties")
                     .Child(selectedPropertyData["Username"].ToString())
                     .OnceSingleAsync<Dictionary<string, object>>();
-
                 var addressData = await firebaseClient
                     .Child("Available Properties")
                     .Child(selectedPropertyData["Username"].ToString())
                     .Child("Address")
                     .OnceSingleAsync<Dictionary<string, object>>();
-
                 selectedPropertyManager.AddReservationToDatabase(username, strCheckOutDate, totalNights, strCheckInDate, propertyData, addressData);
-
-                // Return to home panel or another appropriate panel
                 ShowPanel(panelHome);
             }
             catch (ArgumentException ex)
@@ -428,15 +405,13 @@ namespace AirBnB
                 MessageBox.Show("An error occurred while processing the payment: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private async void PropertyBookingManager_CitySelected(object sender, string city)
         {
+            // Handle city selection and display properties in the selected city
             ShowPanel(panelBook);
-
             try
             {
                 var properties = await propertyBookingManager.SearchPropertiesByCity(city);
-
                 if (properties != null && properties.Count > 0)
                 {
                     await propertyBookingManager.DisplayAvailableProperties(
@@ -459,21 +434,25 @@ namespace AirBnB
 
         private void labelSearchCities_Click(object sender, EventArgs e)
         {
+            // Show search panel
             ShowPanel(searchPanel);
         }
 
         private void buttonPrevious_Click(object sender, EventArgs e)
         {
+            // Navigate to previous page of city cards
             propertyBookingManager.CityCardManager.PreviousPage();
         }
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
+            // Navigate to next page of city cards
             propertyBookingManager.CityCardManager.NextPage();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            // Exit the application when the form is closing
             base.OnFormClosing(e);
             if (e.CloseReason == CloseReason.UserClosing)
             {

@@ -19,6 +19,7 @@ namespace AirBnB
         private readonly ConcurrentDictionary<string, ManualResetEventSlim> loadingEvents;
         private readonly SynchronizationContext synchronizationContext;
 
+        // Constructor that initializes the ImageLoader with the specified maximum number of threads
         public ImageLoader(int maxThreads)
         {
             threadManager = new ThreadManager(maxThreads);
@@ -27,6 +28,7 @@ namespace AirBnB
             synchronizationContext = SynchronizationContext.Current;
         }
 
+        // Method to load an image asynchronously and display it in a PictureBox
         public void LoadImage(string imageUrl, PictureBox pictureBox, Panel card)
         {
             if (isDisposed)
@@ -35,14 +37,14 @@ namespace AirBnB
             if (synchronizationContext == null)
                 throw new InvalidOperationException("ImageLoader must be created on UI thread");
 
-            // Try to get from cache first
+            // Try to get the image from cache first
             if (imageCache.TryGetValue(imageUrl, out Image cachedImage))
             {
                 SafeUpdateUI(pictureBox, cachedImage);
                 return;
             }
 
-            // If already loading this URL, wait for it
+            // If the image is already being loaded, wait for it
             var loadingEvent = loadingEvents.GetOrAdd(imageUrl, _ => new ManualResetEventSlim(false));
             if (loadingEvent.IsSet)
             {
@@ -53,15 +55,18 @@ namespace AirBnB
                 return;
             }
 
+            // If the image is not in cache and not being loaded, start a new thread to load it
             threadManager.GetThread(() =>
             {
                 try
                 {
+                    // Check if the card or PictureBox has been disposed
                     if (IsControlDisposed(card) || IsControlDisposed(pictureBox))
                         return;
 
                     using (var client = new HttpClient())
                     {
+                        // Download the image data from the URL
                         var imageData = client.GetByteArrayAsync(imageUrl).Result;
 
                         lock (imageLock)
@@ -73,7 +78,7 @@ namespace AirBnB
                                     var originalImage = Image.FromStream(ms);
                                     Image optimizedImage = null;
 
-                                    // Get dimensions on UI thread
+                                    // Get the dimensions of the PictureBox on the UI thread
                                     int width = 0, height = 0;
                                     synchronizationContext.Send(_ =>
                                     {
@@ -84,6 +89,7 @@ namespace AirBnB
                                         }
                                     }, null);
 
+                                    // Resize the image to fit the PictureBox dimensions
                                     if (width > 0 && height > 0)
                                     {
                                         optimizedImage = new Bitmap(width, height);
@@ -98,6 +104,7 @@ namespace AirBnB
                             }
                         }
 
+                        // If the image is now in cache, update the PictureBox on the UI thread
                         if (imageCache.TryGetValue(imageUrl, out Image finalImage))
                         {
                             SafeUpdateUI(pictureBox, finalImage);
@@ -106,11 +113,13 @@ namespace AirBnB
                 }
                 finally
                 {
+                    // Signal that the image loading is complete
                     loadingEvent.Set();
                 }
             });
         }
 
+        // Method to safely update the PictureBox on the UI thread
         private void SafeUpdateUI(PictureBox pictureBox, Image image)
         {
             if (synchronizationContext == null || IsControlDisposed(pictureBox))
@@ -133,6 +142,7 @@ namespace AirBnB
             }, null);
         }
 
+        // Method to check if a control has been disposed
         private bool IsControlDisposed(Control control)
         {
             if (control == null)
@@ -157,11 +167,13 @@ namespace AirBnB
             return disposed;
         }
 
+        // Method to wait for all image loading threads to complete
         public void WaitForAllImages()
         {
             threadManager.WaitForAllThreads();
         }
 
+        // Method to dispose the ImageLoader and clean up resources
         public void Dispose()
         {
             if (isDisposed)
